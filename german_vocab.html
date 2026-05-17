@@ -1,0 +1,1158 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wichtige Wörter — B2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --accent: #4ade80;
+    --accent2: #60a5fa;
+    --accent3: #f59e0b;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --border: #2d3348;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'IBM Plex Sans', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 32px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 2rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+    margin-bottom: 6px;
+  }
+
+  header p {
+    color: var(--muted);
+    font-size: 0.85rem;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  /* Mode toggle */
+  .mode-bar {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .mode-btn {
+    padding: 7px 16px;
+    border-radius: 20px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.8rem;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: all 0.2s;
+  }
+
+  .mode-btn.active {
+    background: var(--accent);
+    color: #000;
+    border-color: var(--accent);
+    font-weight: 500;
+  }
+
+  /* Section tabs */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    margin-bottom: 20px;
+    overflow-x: auto;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+  }
+  .tabs::-webkit-scrollbar { display: none; }
+
+  .tab {
+    white-space: nowrap;
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    cursor: pointer;
+    font-size: 0.78rem;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .tab.active {
+    background: var(--surface2);
+    color: var(--accent2);
+    border-color: var(--accent2);
+  }
+
+  /* Stats bar */
+  .stats {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 20px;
+    font-size: 0.78rem;
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--muted);
+    flex-wrap: wrap;
+  }
+
+  .stat span { color: var(--text); font-weight: 500; }
+
+  /* FLASHCARD mode */
+  #flashcard-mode { display: none; }
+
+  .flashcard-wrap {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+  }
+
+  .flashcard {
+    width: 100%;
+    max-width: 420px;
+    min-height: 220px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    padding: 32px 24px;
+    text-align: center;
+    position: relative;
+    transition: transform 0.15s, box-shadow 0.15s;
+    user-select: none;
+  }
+
+  .flashcard:hover { transform: translateY(-2px); box-shadow: 0 8px 32px rgba(0,0,0,0.4); }
+
+  .flashcard .article {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.8rem;
+    color: var(--accent3);
+    margin-bottom: 8px;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .flashcard .word {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: var(--text);
+    margin-bottom: 8px;
+  }
+
+  .flashcard .plural {
+    font-size: 0.85rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+    margin-bottom: 12px;
+  }
+
+  .flashcard .section-tag {
+    position: absolute;
+    top: 12px;
+    right: 14px;
+    font-size: 0.68rem;
+    padding: 2px 8px;
+    border-radius: 10px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .flashcard .hint {
+    font-size: 0.75rem;
+    color: var(--muted);
+    margin-top: 16px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .flashcard .translation {
+    display: none;
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 1px solid var(--border);
+    width: 100%;
+  }
+
+  .flashcard.revealed .translation { display: block; }
+  .flashcard.revealed .hint { display: none; }
+
+  .translation .ru {
+    font-size: 1.2rem;
+    color: var(--accent);
+    font-weight: 500;
+  }
+
+  .translation .note {
+    font-size: 0.78rem;
+    color: var(--muted);
+    margin-top: 6px;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .card-nav {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .nav-btn {
+    padding: 10px 22px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--text);
+    cursor: pointer;
+    font-size: 0.85rem;
+    font-family: 'IBM Plex Mono', monospace;
+    transition: all 0.15s;
+  }
+
+  .nav-btn:hover { background: var(--surface2); }
+  .nav-btn.know { border-color: var(--accent); color: var(--accent); }
+  .nav-btn.know:hover { background: var(--accent); color: #000; }
+  .nav-btn.skip { border-color: #ef4444; color: #ef4444; }
+
+  .card-counter {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+    color: var(--muted);
+    min-width: 80px;
+    text-align: center;
+  }
+
+  /* TABLE mode */
+  #table-mode { display: none; }
+
+  .section-block {
+    margin-bottom: 32px;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: var(--accent2);
+    margin-bottom: 12px;
+    padding-bottom: 8px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .section-title .letter {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    background: var(--accent2);
+    color: #000;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    font-family: 'IBM Plex Mono', monospace;
+    flex-shrink: 0;
+  }
+
+  .word-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+  }
+
+  @media (max-width: 480px) {
+    .word-grid { grid-template-columns: 1fr; }
+  }
+
+  .word-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 8px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 12px;
+    cursor: pointer;
+    transition: all 0.15s;
+    position: relative;
+  }
+
+  .word-row:hover { border-color: var(--accent2); background: var(--surface2); }
+  .word-row.known { border-color: var(--accent) !important; }
+  .word-row.known::after {
+    content: '✓';
+    position: absolute;
+    top: 6px;
+    right: 8px;
+    color: var(--accent);
+    font-size: 0.75rem;
+  }
+
+  .word-row .art {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.7rem;
+    color: var(--accent3);
+    text-transform: uppercase;
+    flex-shrink: 0;
+    padding-top: 2px;
+    min-width: 22px;
+  }
+
+  .word-row .de {
+    font-weight: 500;
+    font-size: 0.88rem;
+    color: var(--text);
+    flex: 1;
+    line-height: 1.3;
+  }
+
+  .word-row .pl {
+    font-size: 0.72rem;
+    color: var(--muted);
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  .word-row .ru-tr {
+    font-size: 0.8rem;
+    color: var(--accent);
+    display: none;
+    margin-top: 4px;
+  }
+
+  .word-row.show-tr .ru-tr { display: block; }
+
+  /* Search */
+  .search-bar {
+    margin-bottom: 20px;
+  }
+
+  .search-bar input {
+    width: 100%;
+    padding: 10px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text);
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  .search-bar input:focus { border-color: var(--accent2); }
+  .search-bar input::placeholder { color: var(--muted); }
+
+  /* Progress bar */
+  .progress-bar {
+    width: 100%;
+    max-width: 420px;
+    height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: var(--accent);
+    border-radius: 2px;
+    transition: width 0.3s;
+  }
+
+  .done-msg {
+    text-align: center;
+    padding: 40px 20px;
+    display: none;
+  }
+
+  .done-msg h2 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 1.8rem; margin-bottom: 8px; }
+  .done-msg p { color: var(--muted); font-size: 0.88rem; }
+
+  .reset-btn {
+    margin-top: 16px;
+    padding: 10px 24px;
+    background: var(--surface);
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    border-radius: 8px;
+    cursor: pointer;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.85rem;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>Wichtige Wörter</h1>
+  <p id="header-sub">B2 · Загрузка...</p>
+</header>
+
+<div class="mode-bar">
+  <button class="mode-btn active" onclick="setMode('table')">📋 Таблица</button>
+  <button class="mode-btn" onclick="setMode('flashcard')">🃏 Карточки</button>
+</div>
+
+<div class="tabs" id="chapter-tabs"></div>
+
+<!-- TABLE MODE -->
+<div id="table-mode">
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Поиск слова..." oninput="filterWords()">
+  </div>
+  <div class="stats">
+    <div>Изучено: <span id="knownCount">0</span> / <span id="totalCount">0</span></div>
+    <div>Нажмите на слово → перевод</div>
+  </div>
+  <div id="tableContent"></div>
+</div>
+
+<!-- FLASHCARD MODE -->
+<div id="flashcard-mode">
+  <div class="flashcard-wrap">
+    <div class="stats" style="justify-content:center">
+      <div>Осталось: <span id="fc-left">0</span></div>
+      <div>Знаю: <span id="fc-known">0</span></div>
+    </div>
+    <div class="progress-bar">
+      <div class="progress-fill" id="fc-progress" style="width:0%"></div>
+    </div>
+    <div class="flashcard" id="flashcard" onclick="revealCard()">
+      <div class="section-tag" id="fc-tag"></div>
+      <div class="article" id="fc-article"></div>
+      <div class="word" id="fc-word"></div>
+      <div class="plural" id="fc-plural"></div>
+      <div class="hint">👆 Нажмите, чтобы увидеть перевод</div>
+      <div class="translation">
+        <div class="ru" id="fc-ru"></div>
+        <div class="note" id="fc-note"></div>
+      </div>
+    </div>
+    <div class="card-nav">
+      <button class="nav-btn skip" onclick="nextCard(false)">✗ Не знаю</button>
+      <div class="card-counter"><span id="fc-idx">1</span> / <span id="fc-total">0</span></div>
+      <button class="nav-btn know" onclick="nextCard(true)">✓ Знаю</button>
+    </div>
+    <div class="done-msg" id="done-msg">
+      <h2>Готово! 🎉</h2>
+      <p>Вы прошли все карточки</p>
+      <button class="reset-btn" onclick="resetFlashcards()">Начать заново</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHAPTERS = [
+  {
+    id: 'ch-prev', title: 'Стр. 68–69 (Работа и жильё)',
+    sections: [
+  {
+    id: 'A', title: 'Eine Stelle suchen', color: '#60a5fa',
+    words: [
+      { art: 'der', de: 'Arbeitsvertrag', pl: '"-e', ru: 'трудовой договор' },
+      { art: 'der', de: 'Aushang', pl: '"-e', ru: 'объявление, доска объявлений' },
+      { art: '', de: 'aussagekräftig', pl: '', ru: 'убедительный, содержательный' },
+      { art: '', de: 'etw. beinhalten', pl: '', ru: 'включать в себя что-л.' },
+      { art: 'das', de: 'BIZ', pl: '(Sg.)', ru: 'информационный центр по трудоустройству' },
+      { art: 'die', de: 'Chancengleichheit', pl: '-en', ru: 'равенство возможностей' },
+      { art: '', de: 'etw. entwickeln', pl: '', ru: 'развивать что-л.' },
+      { art: 'der', de: 'Fortschritt', pl: '(Sg.)', ru: 'прогресс, продвижение' },
+      { art: '', de: 'ein inklusiver Arbeitsplatz', pl: '', ru: 'инклюзивное рабочее место' },
+      { art: '', de: 'innovativ', pl: '', ru: 'инновационный' },
+      { art: 'die', de: 'Jobmesse', pl: '-n', ru: 'ярмарка вакансий' },
+      { art: 'der', de: 'Labormitarbeiter', pl: '–', ru: 'сотрудник лаборатории (м.)' },
+      { art: 'die', de: 'Labormitarbeiterin', pl: '-nen', ru: 'сотрудница лаборатории' },
+      { art: 'die', de: 'Messmethode', pl: '-n', ru: 'метод измерения' },
+      { art: 'das', de: 'Netzwerk', pl: '-e', ru: 'сеть, нетворкинг' },
+      { art: 'die', de: 'Online-Jobbörse', pl: '-n', ru: 'онлайн-биржа труда' },
+      { art: 'das', de: 'Online-Stellenportal', pl: '-e', ru: 'онлайн-портал вакансий' },
+      { art: 'das', de: 'Pharmaunternehmen', pl: '–', ru: 'фармацевтическая компания' },
+      { art: 'die', de: 'Qualitätskontrolle', pl: '-n', ru: 'контроль качества' },
+      { art: '', de: 'etw. recherchieren', pl: '', ru: 'исследовать, искать информацию' },
+      { art: '', de: 'sorgfältig', pl: '', ru: 'тщательный, аккуратный' },
+      { art: '', de: 'soziale Netzwerke', pl: '(Pl.)', ru: 'социальные сети' },
+      { art: 'die', de: 'Sozialleistung', pl: '-en', ru: 'социальное пособие / льгота' },
+      { art: 'die', de: 'Stellenbörse', pl: '-n', ru: 'биржа труда, сайт вакансий' },
+      { art: 'das', de: 'Stellengesuch', pl: '-e', ru: 'объявление о поиске работы' },
+      { art: 'die', de: 'Stellensuche', pl: '(Sg.)', ru: 'поиск работы' },
+      { art: '', de: 'umfangreich', pl: '', ru: 'обширный, объёмный' },
+      { art: '', de: 'unbefristet', pl: '', ru: 'бессрочный (без ограничения срока)' },
+      { art: 'die', de: 'Vergütung', pl: '-en', ru: 'вознаграждение, зарплата' },
+      { art: '', de: 'etw. verlangen', pl: '', ru: 'требовать, запрашивать что-л.' },
+      { art: 'die', de: 'Voraussetzung', pl: '-en', ru: 'предпосылка, условие' },
+      { art: 'die', de: 'Webseite', pl: '-n', ru: 'веб-сайт' },
+      { art: '', de: 'zur Verfügung stehen', pl: '', ru: 'быть в наличии / распоряжении' },
+    ]
+  },
+  {
+    id: 'B', title: 'Der Lebenslauf', color: '#f59e0b',
+    words: [
+      { art: 'der', de: 'Abschluss', pl: '"-e', ru: 'диплом, окончание' },
+      { art: '', de: 'etw. auswerten', pl: '', ru: 'анализировать, обрабатывать данные' },
+      { art: '', de: 'begeistert von (+ Dat.)', pl: '', ru: 'воодушевлённый чем-л.' },
+      { art: 'der', de: 'Bildungsweg', pl: '-e', ru: 'образовательный путь' },
+      { art: 'die', de: 'Daten', pl: '(Pl.)', ru: 'данные' },
+      { art: '', de: 'etw. dokumentieren', pl: '', ru: 'документировать что-л.' },
+      { art: '', de: 'eigenverantwortlich', pl: '', ru: 'самостоятельный, ответственный' },
+      { art: 'die', de: 'Fähigkeit', pl: '-en', ru: 'способность, умение' },
+      { art: '', de: 'fehlerfrei', pl: '', ru: 'без ошибок, безупречный' },
+      { art: '', de: 'jdn. hinweisen auf (+ Akk.)', pl: '', ru: 'указывать кому-л. на что-л.' },
+      { art: '', de: 'etw. hinzufügen zu (+ Dat.)', pl: '', ru: 'добавлять что-л. к чему-л.' },
+      { art: 'die', de: 'Kenntnis', pl: '-se', ru: 'знание, навык' },
+      { art: 'die', de: 'Korrektheit', pl: '(Sg.)', ru: 'правильность, корректность' },
+      { art: '', de: 'persönliche Daten', pl: '(Pl.)', ru: 'личные данные' },
+      { art: 'die', de: 'Praxis- und Berufserfahrung', pl: '-en', ru: 'практический и профессиональный опыт' },
+      { art: '', de: 'selbstständig', pl: '', ru: 'самостоятельный, независимый' },
+      { art: 'die', de: 'Stellenausschreibung', pl: '-en', ru: 'объявление о вакансии' },
+      { art: '', de: 'verfügen über (+ Akk.)', pl: '', ru: 'располагать чем-л., иметь' },
+      { art: '', de: 'vertraut mit (+ Dat.)', pl: '', ru: 'знакомый с чем-л.' },
+      { art: 'die', de: 'Vollständigkeit', pl: '(Sg.)', ru: 'полнота, полнотта комплектности' },
+      { art: 'die', de: 'Weiterbildung', pl: '-en', ru: 'повышение квалификации' },
+    ]
+  },
+  {
+    id: 'C', title: 'Das Bewerbungsschreiben', color: '#a78bfa',
+    words: [
+      { art: 'der', de: 'Absender', pl: '–', ru: 'отправитель' },
+      { art: 'die', de: 'Anlage', pl: '-n', ru: 'приложение (к письму)' },
+      { art: 'die', de: 'Anrede', pl: '-n', ru: 'обращение (в письме)' },
+      { art: 'der', de: 'Ansprechpartner', pl: '–', ru: 'контактное лицо (м.)' },
+      { art: 'die', de: 'Ansprechpartnerin', pl: '-nen', ru: 'контактное лицо (ж.)' },
+      { art: 'der', de: 'Aufgabenbereich', pl: '-e', ru: 'круг обязанностей, зона ответственности' },
+      { art: 'das', de: 'Aufgabengebiet', pl: '-e', ru: 'область задач' },
+      { art: '', de: 'etw. beantworten', pl: '', ru: 'отвечать на что-л.' },
+      { art: '', de: 'etw. beweisen', pl: '', ru: 'доказывать что-л.' },
+      { art: 'die', de: 'Bewerbungsunterlagen', pl: '(Pl.)', ru: 'документы для приёма на работу' },
+      { art: 'die', de: 'Durchführung', pl: '-en', ru: 'проведение, выполнение' },
+      { art: '', de: 'sich einarbeiten in (+ Akk.)', pl: '', ru: 'вникать во что-л., осваиваться' },
+      { art: 'die', de: 'Einleitung', pl: '-en', ru: 'введение, вступление' },
+      { art: 'der', de: 'Empfänger', pl: '–', ru: 'получатель (м.)' },
+      { art: 'die', de: 'Empfängerin', pl: '-nen', ru: 'получательница' },
+      { art: '', de: 'engagiert', pl: '', ru: 'преданный, активный, вовлечённый' },
+      { art: 'das', de: 'Fachwissen', pl: '(Sg.)', ru: 'профессиональные знания' },
+      { art: 'das', de: 'Fähigkeitsprofil', pl: '-e', ru: 'профиль компетенций' },
+      { art: '', de: 'etw. fordern', pl: '', ru: 'требовать что-л.' },
+      { art: '', de: 'herausfordernd', pl: '', ru: 'сложный, бросающий вызов' },
+      { art: '', de: 'leichtfallen', pl: '', ru: 'даваться легко' },
+    ]
+  },
+  {
+    id: 'D', title: 'Vor dem Vorstellungsgespräch', color: '#4ade80',
+    words: [
+      { art: '', de: 'etw. anpacken', pl: '', ru: 'браться за что-л., решать' },
+      { art: 'die', de: 'Auflistung', pl: '-en', ru: 'перечисление, список' },
+      { art: '', de: 'etw. bestätigen', pl: '', ru: 'подтверждать что-л.' },
+      { art: 'der', de: 'Dienstleister', pl: '–', ru: 'поставщик услуг (м.)' },
+      { art: 'die', de: 'Dienstleisterin', pl: '-nen', ru: 'поставщик услуг (ж.)' },
+      { art: '', de: 'ehrgeizig', pl: '', ru: 'честолюбивый, амбициозный' },
+      { art: '', de: 'erforderlich', pl: '', ru: 'необходимый, требуемый' },
+      { art: '', de: 'etw./jdn. erkennen', pl: '', ru: 'узнавать, распознавать' },
+      { art: '', de: 'etw. erledigen', pl: '', ru: 'выполнять, решать что-л.' },
+      { art: '', de: 'etw. erstatten', pl: '', ru: 'возмещать, компенсировать' },
+      { art: 'die', de: 'Fahrkosten', pl: '(Pl.)', ru: 'транспортные расходы' },
+      { art: 'die', de: 'Flexibilität', pl: '(Sg.)', ru: 'гибкость' },
+      { art: 'der', de: 'Gesprächspartner', pl: '–', ru: 'собеседник (м.)' },
+      { art: 'die', de: 'Gesprächspartnerin', pl: '-nen', ru: 'собеседница' },
+      { art: '', de: 'gründlich', pl: '', ru: 'основательный, тщательный' },
+      { art: 'die', de: 'Kommunikationskompetenz', pl: '(Sg.)', ru: 'коммуникативная компетентность' },
+      { art: 'die', de: 'Kosten', pl: '(Pl.)', ru: 'затраты, расходы' },
+      { art: '', de: 'Kosten erstatten', pl: '', ru: 'возмещать расходы' },
+      { art: 'die', de: 'Kritikfähigkeit', pl: '(Sg.)', ru: 'способность воспринимать критику' },
+      { art: '', de: 'etw./jdn. kritisieren', pl: '', ru: 'критиковать что-л./кого-л.' },
+      { art: 'der', de: 'Laborleiter', pl: '–', ru: 'руководитель лаборатории (м.)' },
+      { art: 'die', de: 'Laborleiterin', pl: '-nen', ru: 'руководитель лаборатории (ж.)' },
+      { art: 'die', de: 'Leistungsbereitschaft', pl: '(Sg.)', ru: 'готовность к работе / высокой отдаче' },
+      { art: 'der', de: 'Personalverantwortliche', pl: '-n', ru: 'сотрудник отдела кадров (м.)' },
+      { art: 'die', de: 'Personalverantwortliche', pl: '-n', ru: 'сотрудник отдела кадров (ж.)' },
+      { art: 'die', de: 'Quittung', pl: '-en', ru: 'квитанция, чек' },
+      { art: 'die', de: 'Teamfähigkeit', pl: '(Sg.)', ru: 'способность работать в команде' },
+      { art: '', de: 'einen Termin bestätigen', pl: '', ru: 'подтверждать встречу/запись' },
+      { art: '', de: 'überzeugend', pl: '', ru: 'убедительный' },
+      { art: '', de: 'unbedingt', pl: '', ru: 'обязательно, непременно' },
+      { art: '', de: 'etw. variieren', pl: '', ru: 'варьировать что-л.' },
+      { art: '', de: 'verständlich', pl: '', ru: 'понятный, доступный' },
+      { art: 'die', de: 'Vorlage', pl: '-n', ru: 'шаблон, образец' },
+      { art: '', de: 'etw./jdn. wahrnehmen', pl: '', ru: 'воспринимать, замечать' },
+      { art: 'die', de: 'Zuverlässigkeit', pl: '(Sg.)', ru: 'надёжность' },
+      // from top section (before D)
+      { art: 'die', de: 'Messung', pl: '-en', ru: 'измерение' },
+      { art: '', de: 'reizen', pl: '', ru: 'привлекать, манить' },
+      { art: 'die', de: 'Rückmeldung', pl: '-en', ru: 'обратная связь, отклик' },
+      { art: 'die', de: 'Soft Skills', pl: '(Pl.)', ru: 'мягкие навыки' },
+      { art: 'die', de: 'Stärke', pl: '-n', ru: 'сила, сильная сторона' },
+      { art: 'der', de: 'Versuchsablauf', pl: '"-e', ru: 'ход эксперимента' },
+      { art: '', de: 'etw. vertiefen', pl: '', ru: 'углублять что-л.' },
+      { art: '', de: 'vielfältig', pl: '', ru: 'разнообразный, многогранный' },
+      { art: '', de: 'vollständig', pl: '', ru: 'полный, полностью' },
+      { art: '', de: 'sich weiterentwickeln', pl: '', ru: 'развиваться дальше, совершенствоваться' },
+      { art: '', de: 'Wert legen auf (+ Akk.)', pl: '', ru: 'придавать значение чему-л.' },
+    ]
+  },
+  {
+    id: 'E', title: 'Eine Wohnung suchen und finden', color: '#f472b6',
+    words: [
+      { art: '', de: 'angespannt', pl: '', ru: 'напряжённый (рынок жилья)' },
+      { art: 'die', de: 'Bescheinigung', pl: '-en', ru: 'справка, подтверждение' },
+      { art: 'der', de: 'Besichtigungstermin', pl: '-e', ru: 'дата осмотра квартиры' },
+      { art: '', de: 'betragen', pl: '', ru: 'составлять (сумму)' },
+      { art: '', de: 'deprimierend', pl: '', ru: 'удручающий, подавляющий' },
+      { art: 'das', de: 'Familieneinkommen', pl: '–', ru: 'семейный доход' },
+      { art: 'der', de: 'Gehaltsnachweis', pl: '-e', ru: 'справка о зарплате' },
+      { art: '', de: 'gemeinsam', pl: '', ru: 'совместный, вместе' },
+      { art: 'die', de: 'Immobilie', pl: '-n', ru: 'недвижимость' },
+      { art: 'der', de: 'Makler', pl: '–', ru: 'риелтор (м.)' },
+      { art: 'die', de: 'Maklerin', pl: '-nen', ru: 'риелтор (ж.)' },
+      { art: 'die', de: 'Mietschulden', pl: '(Pl.)', ru: 'задолженность по аренде' },
+      { art: '', de: 'mühsam', pl: '', ru: 'трудоёмкий, изнурительный' },
+    ]
+  }
+] // end sections of ch-prev
+  }, // end chapter ch-prev
+  {
+    id: 'ch1', title: 'Kapitel 1 (Стр. 28–29)',
+    sections: [
+  {
+    id: 'A', title: 'Berufliche Einstiege', color: '#60a5fa',
+    words: [
+      { art: 'der', de: 'Absolvent', pl: '-en', ru: 'выпускник, специалист' },
+      { art: 'die', de: 'Absolventin', pl: '-nen', ru: 'выпускница' },
+      { art: '', de: 'sich anpassen an (+ Akk.)', pl: '', ru: 'приспосабливаться к чему-л.' },
+      { art: 'der', de: 'Arbeitsberater', pl: '–', ru: 'консультант по трудоустройству (м.)' },
+      { art: 'die', de: 'Arbeitsberaterin', pl: '-nen', ru: 'консультант по трудоустройству (ж.)' },
+      { art: 'die', de: 'Arbeitsteilung', pl: '(Sg.)', ru: 'разделение труда' },
+      { art: 'die', de: 'Arbeitswelt', pl: '(Sg.)', ru: 'мир труда, профессиональный мир' },
+      { art: '', de: 'aufgrund von (+ Dat.)', pl: '', ru: 'из-за, вследствие' },
+      { art: 'die', de: 'Bedeutung', pl: '-en', ru: 'значение, смысл' },
+      { art: '', de: 'sich behaupten', pl: '', ru: 'утверждать себя, держаться' },
+      { art: 'der', de: 'Berufsweg', pl: '-e', ru: 'карьерный путь' },
+      { art: 'die', de: 'Digitalisierung', pl: '(Sg.)', ru: 'цифровизация' },
+      { art: '', de: 'sich einstellen auf (+ Akk.)', pl: '', ru: 'настраиваться на что-л., готовиться' },
+      { art: '', de: 'erforderlich', pl: '', ru: 'необходимый, требуемый' },
+      { art: '', de: 'etw. erwerben', pl: '', ru: 'приобретать что-л. (навык, знание)' },
+      { art: 'der', de: 'Erwerbstätige', pl: '-n', ru: 'работающий человек (м.)' },
+      { art: 'die', de: 'Erwerbstätige', pl: '-n', ru: 'работающий человек (ж.)' },
+      { art: 'der', de: 'Freiberufler', pl: '–', ru: 'фрилансер (м.)' },
+      { art: 'die', de: 'Freiberuflerin', pl: '-nen', ru: 'фрилансер (ж.)' },
+      { art: 'die', de: 'Globalisierung', pl: '(Sg.)', ru: 'глобализация' },
+      { art: 'die', de: 'Herausforderung', pl: '-en', ru: 'вызов, трудная задача' },
+      { art: '', de: 'interkulturelle Kompetenz', pl: '', ru: 'межкультурная компетентность' },
+      { art: 'der', de: 'Klimawandel', pl: '(Sg.)', ru: 'изменение климата' },
+      { art: 'die', de: 'Kompetenz', pl: '-en', ru: 'компетентность, навык' },
+      { art: '', de: 'modernisieren', pl: '', ru: 'модернизировать' },
+      { art: 'die', de: 'Neuorientierung', pl: '-en', ru: 'переориентация, новое направление' },
+      { art: '', de: 'sich niederlassen', pl: '', ru: 'обосноваться, открыть дело' },
+      { art: '', de: 'ökologisch', pl: '', ru: 'экологический' },
+      { art: 'das', de: 'Pausengespräch', pl: '-e', ru: 'разговор в перерыве' },
+      { art: 'die', de: 'Technologie', pl: '-n', ru: 'технология' },
+      { art: 'die', de: 'Unterbrechung', pl: '-en', ru: 'перерыв, прерывание' },
+      { art: 'das', de: 'Unternehmen', pl: '–', ru: 'предприятие, компания' },
+      { art: '', de: 'veralten', pl: '', ru: 'устаревать' },
+      { art: '', de: 'vertrauen auf (+ Akk.)', pl: '', ru: 'доверять чему-л./кому-л.' },
+    ]
+  },
+  {
+    id: 'B', title: 'Bei der Berufsberatung', color: '#f59e0b',
+    words: [
+      { art: '', de: 'ambulant', pl: '', ru: 'амбулаторный (не стационарный)' },
+      { art: 'das', de: 'Berufsleben', pl: '(Sg.)', ru: 'профессиональная жизнь' },
+      { art: 'das', de: 'Beschwerdemanagement', pl: '(Sg.)', ru: 'управление жалобами / рекламациями' },
+      { art: 'der', de: 'Betreuungsdienst', pl: '-e', ru: 'служба ухода' },
+      { art: 'der', de: 'Bildungsgutschein', pl: '-e', ru: 'образовательный ваучер' },
+      { art: '', de: 'bisherig', pl: '', ru: 'предыдущий, прежний' },
+      { art: '', de: 'eingehende Post', pl: '', ru: 'входящая почта / корреспонденция' },
+      { art: 'die', de: 'Fachkraft', pl: '"-e', ru: 'квалифицированный специалист' },
+      { art: 'die', de: 'Fördermöglichkeit', pl: '-en', ru: 'возможность получения поддержки' },
+      { art: '', de: 'geeignet für (+ Akk.)', pl: '', ru: 'подходящий для чего-л.' },
+      { art: 'die', de: 'Haushaltsführung', pl: '-en', ru: 'ведение домашнего хозяйства' },
+      { art: 'die', de: 'Hilfskraft', pl: '"-e', ru: 'подсобный рабочий, помощник' },
+      { art: 'die', de: 'Kenntnis', pl: '-se', ru: 'знание, навык' },
+      { art: '', de: 'Kenntnisse erwerben', pl: '', ru: 'приобретать знания' },
+      { art: 'die', de: 'Lagerliste', pl: '-n', ru: 'складской список, инвентарный лист' },
+      { art: 'der', de: 'Lagerlogistiker', pl: '–', ru: 'специалист складской логистики (м.)' },
+      { art: 'die', de: 'Lagerlogistikerin', pl: '-nen', ru: 'специалист складской логистики (ж.)' },
+      { art: 'der', de: 'Lehrplan', pl: '"-e', ru: 'учебная программа' },
+      { art: 'der', de: 'Pflegedienst', pl: '-e', ru: 'служба по уходу' },
+      { art: 'die', de: 'Pflegeeinrichtung', pl: '-en', ru: 'учреждение по уходу' },
+      { art: 'die', de: 'Pflegekraft', pl: '"-e', ru: 'медицинский / сиделка-работник' },
+      { art: 'das', de: 'Pflegezertifikat', pl: '-e', ru: 'сертификат по уходу' },
+      { art: 'das', de: 'Präsenzseminar', pl: '-e', ru: 'очный семинар' },
+      { art: 'der', de: 'Produktionshelfer', pl: '–', ru: 'помощник на производстве (м.)' },
+      { art: 'die', de: 'Produktionshelferin', pl: '-nen', ru: 'помощник на производстве (ж.)' },
+      { art: '', de: 'sich qualifizieren', pl: '', ru: 'квалифицироваться, повышать квалификацию' },
+      { art: 'die', de: 'Sachkenntnis', pl: '-se', ru: 'знание предмета, компетентность' },
+      { art: '', de: 'etw. vermitteln', pl: '', ru: 'передавать, посредничать' },
+      { art: '', de: 'zur Verfügung stehen', pl: '', ru: 'быть в распоряжении' },
+    ]
+  },
+  {
+    id: 'C', title: 'Eine Unternehmensbesichtigung', color: '#a78bfa',
+    words: [
+      { art: 'die', de: 'Abfallvermeidung', pl: '(Sg.)', ru: 'сокращение отходов' },
+      { art: 'der', de: 'Anschluss', pl: '"-e', ru: 'подключение, связь' },
+      { art: 'der', de: 'Bereich', pl: '-e', ru: 'область, сфера, отдел' },
+      { art: 'die', de: 'Betriebsbesichtigung', pl: '-en', ru: 'экскурсия на предприятие' },
+      { art: 'das', de: 'Betriebsgelände', pl: '(Sg.)', ru: 'территория предприятия' },
+      { art: '', de: 'etw. einführen', pl: '', ru: 'вводить, внедрять что-л.' },
+      { art: 'die', de: 'Energieeinsparung', pl: '-en', ru: 'экономия энергии' },
+      { art: 'der', de: 'Entscheidungsspielraum', pl: '"-e', ru: 'свобода принятия решений' },
+      { art: '', de: 'etw. eröffnen', pl: '', ru: 'открывать что-л.' },
+      { art: 'die', de: 'Eröffnung', pl: '-en', ru: 'открытие' },
+      { art: 'die', de: 'Erschließung neuer Märkte', pl: '(Sg.)', ru: 'освоение новых рынков' },
+      { art: '', de: 'etw. erweitern', pl: '', ru: 'расширять что-л.' },
+      { art: 'die', de: 'Fertigstellung', pl: '(Sg.)', ru: 'завершение, сдача в эксплуатацию' },
+      { art: 'die', de: 'Filiale', pl: '-n', ru: 'филиал, отделение' },
+      { art: '', de: 'eine flache Hierarchie', pl: '', ru: 'плоская иерархия' },
+      { art: 'das', de: 'Geschäftsjahr', pl: '-e', ru: 'финансовый год' },
+      { art: 'das', de: 'Gründungsdatum', pl: '-daten', ru: 'дата основания' },
+      { art: 'die', de: 'Hierarchie', pl: '-n', ru: 'иерархия' },
+      { art: '', de: 'im Anschluss an (+ Akk.)', pl: '', ru: 'после чего-л., вслед за' },
+      { art: 'das', de: 'Mitspracherecht', pl: '-e', ru: 'право голоса / на участие' },
+      { art: '', de: 'nachhaltig', pl: '', ru: 'устойчивый, долгосрочный' },
+      { art: '', de: 'etw. präsentieren', pl: '', ru: 'представлять, презентовать' },
+      { art: 'der', de: 'Pressesprecher', pl: '–', ru: 'пресс-секретарь (м.)' },
+      { art: 'die', de: 'Pressesprecherin', pl: '-nen', ru: 'пресс-секретарь (ж.)' },
+      { art: '', de: 'Produkte einführen', pl: '', ru: 'выводить продукты на рынок' },
+      { art: 'die', de: 'Produktionsstätte', pl: '-n', ru: 'производственный объект' },
+      { art: 'der', de: 'Rundgang', pl: '"-e', ru: 'обход, экскурсия' },
+      { art: 'das', de: 'Sortiment', pl: '-e', ru: 'ассортимент' },
+      { art: 'der', de: 'Standort', pl: '-e', ru: 'местонахождение, площадка' },
+      { art: 'die', de: 'Terminbestätigung', pl: '-en', ru: 'подтверждение встречи' },
+      { art: '', de: 'etw. übernehmen', pl: '', ru: 'перенимать, брать на себя' },
+      { art: 'der', de: 'Umsatz', pl: '"-e', ru: 'оборот, выручка' },
+      { art: 'die', de: 'Unternehmensgeschichte', pl: '-n', ru: 'история компании' },
+      { art: 'die', de: 'Verkaufsfläche', pl: '-n', ru: 'торговая площадь' },
+      { art: 'das', de: 'Verkaufsgespräch', pl: '-e', ru: 'торговые переговоры, продающий разговор' },
+      { art: 'das', de: 'Zentrallager', pl: '–', ru: 'центральный склад' },
+      { art: 'das', de: 'Zweigwerk', pl: '-e', ru: 'дочернее предприятие' },
+    ]
+  },
+  {
+    id: 'D', title: 'Die Organisation eines Unternehmens', color: '#4ade80',
+    words: [
+      { art: '', de: 'etw. anordnen', pl: '', ru: 'распоряжаться, упорядочивать' },
+      { art: 'das', de: 'Controlling', pl: '(Sg.)', ru: 'контроллинг (управленческий учёт)' },
+      { art: 'die', de: 'Finanzabteilung', pl: '-en', ru: 'финансовый отдел' },
+      { art: 'die', de: 'Fläche', pl: '-n', ru: 'площадь, поверхность' },
+      { art: 'die', de: 'Forschung & Entwicklung', pl: '(Sg.)', ru: 'исследования и разработки (R&D)' },
+      { art: 'die', de: 'Geschäftsleitung', pl: '-en', ru: 'руководство компании' },
+      { art: 'der', de: 'Hauptbereich', pl: '-e', ru: 'основное направление / главный отдел' },
+      { art: 'die', de: 'Haustechnik', pl: '(Sg.)', ru: 'инженерные системы здания' },
+      { art: 'die', de: 'Herstellung', pl: '(Sg.)', ru: 'производство, изготовление' },
+      { art: 'die', de: 'Hierarchieebene', pl: '-n', ru: 'уровень иерархии' },
+      { art: 'das', de: 'Lager', pl: '–', ru: 'склад' },
+      { art: '', de: 'etw. leiten', pl: '', ru: 'руководить чем-л.' },
+      { art: 'das', de: 'Marketing', pl: '(Sg.)', ru: 'маркетинг' },
+      { art: 'die', de: 'Marktuntersuchung', pl: '-en', ru: 'исследование рынка' },
+      { art: 'die', de: 'Mitarbeiterzahl', pl: '-en', ru: 'численность сотрудников' },
+      { art: 'die', de: 'Öffentlichkeitsarbeit', pl: '(Sg.)', ru: 'PR, связи с общественностью' },
+      { art: 'das', de: 'Organigramm', pl: '-e', ru: 'органиграмма, схема организации' },
+      { art: 'das', de: 'Produktionsverfahren', pl: '–', ru: 'производственный процесс / метод' },
+      { art: 'die', de: 'Qualitätssicherung', pl: '(Sg.)', ru: 'обеспечение качества' },
+      { art: 'die', de: 'Rechtsabteilung', pl: '-en', ru: 'юридический отдел' },
+      { art: 'die', de: 'Spitze', pl: '-n', ru: 'вершина, верхушка' },
+      { art: '', de: 'an der Spitze von (+ Dat.)', pl: '', ru: 'во главе чего-л.' },
+      { art: '', de: 'untergeordnet', pl: '', ru: 'подчинённый' },
+      { art: '', de: 'untergliedert', pl: '', ru: 'подразделённый, структурированный' },
+      { art: '', de: 'unterteilt', pl: '', ru: 'разделённый, разбитый на части' },
+      { art: 'die', de: 'Verkaufsförderung', pl: '(Sg.)', ru: 'стимулирование продаж' },
+      { art: 'der', de: 'Vertrieb', pl: '(Sg.)', ru: 'сбыт, отдел продаж' },
+      { art: 'die', de: 'Verwaltung', pl: '-en', ru: 'администрация, управление' },
+      { art: '', de: 'etw. zuordnen zu (+ Dat.)', pl: '', ru: 'относить что-л. к чему-л.' },
+      { art: 'die', de: 'Zuständigkeit', pl: '-en', ru: 'компетенция, зона ответственности' },
+    ]
+  },
+  {
+    id: 'E', title: 'Du oder Sie?', color: '#f472b6',
+    words: [
+      { art: 'die', de: 'Anrede', pl: '-n', ru: 'форма обращения' },
+      { art: '', de: 'distanzlos', pl: '', ru: 'без дистанции, фамильярный' },
+      { art: 'das', de: 'Du', pl: '(Sg.)', ru: 'обращение «ты»' },
+      { art: '', de: 'sich duzen', pl: '', ru: 'обращаться на «ты»' },
+      { art: 'der', de: 'Kompromiss', pl: '-e', ru: 'компромисс' },
+      { art: '', de: 'einen Kompromiss finden', pl: '', ru: 'найти компромисс' },
+      { art: '', de: 'etw./jdn. respektieren', pl: '', ru: 'уважать что-л./кого-л.' },
+      { art: 'das', de: 'Sie', pl: '(Sg.)', ru: 'обращение «Вы»' },
+      { art: '', de: 'sich siezen', pl: '', ru: 'обращаться на «Вы»' },
+      { art: '', de: 'jdm. das Du anbieten', pl: '', ru: 'предложить кому-л. перейти на «ты»' },
+    ]
+  },
+] // end sections of ch1
+  }, // end chapter ch1
+  {
+    id: 'ch2', title: 'Kapitel 2 (Стр. 48–49)',
+    sections: [
+  {
+    id: 'A', title: 'Berufe und Branchen', color: '#60a5fa',
+    words: [
+      { art: 'die', de: 'Arbeitslosenquote', pl: '-n', ru: 'уровень безработицы' },
+      { art: '', de: 'auffallen', pl: '', ru: 'бросаться в глаза, выделяться' },
+      { art: 'das', de: 'Baugewerbe', pl: '(Sg.)', ru: 'строительная отрасль' },
+      { art: '', de: 'etw. bearbeiten', pl: '', ru: 'обрабатывать что-л., работать с чем-л.' },
+      { art: '', de: 'etw./jdn. beaufsichtigen', pl: '', ru: 'надзирать за чем-л./кем-л.' },
+      { art: '', de: 'befristet', pl: '', ru: 'ограниченный сроком, срочный' },
+      { art: 'der', de: 'Beschäftigte', pl: '-n', ru: 'сотрудник, работник (м.)' },
+      { art: 'die', de: 'Beschäftigte', pl: '-n', ru: 'сотрудница, работница (ж.)' },
+      { art: '', de: 'etw./jdn. betreuen', pl: '', ru: 'заботиться о чём-л./ком-л.' },
+      { art: 'die', de: 'Branche', pl: '-n', ru: 'отрасль, сфера' },
+      { art: 'die', de: 'Dienstleistung', pl: '-en', ru: 'услуга' },
+      { art: 'die', de: 'Finanzbranche', pl: '(Sg.)', ru: 'финансовый сектор' },
+      { art: 'der', de: 'Fluggerätmechaniker', pl: '–', ru: 'авиамеханик (м.)' },
+      { art: 'die', de: 'Fluggerätmechanikerin', pl: '-nen', ru: 'авиамеханик (ж.)' },
+      { art: 'das', de: 'Gastgewerbe', pl: '(Sg.)', ru: 'гостиничный и ресторанный бизнес' },
+      { art: 'das', de: 'Gesundheitswesen', pl: '(Sg.)', ru: 'здравоохранение' },
+      { art: 'das', de: 'Gewerbe', pl: '(Sg.)', ru: 'ремесло, промысел, отрасль' },
+      { art: 'die', de: 'Gleitzeit', pl: '(Sg.)', ru: 'гибкий график работы' },
+      { art: 'der', de: 'Handel', pl: '(Sg.)', ru: 'торговля' },
+      { art: 'das', de: 'Handwerk', pl: '(Sg.)', ru: 'ремесло, кустарное производство' },
+      { art: '', de: 'hervorgehen aus (+ Dat.)', pl: '', ru: 'следовать из, вытекать из' },
+      { art: 'das', de: 'Homeoffice', pl: '(Sg.)', ru: 'работа из дома, удалёнка' },
+      { art: '', de: 'Hotel und Gastronomie', pl: '', ru: 'гостиничный и ресторанный бизнес' },
+      { art: 'die', de: 'IT-Branche', pl: '(Sg.)', ru: 'IT-сфера' },
+      { art: '', de: 'kaufmännisch', pl: '', ru: 'коммерческий, торговый' },
+      { art: 'die', de: 'Konjunktur', pl: '(Sg.)', ru: 'конъюнктура (экономики)' },
+      { art: 'die', de: 'Lagerlogistik', pl: '(Sg.)', ru: 'складская логистика' },
+      { art: 'die', de: 'Land- und Forstwirtschaft', pl: '(Sg.)', ru: 'сельское и лесное хозяйство' },
+      { art: '', de: '(den Schluss) nahelegen', pl: '', ru: 'давать основания полагать' },
+      { art: 'das', de: 'Pflegeheim', pl: '-e', ru: 'дом престарелых / уход' },
+      { art: '', de: 'produzierendes Gewerbe', pl: '', ru: 'производственная промышленность' },
+      { art: 'die', de: 'Reservierung', pl: '-en', ru: 'бронирование' },
+      { art: 'die', de: 'Schichtarbeit', pl: '(Sg.)', ru: 'сменная работа' },
+      { art: 'der', de: 'Server', pl: '–', ru: 'сервер' },
+      { art: '', de: 'sozialversicherungspflichtig', pl: '', ru: 'подлежащий социальному страхованию' },
+      { art: '', de: 'stabil', pl: '', ru: 'стабильный' },
+      { art: 'die', de: 'Teilzeit', pl: '(Sg.)', ru: 'неполная занятость, частичная ставка' },
+      { art: '', de: 'etw. überwachen', pl: '', ru: 'контролировать, наблюдать' },
+      { art: '', de: 'etw. verwalten', pl: '', ru: 'управлять чем-л.' },
+      { art: 'die', de: 'Vollzeit', pl: '(Sg.)', ru: 'полная занятость' },
+      { art: 'der', de: 'Vollzeitjob', pl: '-s', ru: 'работа на полную ставку' },
+      { art: '', de: 'etw. warten (z. B. Maschine)', pl: '', ru: 'обслуживать, выполнять техобслуживание' },
+      { art: 'die', de: 'Wirtschaftsbranche', pl: '(Sg.)', ru: 'отрасль экономики' },
+      { art: '', de: 'etw. zubereiten', pl: '', ru: 'приготавливать что-л.' },
+      { art: 'die', de: 'Zuverlässigkeit', pl: '(Sg.)', ru: 'надёжность' },
+    ]
+  },
+  {
+    id: 'B', title: 'Berufe am Flughafen', color: '#f59e0b',
+    words: [
+      { art: '', de: 'etw./jdn. abfertigen', pl: '', ru: 'оформлять (регистрация, таможня)' },
+      { art: 'die', de: 'Arbeitsstätte', pl: '-n', ru: 'рабочее место, место работы' },
+      { art: '', de: 'etw. beschreiben', pl: '', ru: 'описывать что-л.' },
+      { art: '', de: 'etw. betreiben', pl: '', ru: 'управлять, эксплуатировать что-л.' },
+      { art: 'das', de: 'Bodenpersonal', pl: '(Sg.)', ru: 'наземный персонал' },
+      { art: 'der', de: 'Check-in', pl: '(Sg.)', ru: 'регистрация (на рейс)' },
+      { art: '', de: 'jdn. einstellen', pl: '', ru: 'нанимать кого-л.' },
+      { art: 'der', de: 'Einzelhandel', pl: '(Sg.)', ru: 'розничная торговля' },
+      { art: '', de: 'etw. erweitern', pl: '', ru: 'расширять что-л.' },
+      { art: 'der', de: 'Fluglotse', pl: '-n', ru: 'авиадиспетчер (м.)' },
+      { art: 'die', de: 'Fluglotsin', pl: '-nen', ru: 'авиадиспетчер (ж.)' },
+      { art: 'die', de: 'Flugzeugabfertigung', pl: '(Sg.)', ru: 'техническое обслуживание самолётов' },
+      { art: 'die', de: 'Gepäckabfertigung', pl: '(Sg.)', ru: 'обработка багажа' },
+      { art: 'die', de: 'Gewerkschaft', pl: '-en', ru: 'профсоюз' },
+      { art: '', de: 'etw. gründen', pl: '', ru: 'основывать, учреждать что-л.' },
+      { art: 'das', de: 'Handgepäck', pl: '(Sg.)', ru: 'ручная кладь' },
+      { art: 'die', de: 'Hygiene', pl: '(Sg.)', ru: 'гигиена' },
+      { art: 'die', de: 'Logistik', pl: '(Sg.)', ru: 'логистика' },
+      { art: 'die', de: 'Luftfracht', pl: '(Sg.)', ru: 'авиагруз' },
+      { art: 'der', de: 'Passagier', pl: '-e', ru: 'пассажир (м.)' },
+      { art: 'die', de: 'Passagierin', pl: '-nen', ru: 'пассажирка' },
+      { art: 'der', de: 'Quereinsteiger', pl: '–', ru: 'человек, сменивший профессию (м.)' },
+      { art: 'die', de: 'Quereinsteigerin', pl: '-nen', ru: 'человек, сменивший профессию (ж.)' },
+      { art: 'die', de: 'Spedition', pl: '-en', ru: 'транспортная / экспедиторская компания' },
+      { art: '', de: 'etw. umbauen', pl: '', ru: 'перестраивать, реконструировать' },
+      { art: '', de: 'etw. umfassen', pl: '', ru: 'включать, охватывать' },
+      { art: '', de: 'etw./jdn. vertreten', pl: '', ru: 'представлять что-л./кого-л.' },
+    ]
+  },
+  {
+    id: 'C', title: 'Sicherheit in Unternehmen', color: '#a78bfa',
+    words: [
+      { art: 'das', de: 'Arbeitsmittel', pl: '–', ru: 'рабочий инструмент, средство труда' },
+      { art: 'der', de: 'Arbeitsschutz', pl: '(Sg.)', ru: 'охрана труда' },
+      { art: '', de: 'etw. befolgen', pl: '', ru: 'соблюдать, выполнять что-л.' },
+      { art: '', de: 'etw./jdn. behindern', pl: '', ru: 'препятствовать, мешать' },
+      { art: '', de: 'etw. betätigen (z. B. den Brandmelder)', pl: '', ru: 'приводить в действие (напр. пожарную сигнализацию)' },
+      { art: 'der', de: 'Brandmelder', pl: '–', ru: 'пожарная сигнализация' },
+      { art: 'der', de: 'Brandschutz', pl: '(Sg.)', ru: 'противопожарная защита' },
+      { art: 'das', de: 'Brandschutzzeichen', pl: '–', ru: 'знак пожарной безопасности' },
+      { art: '', de: 'dreieckig', pl: '', ru: 'треугольный' },
+      { art: '', de: 'etw. einschlagen', pl: '', ru: 'разбить (напр. стекло)' },
+      { art: '', de: 'etw. entsorgen', pl: '', ru: 'утилизировать, избавляться от чего-л.' },
+      { art: 'der', de: 'Feuerlöscher', pl: '–', ru: 'огнетушитель' },
+      { art: 'der', de: 'Feuermelder', pl: '–', ru: 'пожарный извещатель' },
+      { art: 'der', de: 'Flucht- und Rettungsweg', pl: '-e', ru: 'путь эвакуации и спасения' },
+      { art: '', de: 'etw. freihalten', pl: '', ru: 'держать свободным, не загораживать' },
+      { art: 'das', de: 'Gebotszeichen', pl: '–', ru: 'предписывающий знак (синий круг)' },
+      { art: 'die', de: 'Glasscheibe', pl: '-n', ru: 'стеклянная пластина, стекло' },
+      { art: '', de: 'hinweisen auf (+ Akk.)', pl: '', ru: 'указывать на что-л.' },
+      { art: 'das', de: 'Hinweisschild', pl: '-er', ru: 'информационный щит / табличка' },
+      { art: '', de: 'etw. löschen', pl: '', ru: 'тушить (огонь)' },
+      { art: 'der', de: 'Notausgang', pl: '"-e', ru: 'аварийный выход' },
+      { art: 'die', de: 'Pflicht', pl: '-en', ru: 'обязанность, долг' },
+      { art: '', de: 'quadratisch', pl: '', ru: 'квадратный' },
+      { art: 'das', de: 'Rettungszeichen', pl: '–', ru: 'знак безопасности (эвакуация)' },
+      { art: 'die', de: 'Schutzausrüstung', pl: '-en', ru: 'защитное снаряжение' },
+      { art: 'die', de: 'Schutzbrille', pl: '-n', ru: 'защитные очки' },
+      { art: '', de: 'etw./jdn. schützen', pl: '', ru: 'защищать что-л./кого-л.' },
+      { art: 'der', de: 'Schutzhelm', pl: '-e', ru: 'защитный шлем, каска' },
+      { art: 'der', de: 'Sicherheitshinweis', pl: '-e', ru: 'предупреждение по технике безопасности' },
+      { art: 'der', de: 'Sicherheitsschuh', pl: '-e', ru: 'защитная обувь' },
+      { art: 'die', de: 'Sicherheitsvorschrift', pl: '-en', ru: 'правила техники безопасности' },
+      { art: 'die', de: 'Stolpergefahr', pl: '-en', ru: 'риск спотыкания' },
+      { art: 'die', de: 'Straßenverkehrsordnung', pl: '(Sg.)', ru: 'правила дорожного движения' },
+      { art: 'das', de: 'Verbotsschild', pl: '-er', ru: 'запрещающий щит / знак' },
+      { art: 'das', de: 'Verbotszeichen', pl: '–', ru: 'запрещающий знак (красный круг)' },
+      { art: '', de: 'etw. vermeiden', pl: '', ru: 'избегать чего-л.' },
+      { art: 'die', de: 'Verordnung', pl: '-en', ru: 'постановление, предписание' },
+      { art: '', de: 'verpflichtet', pl: '', ru: 'обязанный' },
+      { art: '', de: 'etw. verstauen', pl: '', ru: 'укладывать, убирать что-л.' },
+      { art: 'das', de: 'Warnzeichen', pl: '–', ru: 'предупреждающий знак (жёлтый треугольник)' },
+      { art: 'die', de: 'Berufsgenossenschaft', pl: '-en', ru: 'профессиональное объединение / страховая ассоциация' },
+      { art: '', de: 'beteiligt an (+ Dat.)', pl: '', ru: 'причастный к чему-л., участвующий' },
+      { art: 'das', de: 'Detail', pl: '-s', ru: 'деталь, подробность' },
+      { art: 'das', de: 'Ereignis', pl: '-se', ru: 'событие, происшествие' },
+      { art: '', de: 'glatt', pl: '', ru: 'гладкий, скользкий' },
+      { art: 'das', de: 'Kabel', pl: '–', ru: 'кабель' },
+      { art: '', de: 'sich (etw.) quetschen', pl: '', ru: 'защемить / прищемить (что-л.)' },
+      { art: '', de: 'Ruhe bewahren', pl: '', ru: 'сохранять спокойствие' },
+      { art: '', de: 'rutschig', pl: '', ru: 'скользкий' },
+      { art: '', de: 'sachlich', pl: '', ru: 'деловой, объективный' },
+      { art: 'der', de: 'Schaden', pl: '"-', ru: 'ущерб, повреждение' },
+      { art: '', de: 'etw. schildern', pl: '', ru: 'описывать, излагать что-л.' },
+      { art: 'der', de: 'Schlauch', pl: '"-e', ru: 'шланг, трубка' },
+      { art: '', de: 'stolpern', pl: '', ru: 'спотыкаться' },
+      { art: '', de: 'sich (etw.) verbrennen', pl: '', ru: 'обжечься / обжечь что-л.' },
+      { art: 'das', de: 'Verhalten', pl: '(Sg.)', ru: 'поведение' },
+      { art: 'die', de: 'Vorsichtsmaßnahme', pl: '-n', ru: 'мера предосторожности' },
+      { art: 'der', de: 'Zeuge', pl: '-n', ru: 'свидетель (м.)' },
+      { art: 'die', de: 'Zeugin', pl: '-nen', ru: 'свидетельница' },
+    ]
+  },
+  {
+    id: 'D', title: 'Arbeitsunfälle', color: '#4ade80',
+    words: [
+      { art: 'der', de: 'Ablauf', pl: '"-e', ru: 'ход, порядок действий' },
+      { art: '', de: 'arbeitsunfähig', pl: '', ru: 'нетрудоспособный' },
+      { art: '', de: 'ausrutschen', pl: '', ru: 'поскользнуться' },
+    ]
+  },
+  {
+    id: 'E', title: 'Zufrieden leben in Deutschland', color: '#f472b6',
+    words: [
+      { art: '', de: 'etw. behaupten', pl: '', ru: 'утверждать что-л.' },
+      { art: '', de: 'etw./jdn. beobachten', pl: '', ru: 'наблюдать за чем-л./кем-л.' },
+      { art: '', de: 'entscheidend', pl: '', ru: 'решающий, определяющий' },
+      { art: 'die', de: 'Geldsorgen', pl: '(Pl.)', ru: 'финансовые проблемы' },
+      { art: '', de: 'gemütlich', pl: '', ru: 'уютный, комфортный' },
+      { art: 'die', de: 'Geselligkeit', pl: '(Sg.)', ru: 'общительность, компанейство' },
+      { art: 'das', de: 'Grundbedürfnis', pl: '-se', ru: 'базовая потребность' },
+      { art: 'die', de: 'Partnerschaft', pl: '-en', ru: 'партнёрство, отношения' },
+      { art: 'das', de: 'Wohlbefinden', pl: '(Sg.)', ru: 'благополучие, самочувствие' },
+      { art: 'die', de: 'Zufriedenheit', pl: '(Sg.)', ru: 'удовлетворённость, довольство' },
+    ]
+  },
+] // end sections of ch2
+  } // end chapter ch2
+]; // end CHAPTERS
+
+// ---- State ----
+let currentChapter = CHAPTERS[0];
+let knownSet = new Set(JSON.parse(localStorage.getItem('known') || '[]'));
+let currentMode = 'table';
+let fcQueue = [];
+let fcIndex = 0;
+let fcKnown = 0;
+let showTranslation = false;
+let searchQuery = '';
+
+function saveKnown() {
+  try { localStorage.setItem('known', JSON.stringify([...knownSet])); } catch(e){}
+}
+
+function totalWords() {
+  return CHAPTERS.flatMap(ch => ch.sections.flatMap(s => s.words)).length;
+}
+
+function chapterWords(ch) {
+  return ch.sections.flatMap(s => s.words.map(w => ({ ...w, section: s.id, sectionTitle: s.title, sectionColor: s.color })));
+}
+
+// ---- Chapter tabs ----
+function renderChapterTabs() {
+  const el = document.getElementById('chapter-tabs');
+  el.innerHTML = CHAPTERS.map(ch =>
+    `<button class="tab ${ch.id === currentChapter.id ? 'active' : ''}" onclick="switchChapter('${ch.id}')">${ch.title}</button>`
+  ).join('');
+  const total = totalWords();
+  document.getElementById('header-sub').textContent = `B2 · ${total} слов · изучено ${knownSet.size}`;
+}
+
+function switchChapter(id) {
+  currentChapter = CHAPTERS.find(c => c.id === id);
+  searchQuery = '';
+  const inp = document.getElementById('searchInput');
+  if (inp) inp.value = '';
+  renderChapterTabs();
+  if (currentMode === 'table') renderTable();
+  else initFlashcards();
+}
+
+// ---- TABLE MODE ----
+function renderTable() {
+  const q = searchQuery.toLowerCase();
+  let html = '';
+  for (const sec of currentChapter.sections) {
+    const filtered = sec.words.filter(w =>
+      !q || w.de.toLowerCase().includes(q) || w.ru.toLowerCase().includes(q)
+    );
+    if (!filtered.length) continue;
+    html += `<div class="section-block">
+      <div class="section-title" style="color:${sec.color}">
+        <span class="letter" style="background:${sec.color}">${sec.id}</span>
+        ${sec.title}
+      </div>
+      <div class="word-grid">`;
+    for (const w of filtered) {
+      const key = currentChapter.id + ':' + sec.id + ':' + w.de;
+      const known = knownSet.has(key);
+      html += `<div class="word-row ${known ? 'known' : ''}" onclick="toggleWord('${currentChapter.id}','${sec.id}','${w.de.replace(/'/g,"\\'")}',this)">
+        <div class="art">${w.art}</div>
+        <div style="flex:1">
+          <div class="de">${w.de}${w.pl ? ` <span class="pl">${w.pl}</span>` : ''}</div>
+          <div class="ru-tr">${w.ru}</div>
+        </div>
+      </div>`;
+    }
+    html += '</div></div>';
+  }
+  document.getElementById('tableContent').innerHTML = html;
+  document.getElementById('knownCount').textContent = knownSet.size;
+  document.getElementById('totalCount').textContent = totalWords();
+}
+
+function toggleWord(chId, secId, de, el) {
+  el.classList.toggle('show-tr');
+  const key = chId + ':' + secId + ':' + de;
+  if (el.classList.contains('show-tr')) {
+    knownSet.add(key);
+    el.classList.add('known');
+    saveKnown();
+    document.getElementById('knownCount').textContent = knownSet.size;
+    document.getElementById('header-sub').textContent = `B2 · ${totalWords()} слов · изучено ${knownSet.size}`;
+  }
+}
+
+function filterWords() {
+  searchQuery = document.getElementById('searchInput').value;
+  renderTable();
+}
+
+// ---- FLASHCARD MODE ----
+function initFlashcards() {
+  fcQueue = chapterWords(currentChapter).sort(() => Math.random() - 0.5);
+  fcIndex = 0;
+  fcKnown = 0;
+  showTranslation = false;
+  document.getElementById('done-msg').style.display = 'none';
+  document.getElementById('flashcard').style.display = 'flex';
+  document.querySelectorAll('.card-nav .nav-btn').forEach(b => b.style.display = '');
+  document.getElementById('fc-total').textContent = fcQueue.length;
+  showCard();
+}
+
+function showCard() {
+  if (fcIndex >= fcQueue.length) {
+    document.getElementById('done-msg').style.display = 'block';
+    document.getElementById('flashcard').style.display = 'none';
+    document.querySelectorAll('.card-nav .nav-btn').forEach(b => b.style.display = 'none');
+    return;
+  }
+  const w = fcQueue[fcIndex];
+  document.getElementById('fc-article').textContent = w.art;
+  document.getElementById('fc-word').textContent = w.de;
+  document.getElementById('fc-plural').textContent = w.pl ? w.pl : '';
+  document.getElementById('fc-ru').textContent = w.ru;
+  document.getElementById('fc-note').textContent = '';
+  document.getElementById('fc-tag').textContent = w.section;
+  document.getElementById('fc-tag').style.background = w.sectionColor + '22';
+  document.getElementById('fc-tag').style.color = w.sectionColor;
+  document.getElementById('fc-idx').textContent = fcIndex + 1;
+  document.getElementById('fc-left').textContent = fcQueue.length - fcIndex;
+  document.getElementById('fc-known').textContent = fcKnown;
+  const pct = (fcIndex / fcQueue.length * 100).toFixed(0);
+  document.getElementById('fc-progress').style.width = pct + '%';
+  const card = document.getElementById('flashcard');
+  card.classList.remove('revealed');
+  showTranslation = false;
+}
+
+function revealCard() {
+  if (showTranslation) return;
+  showTranslation = true;
+  document.getElementById('flashcard').classList.add('revealed');
+}
+
+function nextCard(known) {
+  if (!showTranslation) { revealCard(); return; }
+  if (known) {
+    fcKnown++;
+    const w = fcQueue[fcIndex];
+    knownSet.add(currentChapter.id + ':' + w.section + ':' + w.de);
+    saveKnown();
+  }
+  fcIndex++;
+  showCard();
+}
+
+function resetFlashcards() {
+  initFlashcards();
+}
+
+// ---- Mode switch ----
+function setMode(mode) {
+  currentMode = mode;
+  document.getElementById('table-mode').style.display = mode === 'table' ? 'block' : 'none';
+  document.getElementById('flashcard-mode').style.display = mode === 'flashcard' ? 'block' : 'none';
+  document.querySelectorAll('.mode-btn').forEach((b, i) => {
+    b.classList.toggle('active', (i === 0 && mode === 'table') || (i === 1 && mode === 'flashcard'));
+  });
+  if (mode === 'flashcard') initFlashcards();
+}
+
+// Init
+renderChapterTabs();
+setMode('table');
+renderTable();
+</script>
+</script>
+</body>
+</html>
