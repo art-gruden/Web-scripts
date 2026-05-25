@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsche Verben – Flashcards</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,500;1,400&family=DM+Sans:wght@400;500&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --purple-50:#EEEDFE;--purple-100:#CECBF6;--purple-200:#AFA9EC;--purple-400:#7F77DD;--purple-600:#534AB7;--purple-800:#3C3489;--purple-900:#26215C;
+  --teal-50:#E1F5EE;--teal-100:#9FE1CB;--teal-200:#5DCAA5;--teal-400:#1D9E75;--teal-600:#0F6E56;--teal-800:#085041;--teal-900:#04342C;
+  --coral-50:#FAECE7;--coral-200:#F0997B;--coral-600:#993C1D;--coral-900:#4A1B0C;
+  --amber-50:#FAEEDA;--amber-400:#BA7517;--amber-800:#633806;
+}
+body{font-family:'DM Sans',sans-serif;background:#f7f5ff;min-height:100vh;display:flex;flex-direction:column;align-items:center;padding:2rem 1rem}
+h1{font-family:'Fraunces',serif;font-size:2rem;font-weight:400;color:var(--purple-900);margin-bottom:.25rem;text-align:center}
+.subtitle{font-size:13px;color:var(--purple-600);margin-bottom:2rem;text-align:center;letter-spacing:.04em}
+#app{width:100%;max-width:560px}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:1.25rem}
+.stat{border-radius:14px;padding:.85rem;text-align:center}
+.stat-n{font-family:'Fraunces',serif;font-size:24px;font-weight:400}
+.stat-l{font-size:11px;margin-top:3px;font-weight:500;letter-spacing:.07em;text-transform:uppercase}
+.s-idx{background:var(--purple-50)}.s-idx .stat-n{color:var(--purple-800)}.s-idx .stat-l{color:var(--purple-600)}
+.s-ok{background:var(--teal-50)}.s-ok .stat-n{color:var(--teal-800)}.s-ok .stat-l{color:var(--teal-600)}
+.s-no{background:var(--coral-50)}.s-no .stat-n{color:var(--coral-600)}.s-no .stat-l{color:var(--coral-600)}
+.progress-bar{height:6px;background:var(--purple-100);border-radius:3px;margin-bottom:1.5rem;overflow:hidden}
+.progress-fill{height:100%;background:var(--purple-400);border-radius:3px;transition:width .4s ease}
+.card-area{perspective:1200px;margin-bottom:1.25rem}
+.card{width:100%;min-height:290px;position:relative;transform-style:preserve-3d;transition:transform .55s cubic-bezier(.4,0,.2,1);cursor:pointer;border-radius:22px}
+.card.flipped{transform:rotateY(180deg)}
+.face{position:absolute;top:0;left:0;right:0;bottom:0;border-radius:22px;backface-visibility:hidden;-webkit-backface-visibility:hidden;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:2.25rem}
+.front{background:var(--purple-50);border:2px solid var(--purple-200)}
+.back{transform:rotateY(180deg);background:var(--teal-50);border:2px solid var(--teal-200)}
+.flip-hint{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--purple-600);margin-bottom:1.1rem}
+.infinitiv{font-family:'Fraunces',serif;font-size:48px;font-weight:400;color:var(--purple-900);line-height:1;text-align:center}
+.cat-badge{margin-top:1.1rem;font-size:12px;font-weight:500;padding:5px 16px;border-radius:20px;background:var(--purple-200);color:var(--purple-900)}
+.tenses{width:100%;display:flex;flex-direction:column;gap:0}
+.tense-block{padding:10px 0}
+.tense-label{font-size:10px;font-weight:500;text-transform:uppercase;letter-spacing:.1em;color:var(--teal-600);margin-bottom:5px}
+.tense-val{font-family:'Fraunces',serif;font-size:20px;font-weight:400;color:var(--teal-900)}
+.tense-sep{height:1px;background:var(--teal-100)}
+.back-hint{font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--teal-600);margin-bottom:1.25rem}
+.controls{display:flex;gap:10px;margin-bottom:1.25rem}
+.btn{flex:1;padding:.7rem 1rem;border-radius:14px;border:none;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;cursor:pointer;transition:opacity .15s,transform .1s}
+.btn:active{transform:scale(.97)}
+.btn-flip{background:var(--purple-50);color:var(--purple-800);border:2px solid var(--purple-200)}
+.btn-flip:hover{background:var(--purple-100)}
+.btn-no{background:var(--coral-200);color:var(--coral-900);border:none}
+.btn-no:hover{opacity:.88}
+.btn-ok{background:var(--teal-400);color:var(--teal-50);border:none}
+.btn-ok:hover{background:var(--teal-600)}
+.bottom-row{display:flex;gap:10px;align-items:center}
+.filter-select{flex:1;padding:.55rem .85rem;border:2px solid var(--purple-200);border-radius:12px;background:#fff;color:var(--purple-900);font-family:'DM Sans',sans-serif;font-size:14px;cursor:pointer;outline:none}
+.filter-select:focus{border-color:var(--purple-400)}
+.shuffle-btn{padding:.55rem 1.1rem;border:2px solid var(--purple-200);border-radius:12px;background:var(--purple-50);color:var(--purple-800);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;cursor:pointer}
+.shuffle-btn:hover{background:var(--purple-100)}
+.done-screen{text-align:center;padding:3.5rem 2rem;background:var(--purple-50);border-radius:22px;border:2px solid var(--purple-200)}
+.done-screen h2{font-family:'Fraunces',serif;font-size:28px;font-weight:400;margin-bottom:.85rem;color:var(--purple-900)}
+.done-screen p{color:var(--purple-600);margin-bottom:1.75rem;font-size:15px}
+.done-btn{padding:.75rem 2.5rem;border-radius:14px;border:none;background:var(--purple-400);color:var(--purple-50);font-family:'DM Sans',sans-serif;font-size:15px;font-weight:500;cursor:pointer}
+.done-btn:hover{background:var(--purple-600)}
+</style>
+</head>
+<body>
+<h1>Deutsche Verben</h1>
+<p class="subtitle">Vergangenheit üben · B1 · 100 Verben</p>
+<div id="app"></div>
+<script>
+const VERBS=[
+  {inf:"sein",perf:"er ist gewesen",prae:"er war",plus:"er war gewesen",cat:"Hilfsverb"},
+  {inf:"haben",perf:"er hat gehabt",prae:"er hatte",plus:"er hatte gehabt",cat:"Hilfsverb"},
+  {inf:"werden",perf:"er ist geworden",prae:"er wurde",plus:"er war geworden",cat:"Hilfsverb"},
+  {inf:"können",perf:"er hat gekonnt",prae:"er konnte",plus:"er hatte gekonnt",cat:"Modalverb"},
+  {inf:"müssen",perf:"er hat gemusst",prae:"er musste",plus:"er hatte gemusst",cat:"Modalverb"},
+  {inf:"wollen",perf:"er hat gewollt",prae:"er wollte",plus:"er hatte gewollt",cat:"Modalverb"},
+  {inf:"dürfen",perf:"er hat gedurft",prae:"er durfte",plus:"er hatte gedurft",cat:"Modalverb"},
+  {inf:"sollen",perf:"er hat gesollt",prae:"er sollte",plus:"er hatte gesollt",cat:"Modalverb"},
+  {inf:"mögen",perf:"er hat gemocht",prae:"er mochte",plus:"er hatte gemocht",cat:"Modalverb"},
+  {inf:"gehen",perf:"er ist gegangen",prae:"er ging",plus:"er war gegangen",cat:"Bewegung"},
+  {inf:"kommen",perf:"er ist gekommen",prae:"er kam",plus:"er war gekommen",cat:"Bewegung"},
+  {inf:"fahren",perf:"er ist gefahren",prae:"er fuhr",plus:"er war gefahren",cat:"Bewegung"},
+  {inf:"fliegen",perf:"er ist geflogen",prae:"er flog",plus:"er war geflogen",cat:"Bewegung"},
+  {inf:"laufen",perf:"er ist gelaufen",prae:"er lief",plus:"er war gelaufen",cat:"Bewegung"},
+  {inf:"reisen",perf:"er ist gereist",prae:"er reiste",plus:"er war gereist",cat:"Bewegung"},
+  {inf:"steigen",perf:"er ist gestiegen",prae:"er stieg",plus:"er war gestiegen",cat:"Bewegung"},
+  {inf:"ankommen",perf:"er ist angekommen",prae:"er kam an",plus:"er war angekommen",cat:"Bewegung"},
+  {inf:"abfahren",perf:"er ist abgefahren",prae:"er fuhr ab",plus:"er war abgefahren",cat:"Bewegung"},
+  {inf:"fallen",perf:"er ist gefallen",prae:"er fiel",plus:"er war gefallen",cat:"Bewegung"},
+  {inf:"machen",perf:"er hat gemacht",prae:"er machte",plus:"er hatte gemacht",cat:"Allgemein"},
+  {inf:"geben",perf:"er hat gegeben",prae:"er gab",plus:"er hatte gegeben",cat:"Allgemein"},
+  {inf:"nehmen",perf:"er hat genommen",prae:"er nahm",plus:"er hatte genommen",cat:"Allgemein"},
+  {inf:"kaufen",perf:"er hat gekauft",prae:"er kaufte",plus:"er hatte gekauft",cat:"Allgemein"},
+  {inf:"verkaufen",perf:"er hat verkauft",prae:"er verkaufte",plus:"er hatte verkauft",cat:"Allgemein"},
+  {inf:"bezahlen",perf:"er hat bezahlt",prae:"er bezahlte",plus:"er hatte bezahlt",cat:"Allgemein"},
+  {inf:"kosten",perf:"es hat gekostet",prae:"es kostete",plus:"es hatte gekostet",cat:"Allgemein"},
+  {inf:"finden",perf:"er hat gefunden",prae:"er fand",plus:"er hatte gefunden",cat:"Allgemein"},
+  {inf:"suchen",perf:"er hat gesucht",prae:"er suchte",plus:"er hatte gesucht",cat:"Allgemein"},
+  {inf:"bringen",perf:"er hat gebracht",prae:"er brachte",plus:"er hatte gebracht",cat:"Allgemein"},
+  {inf:"holen",perf:"er hat geholt",prae:"er holte",plus:"er hatte geholt",cat:"Allgemein"},
+  {inf:"stellen",perf:"er hat gestellt",prae:"er stellte",plus:"er hatte gestellt",cat:"Allgemein"},
+  {inf:"legen",perf:"er hat gelegt",prae:"er legte",plus:"er hatte gelegt",cat:"Allgemein"},
+  {inf:"öffnen",perf:"er hat geöffnet",prae:"er öffnete",plus:"er hatte geöffnet",cat:"Allgemein"},
+  {inf:"schließen",perf:"er hat geschlossen",prae:"er schloss",plus:"er hatte geschlossen",cat:"Allgemein"},
+  {inf:"sterben",perf:"er ist gestorben",prae:"er starb",plus:"er war gestorben",cat:"Allgemein"},
+  {inf:"wachsen",perf:"er ist gewachsen",prae:"er wuchs",plus:"er war gewachsen",cat:"Allgemein"},
+  {inf:"sagen",perf:"er hat gesagt",prae:"er sagte",plus:"er hatte gesagt",cat:"Sprache"},
+  {inf:"fragen",perf:"er hat gefragt",prae:"er fragte",plus:"er hatte gefragt",cat:"Sprache"},
+  {inf:"antworten",perf:"er hat geantwortet",prae:"er antwortete",plus:"er hatte geantwortet",cat:"Sprache"},
+  {inf:"sprechen",perf:"er hat gesprochen",prae:"er sprach",plus:"er hatte gesprochen",cat:"Sprache"},
+  {inf:"schreiben",perf:"er hat geschrieben",prae:"er schrieb",plus:"er hatte geschrieben",cat:"Sprache"},
+  {inf:"lesen",perf:"er hat gelesen",prae:"er las",plus:"er hatte gelesen",cat:"Sprache"},
+  {inf:"zeigen",perf:"er hat gezeigt",prae:"er zeigte",plus:"er hatte gezeigt",cat:"Sprache"},
+  {inf:"erklären",perf:"er hat erklärt",prae:"er erklärte",plus:"er hatte erklärt",cat:"Sprache"},
+  {inf:"erzählen",perf:"er hat erzählt",prae:"er erzählte",plus:"er hatte erzählt",cat:"Sprache"},
+  {inf:"empfehlen",perf:"er hat empfohlen",prae:"er empfahl",plus:"er hatte empfohlen",cat:"Sprache"},
+  {inf:"sehen",perf:"er hat gesehen",prae:"er sah",plus:"er hatte gesehen",cat:"Wahrnehmung"},
+  {inf:"hören",perf:"er hat gehört",prae:"er hörte",plus:"er hatte gehört",cat:"Wahrnehmung"},
+  {inf:"wissen",perf:"er hat gewusst",prae:"er wusste",plus:"er hatte gewusst",cat:"Kognition"},
+  {inf:"denken",perf:"er hat gedacht",prae:"er dachte",plus:"er hatte gedacht",cat:"Kognition"},
+  {inf:"glauben",perf:"er hat geglaubt",prae:"er glaubte",plus:"er hatte geglaubt",cat:"Kognition"},
+  {inf:"meinen",perf:"er hat gemeint",prae:"er meinte",plus:"er hatte gemeint",cat:"Kognition"},
+  {inf:"verstehen",perf:"er hat verstanden",prae:"er verstand",plus:"er hatte verstanden",cat:"Kognition"},
+  {inf:"vergessen",perf:"er hat vergessen",prae:"er vergaß",plus:"er hatte vergessen",cat:"Kognition"},
+  {inf:"erinnern",perf:"er hat erinnert",prae:"er erinnerte",plus:"er hatte erinnert",cat:"Kognition"},
+  {inf:"lernen",perf:"er hat gelernt",prae:"er lernte",plus:"er hatte gelernt",cat:"Schule/Arbeit"},
+  {inf:"arbeiten",perf:"er hat gearbeitet",prae:"er arbeitete",plus:"er hatte gearbeitet",cat:"Schule/Arbeit"},
+  {inf:"studieren",perf:"er hat studiert",prae:"er studierte",plus:"er hatte studiert",cat:"Schule/Arbeit"},
+  {inf:"essen",perf:"er hat gegessen",prae:"er aß",plus:"er hatte gegessen",cat:"Alltag"},
+  {inf:"trinken",perf:"er hat getrunken",prae:"er trank",plus:"er hatte getrunken",cat:"Alltag"},
+  {inf:"schlafen",perf:"er hat geschlafen",prae:"er schlief",plus:"er hatte geschlafen",cat:"Alltag"},
+  {inf:"aufstehen",perf:"er ist aufgestanden",prae:"er stand auf",plus:"er war aufgestanden",cat:"Alltag"},
+  {inf:"wohnen",perf:"er hat gewohnt",prae:"er wohnte",plus:"er hatte gewohnt",cat:"Alltag"},
+  {inf:"leben",perf:"er hat gelebt",prae:"er lebte",plus:"er hatte gelebt",cat:"Alltag"},
+  {inf:"heißen",perf:"er hat geheißen",prae:"er hieß",plus:"er hatte geheißen",cat:"Alltag"},
+  {inf:"bleiben",perf:"er ist geblieben",prae:"er blieb",plus:"er war geblieben",cat:"Alltag"},
+  {inf:"warten",perf:"er hat gewartet",prae:"er wartete",plus:"er hatte gewartet",cat:"Alltag"},
+  {inf:"putzen",perf:"er hat geputzt",prae:"er putzte",plus:"er hatte geputzt",cat:"Haushalt"},
+  {inf:"kochen",perf:"er hat gekocht",prae:"er kochte",plus:"er hatte gekocht",cat:"Haushalt"},
+  {inf:"waschen",perf:"er hat gewaschen",prae:"er wusch",plus:"er hatte gewaschen",cat:"Haushalt"},
+  {inf:"helfen",perf:"er hat geholfen",prae:"er half",plus:"er hatte geholfen",cat:"Sozial"},
+  {inf:"treffen",perf:"er hat getroffen",prae:"er traf",plus:"er hatte getroffen",cat:"Sozial"},
+  {inf:"besuchen",perf:"er hat besucht",prae:"er besuchte",plus:"er hatte besucht",cat:"Sozial"},
+  {inf:"kennen",perf:"er hat gekannt",prae:"er kannte",plus:"er hatte gekannt",cat:"Sozial"},
+  {inf:"lieben",perf:"er hat geliebt",prae:"er liebte",plus:"er hatte geliebt",cat:"Sozial"},
+  {inf:"heiraten",perf:"er hat geheiratet",prae:"er heiratete",plus:"er hatte geheiratet",cat:"Sozial"},
+  {inf:"einladen",perf:"er hat eingeladen",prae:"er lud ein",plus:"er hatte eingeladen",cat:"Sozial"},
+  {inf:"spielen",perf:"er hat gespielt",prae:"er spielte",plus:"er hatte gespielt",cat:"Freizeit"},
+  {inf:"singen",perf:"er hat gesungen",prae:"er sang",plus:"er hatte gesungen",cat:"Freizeit"},
+  {inf:"tanzen",perf:"er hat getanzt",prae:"er tanzte",plus:"er hatte getanzt",cat:"Freizeit"},
+  {inf:"lachen",perf:"er hat gelacht",prae:"er lachte",plus:"er hatte gelacht",cat:"Gefühle"},
+  {inf:"weinen",perf:"er hat geweint",prae:"er weinte",plus:"er hatte geweint",cat:"Gefühle"},
+  {inf:"beginnen",perf:"er hat begonnen",prae:"er begann",plus:"er hatte begonnen",cat:"Zeit"},
+  {inf:"anfangen",perf:"er hat angefangen",prae:"er fing an",plus:"er hatte angefangen",cat:"Zeit"},
+  {inf:"aufhören",perf:"er hat aufgehört",prae:"er hörte auf",plus:"er hatte aufgehört",cat:"Zeit"},
+  {inf:"passieren",perf:"es ist passiert",prae:"es passierte",plus:"es war passiert",cat:"Ereignis"},
+  {inf:"geschehen",perf:"es ist geschehen",prae:"es geschah",plus:"es war geschehen",cat:"Ereignis"},
+  {inf:"gewinnen",perf:"er hat gewonnen",prae:"er gewann",plus:"er hatte gewonnen",cat:"Leistung"},
+  {inf:"verlieren",perf:"er hat verloren",prae:"er verlor",plus:"er hatte verloren",cat:"Leistung"},
+  {inf:"versuchen",perf:"er hat versucht",prae:"er versuchte",plus:"er hatte versucht",cat:"Leistung"},
+  {inf:"schaffen",perf:"er hat geschafft",prae:"er schaffte",plus:"er hatte geschafft",cat:"Leistung"},
+  {inf:"stehen",perf:"er hat gestanden",prae:"er stand",plus:"er hatte gestanden",cat:"Position"},
+  {inf:"sitzen",perf:"er hat gesessen",prae:"er saß",plus:"er hatte gesessen",cat:"Position"},
+  {inf:"liegen",perf:"er hat gelegen",prae:"er lag",plus:"er hatte gelegen",cat:"Position"},
+  {inf:"setzen",perf:"er hat gesetzt",prae:"er setzte",plus:"er hatte gesetzt",cat:"Position"},
+  {inf:"hängen",perf:"er hat gehängt",prae:"er hängte",plus:"er hatte gehängt",cat:"Position"},
+];
+
+const app=document.getElementById('app');
+const cats=['Alle',...[...new Set(VERBS.map(v=>v.cat))].sort()];
+let deck=[...VERBS],idx=0,flipped=false,known=0,unknown=0,filter='Alle',unknownCards=[];
+
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a}
+shuffle(deck);
+
+function applyFilter(){
+  deck=filter==='Alle'?[...VERBS]:VERBS.filter(v=>v.cat===filter);
+  shuffle(deck);idx=0;flipped=false;known=0;unknown=0;unknownCards=[];render();
+}
+
+function render(){
+  if(!deck.length){app.innerHTML='<div class="done-screen"><h2>Keine Verben gefunden</h2><p>Wähle eine andere Kategorie.</p></div>';return}
+  if(idx>=deck.length){
+    app.innerHTML=`<div class="done-screen"><h2>Runde geschafft!</h2><p>Gewusst: <strong>${known}</strong> &nbsp;·&nbsp; Nochmal: <strong>${unknown}</strong></p><button class="done-btn" onclick="restart()">Nochmal von vorne</button></div>`;return;
+  }
+  const v=deck[idx],total=deck.length,pct=Math.round((idx/total)*100);
+  app.innerHTML=`
+<div class="stats">
+  <div class="stat s-idx"><div class="stat-n">${idx+1}/${total}</div><div class="stat-l">Karte</div></div>
+  <div class="stat s-ok"><div class="stat-n">${known}</div><div class="stat-l">Gewusst</div></div>
+  <div class="stat s-no"><div class="stat-n">${unknown}</div><div class="stat-l">Nochmal</div></div>
+</div>
+<div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+<div class="card-area"><div class="card${flipped?' flipped':''}" id="fc" onclick="flipCard()">
+  <div class="face front">
+    <div class="flip-hint">Klicken zum Umdrehen</div>
+    <div class="infinitiv">${v.inf}</div>
+    <div class="cat-badge">${v.cat}</div>
+  </div>
+  <div class="face back">
+    <div class="back-hint">3. Person Singular</div>
+    <div class="tenses">
+      <div class="tense-block">
+        <div class="tense-label">Perfekt</div>
+        <div class="tense-val">${v.perf}</div>
+      </div>
+      <div class="tense-sep"></div>
+      <div class="tense-block">
+        <div class="tense-label">Präteritum</div>
+        <div class="tense-val">${v.prae}</div>
+      </div>
+      <div class="tense-sep"></div>
+      <div class="tense-block">
+        <div class="tense-label">Plusquamperfekt</div>
+        <div class="tense-val">${v.plus}</div>
+      </div>
+    </div>
+  </div>
+</div></div>
+${flipped
+  ?`<div class="controls"><button class="btn btn-no" onclick="mark(false)">Nochmal üben</button><button class="btn btn-ok" onclick="mark(true)">Gewusst!</button></div>`
+  :`<div class="controls"><button class="btn btn-flip" onclick="flipCard()">Karte umdrehen</button></div>`
+}
+<div class="bottom-row">
+  <select class="filter-select" onchange="setFilter(this.value)">${cats.map(c=>`<option${c===filter?' selected':''}>${c}</option>`).join('')}</select>
+  <button class="shuffle-btn" onclick="doShuffle()">Mischen</button>
+</div>`;
+}
+
+function flipCard(){flipped=!flipped;render()}
+function mark(ok){if(ok){known++}else{unknown++;unknownCards.push(deck[idx]);}idx++;flipped=false;render()}
+function setFilter(f){filter=f;applyFilter()}
+function doShuffle(){shuffle(deck);idx=0;flipped=false;render()}
+function restart(){idx=0;flipped=false;known=0;unknown=0;unknownCards=[];shuffle(deck);render()}
+
+render();
+</script>
+</body>
+</html>
