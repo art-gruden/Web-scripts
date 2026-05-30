@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Нумерологічне Колесо</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@400;600;700&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    background: #0d0d0d;
+    font-family: 'DM Sans', sans-serif;
+    overflow-x: hidden;
+    padding: 32px 16px 48px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(255,180,0,0.07) 0%, transparent 70%);
+    pointer-events: none;
+  }
+
+  .container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 28px;
+    width: 100%;
+    max-width: 900px;
+  }
+
+  h1 {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    letter-spacing: 0.12em;
+    color: #f5c842;
+    text-shadow: 0 0 24px rgba(245,200,66,0.4);
+  }
+
+  /* ── Input panel ──────────────────────────────────── */
+  .input-panel {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: #1a1a1a;
+    border: 1px solid #2e2e2e;
+    border-radius: 14px;
+    padding: 16px 24px;
+    width: 100%;
+    max-width: 480px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+
+  .input-panel label {
+    color: #aaa;
+    font-size: 0.9rem;
+    white-space: nowrap;
+  }
+
+  .input-panel input[type="text"] {
+    background: #111;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #fff;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 1.05rem;
+    padding: 8px 14px;
+    width: 160px;
+    outline: none;
+    transition: border-color .2s;
+    letter-spacing: .05em;
+  }
+  .input-panel input[type="text"]:focus { border-color: #f5c842; }
+
+  .btn-calc {
+    background: #f5c842;
+    border: none;
+    border-radius: 8px;
+    color: #0d0d0d;
+    cursor: pointer;
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: .08em;
+    padding: 9px 22px;
+    transition: background .2s, transform .1s;
+  }
+  .btn-calc:hover  { background: #ffd966; }
+  .btn-calc:active { transform: scale(.97); }
+
+  .err-msg {
+    color: #e84040;
+    font-size: 0.82rem;
+    text-align: center;
+    min-height: 18px;
+  }
+
+  /* ── Main layout: wheel + cards ───────────────────── */
+  .main-row {
+    display: flex;
+    gap: 36px;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    justify-content: center;
+    width: 100%;
+  }
+
+  /* ── Wheel ────────────────────────────────────────── */
+  .wheel-wrap {
+    position: relative;
+    width: 380px;
+    height: 380px;
+    flex-shrink: 0;
+    filter: drop-shadow(0 0 36px rgba(245,200,66,0.22));
+  }
+  .wheel-wrap svg { width: 100%; height: 100%; overflow: visible; }
+
+  /* ── Cards ────────────────────────────────────────── */
+  .cards {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    min-width: 240px;
+    max-width: 340px;
+    flex: 1;
+  }
+
+  .card {
+    background: #161616;
+    border: 1px solid #252525;
+    border-radius: 12px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    transition: border-color .3s, background .3s;
+  }
+  .card.active {
+    border-color: var(--card-color);
+    background: #1b1b1b;
+    box-shadow: 0 0 18px -4px var(--card-color);
+  }
+
+  .card-num {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2rem;
+    color: var(--card-color);
+    min-width: 36px;
+    text-align: center;
+    line-height: 1;
+  }
+
+  .card-body { flex: 1; }
+
+  .card-title {
+    font-size: 0.78rem;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+  }
+
+  .card-name {
+    font-weight: 700;
+    font-size: 0.95rem;
+    color: #ddd;
+    line-height: 1.2;
+  }
+
+  .card-formula {
+    font-size: 0.75rem;
+    color: #666;
+    margin-top: 2px;
+  }
+
+  .card-badge {
+    font-family: 'Bebas Neue', sans-serif;
+    font-size: 2.2rem;
+    color: var(--card-color);
+    min-width: 36px;
+    text-align: right;
+    opacity: 0;
+    transition: opacity .4s;
+  }
+  .card.active .card-badge { opacity: 1; }
+
+</style>
+</head>
+<body>
+<div class="container">
+  <h1>Нумерологічне Колесо</h1>
+
+  <div class="input-panel">
+    <label>Дата народження:</label>
+    <input type="text" id="dob" placeholder="ДД.ММ.РРРР" maxlength="10" />
+    <button class="btn-calc" onclick="calculate()">Розрахувати</button>
+  </div>
+  <div class="err-msg" id="errMsg"></div>
+
+  <div class="main-row">
+    <div class="wheel-wrap">
+      <svg id="wheel" viewBox="-190 -190 380 380"></svg>
+    </div>
+    <div class="cards" id="cards"></div>
+  </div>
+</div>
+
+<script>
+/* ── helpers ──────────────────────────────────────────────── */
+const digitSum = n => String(n).split('').reduce((a,c)=>a+Number(c),0);
+
+// Reduce to 1-9 (never 0)
+function reduce9(n) {
+  while (n > 9 || n === 0) {
+    n = digitSum(n);
+    if (n === 0) n = 9;
+  }
+  return n;
+}
+
+function sumDigitsOf(n) {
+  // one-pass digit sum (before reduction), used for formula display
+  return String(n).split('').map(Number);
+}
+
+/* ── sector definitions ──────────────────────────────────── */
+const SECTORS = [
+  { name: 'Успіх в житті', key: 's1' },
+  { name: "Зв'язок з родом", key: 's2' },
+  { name: 'Фінанси',        key: 's3' },
+  { name: 'Сімʼя',          key: 's4' },
+  { name: 'Здоровʼя',       key: 's5' },
+  { name: 'Місія душі',     key: 's6' },
+];
+
+const PALETTE = ['#e84040','#f5a623','#27ae60','#2980b9','#8e44ad','#16a085'];
+
+/* ── wheel drawing ────────────────────────────────────────── */
+const SVG_NS = 'http://www.w3.org/2000/svg';
+const R = 172, INNER = 26, CX = 0, CY = 0;
+const N = 6, SLICE = (2*Math.PI)/N, START = -Math.PI/2;
+
+function polar(a, r){ return { x: CX+r*Math.cos(a), y: CY+r*Math.sin(a) }; }
+
+function slicePath(i){
+  const a0=START+i*SLICE, a1=a0+SLICE, lf=SLICE>Math.PI?1:0;
+  const oA=polar(a0,R), oB=polar(a1,R), iA=polar(a0,INNER), iB=polar(a1,INNER);
+  return `M${iA.x} ${iA.y} L${oA.x} ${oA.y} A${R} ${R} 0 ${lf} 1 ${oB.x} ${oB.y} L${iB.x} ${iB.y} A${INNER} ${INNER} 0 ${lf} 0 ${iA.x} ${iA.y}Z`;
+}
+
+function mkEl(tag, attrs){
+  const el=document.createElementNS(SVG_NS,tag);
+  Object.entries(attrs).forEach(([k,v])=>el.setAttribute(k,v));
+  return el;
+}
+
+function drawWheel(values){
+  const svg = document.getElementById('wheel');
+  svg.innerHTML = '';
+
+  values.forEach((val,i)=>{
+    const color = PALETTE[i];
+    const mid   = START+(i+0.5)*SLICE;
+
+    // slice
+    svg.appendChild(mkEl('path',{d:slicePath(i),fill:color,stroke:'#0d0d0d','stroke-width':'2'}));
+
+    // separator line
+    const lA=START+i*SLICE, lo=polar(lA,R), li=polar(lA,INNER);
+    svg.appendChild(mkEl('line',{x1:li.x,y1:li.y,x2:lo.x,y2:lo.y,stroke:'#0d0d0d','stroke-width':'2.5'}));
+
+    // sector number (outer)
+    const sn=polar(mid,R-20);
+    const snEl=mkEl('text',{x:sn.x,y:sn.y,'text-anchor':'middle','dominant-baseline':'central',
+      'font-family':'Bebas Neue,sans-serif','font-size':'12',fill:'rgba(255,255,255,0.5)','letter-spacing':'1'});
+    snEl.textContent=`№${i+1}`;
+    svg.appendChild(snEl);
+
+    // big value
+    const vp=polar(mid,R*0.52);
+    const vEl=mkEl('text',{x:vp.x,y:vp.y,'text-anchor':'middle','dominant-baseline':'central',
+      'font-family':'Bebas Neue,sans-serif','font-size':'56',fill:'#fff',opacity:'0.95'});
+    vEl.id=`sv${i}`;
+    vEl.textContent=val;
+    svg.appendChild(vEl);
+  });
+
+  // outer ring
+  svg.appendChild(mkEl('circle',{cx:CX,cy:CY,r:R,fill:'none',stroke:'#f5c842','stroke-width':'3'}));
+  // cap
+  svg.appendChild(mkEl('circle',{cx:CX,cy:CY,r:INNER,fill:'#111',stroke:'#f5c842','stroke-width':'3'}));
+  // dot
+  svg.appendChild(mkEl('circle',{cx:CX,cy:CY,r:5,fill:'#f5c842'}));
+}
+
+/* ── cards ──────────────────────────────────────────────── */
+function buildCards(data){
+  const wrap = document.getElementById('cards');
+  wrap.innerHTML = '';
+  data.forEach((d,i)=>{
+    const color = PALETTE[i];
+    const card  = document.createElement('div');
+    card.className = 'card active';
+    card.style.setProperty('--card-color', color);
+    card.innerHTML = `
+      <div class="card-num">${i+1}</div>
+      <div class="card-body">
+        <div class="card-title">Сектор ${i+1}</div>
+        <div class="card-name">${SECTORS[i].name}</div>
+        <div class="card-formula">${d.formula}</div>
+      </div>
+      <div class="card-badge">${d.value}</div>`;
+    wrap.appendChild(card);
+  });
+}
+
+/* ── calculation ────────────────────────────────────────── */
+function calculate(){
+  const raw = document.getElementById('dob').value.trim();
+  const err = document.getElementById('errMsg');
+  err.textContent = '';
+
+  const m = raw.match(/^(\d{1,2})\.(\d{1,2})\.(\d{4})$/);
+  if(!m){ err.textContent='❌ Формат: ДД.ММ.РРРР'; return; }
+
+  const dd=parseInt(m[1]), mo=parseInt(m[2]), yr=parseInt(m[3]);
+  if(dd<1||dd>31||mo<1||mo>12){ err.textContent='❌ Невірна дата'; return; }
+
+  // --- S1: день (sum digits, reduce to 1-9)
+  const s1raw_digits = sumDigitsOf(dd);
+  const s1raw = s1raw_digits.reduce((a,b)=>a+b,0);
+  const s1 = reduce9(s1raw);
+  const s1formula = s1raw_digits.join('+') + (s1raw>9 ? ` = ${digitSum(s1raw)} → ${s1}` : ` = ${s1}`);
+
+  // --- S2: місяць
+  const s2raw_digits = sumDigitsOf(mo);
+  const s2raw = s2raw_digits.reduce((a,b)=>a+b,0);
+  const s2 = reduce9(s2raw);
+  const s2formula = s2raw_digits.join('+') + (s2raw>9 ? ` = ${digitSum(s2raw)} → ${s2}` : ` = ${s2}`);
+
+  // --- S3: рік
+  const s3raw_digits = sumDigitsOf(yr);
+  const s3raw = s3raw_digits.reduce((a,b)=>a+b,0);
+  const s3 = reduce9(s3raw);
+  const s3_step = s3raw_digits.join('+') + ` = ${s3raw}`;
+  const s3formula = s3raw>9 ? s3_step + ` → ${digitSum(s3raw)} → ${s3}` : s3_step + ` = ${s3}`;
+
+  // --- S4: сума s1+s2+s3
+  const s4raw = s1+s2+s3;
+  const s4 = reduce9(s4raw);
+  const s4formula = `${s1}+${s2}+${s3} = ${s4raw}` + (s4raw>9 ? ` → ${s4}` : '');
+
+  // --- S5: сума s1..s4
+  const s5raw = s1+s2+s3+s4;
+  const s5 = reduce9(s5raw);
+  const s5formula = `${s1}+${s2}+${s3}+${s4} = ${s5raw}` + (s5raw>9 ? ` → ${s5}` : '');
+
+  // --- S6: сума s1..s5
+  const s6raw = s1+s2+s3+s4+s5;
+  const s6 = reduce9(s6raw);
+  const s6formula = `${s1}+${s2}+${s3}+${s4}+${s5} = ${s6raw}` + (s6raw>9 ? ` → ${s6}` : '');
+
+  const results = [
+    { value: s1, formula: `День: ${dd} → ${s1formula}` },
+    { value: s2, formula: `Місяць: ${mo} → ${s2formula}` },
+    { value: s3, formula: `Рік: ${yr} → ${s3formula}` },
+    { value: s4, formula: `С1+С2+С3 → ${s4formula}` },
+    { value: s5, formula: `С1+С2+С3+С4 → ${s5formula}` },
+    { value: s6, formula: `С1+С2+С3+С4+С5 → ${s6formula}` },
+  ];
+
+  drawWheel(results.map(r=>r.value));
+  buildCards(results);
+}
+
+/* ── format input automatically ─────────────────────────── */
+document.getElementById('dob').addEventListener('input', function(){
+  let v = this.value.replace(/[^\d.]/g,'');
+  // auto-insert dots
+  const digits = v.replace(/\./g,'');
+  let formatted = '';
+  for(let i=0;i<digits.length && i<8;i++){
+    if(i===2||i===4) formatted+='.';
+    formatted+=digits[i];
+  }
+  this.value = formatted;
+});
+
+document.getElementById('dob').addEventListener('keydown', function(e){
+  if(e.key==='Enter') calculate();
+});
+
+/* ── initial wheel (empty zeros) ────────────────────────── */
+drawWheel([0,0,0,0,0,0]);
+
+// build empty cards
+(function(){
+  const wrap = document.getElementById('cards');
+  SECTORS.forEach((s,i)=>{
+    const color = PALETTE[i];
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--card-color', color);
+    card.innerHTML = `
+      <div class="card-num">${i+1}</div>
+      <div class="card-body">
+        <div class="card-title">Сектор ${i+1}</div>
+        <div class="card-name">${s.name}</div>
+        <div class="card-formula">введіть дату народження</div>
+      </div>
+      <div class="card-badge">—</div>`;
+    wrap.appendChild(card);
+  });
+})();
+</script>
+</body>
+</html>
