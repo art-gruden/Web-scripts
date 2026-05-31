@@ -1,0 +1,430 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Коло життя: енергії цифр від 1 до 9</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background: #f5f2eb;
+            font-family: 'Segoe UI', 'Merriweather', 'Noto Serif', Georgia, serif;
+            color: #1e2a2e;
+            line-height: 1.5;
+            padding: 2rem 1rem;
+        }
+
+        .container {
+            max-width: 1300px;
+            margin: 0 auto;
+            background: #fffef7;
+            border-radius: 2rem;
+            box-shadow: 0 20px 35px -12px rgba(0,0,0,0.1);
+            overflow: hidden;
+            padding: 2rem 1.8rem;
+        }
+
+        /* заголовки */
+        h1 {
+            font-size: 2.2rem;
+            text-align: center;
+            color: #3b2a1f;
+            border-bottom: 3px solid #e4c9a5;
+            display: inline-block;
+            width: auto;
+            margin: 0 auto 0.5rem auto;
+            padding-bottom: 0.3rem;
+            font-weight: 600;
+            letter-spacing: -0.3px;
+        }
+
+        .title-wrapper {
+            text-align: center;
+            margin-bottom: 2.5rem;
+        }
+
+        .sub {
+            text-align: center;
+            color: #6b4c2c;
+            font-style: italic;
+            margin-top: 0.25rem;
+            font-size: 1.05rem;
+        }
+
+        /* сітка для цифр */
+        .digits-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 1.8rem;
+            margin-bottom: 3rem;
+        }
+
+        /* картка цифри */
+        .digit-card {
+            background: #ffffff;
+            border-radius: 1.5rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+            overflow: hidden;
+            transition: all 0.2s;
+            border: 1px solid #f0e2d0;
+        }
+
+        .digit-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 15px 25px -12px rgba(0,0,0,0.15);
+            border-color: #dbbc8c;
+        }
+
+        .card-header {
+            background: #f7f0e6;
+            padding: 1rem 1.5rem;
+            border-bottom: 2px solid #e9d9c4;
+        }
+
+        .card-header h2 {
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: #4a2e1a;
+            margin: 0;
+            display: flex;
+            align-items: baseline;
+            gap: 0.4rem;
+        }
+
+        .card-header h2 span {
+            font-size: 1rem;
+            font-weight: normal;
+            color: #866633;
+            background: #e9dccf;
+            padding: 0.1rem 0.6rem;
+            border-radius: 30px;
+        }
+
+        .card-body {
+            padding: 1.2rem 1.5rem 1.5rem;
+        }
+
+        .energy-desc {
+            background: #fefaf5;
+            padding: 0.9rem;
+            border-radius: 1rem;
+            margin-bottom: 1.4rem;
+            border-left: 5px solid #c7a56b;
+            font-size: 0.96rem;
+        }
+
+        .sector-title {
+            font-weight: 700;
+            color: #7a562e;
+            margin: 1rem 0 0.6rem 0;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            border-bottom: 1px dashed #e2cfb5;
+            padding-bottom: 0.2rem;
+        }
+
+        .sector-title::before {
+            content: "✧";
+            font-size: 1.2rem;
+        }
+
+        .sector-list {
+            list-style: none;
+            padding-left: 0.5rem;
+        }
+
+        .sector-list li {
+            margin-bottom: 0.65rem;
+            position: relative;
+            padding-left: 1.2rem;
+            font-size: 0.94rem;
+        }
+
+        .sector-list li::before {
+            content: "•";
+            color: #c7a56b;
+            font-weight: bold;
+            font-size: 1rem;
+            position: absolute;
+            left: 0;
+        }
+
+        .note {
+            font-size: 0.85rem;
+            color: #6f5a44;
+            background: #fcf7f0;
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            margin-top: 0.8rem;
+            display: inline-block;
+        }
+
+        hr {
+            margin: 2rem 0;
+            border: none;
+            height: 1px;
+            background: linear-gradient(to right, #f0e2d0, transparent);
+        }
+
+        /* додатковий блок про дітей */
+        .extra-section {
+            background: #fdf7ed;
+            border-radius: 1.5rem;
+            padding: 1.5rem 2rem;
+            margin-top: 1rem;
+            border: 1px solid #eedfcb;
+        }
+
+        .extra-section h3 {
+            font-size: 1.7rem;
+            color: #4e3822;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+        }
+
+        .extra-section h3::before {
+            content: "🌿";
+            font-size: 1.7rem;
+        }
+
+        .child-mission-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+
+        .child-item {
+            background: white;
+            border-radius: 1rem;
+            padding: 0.8rem 1rem;
+            border-left: 6px solid #e2bc89;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.03);
+        }
+
+        .child-item strong {
+            font-size: 1.2rem;
+            color: #744e1e;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        footer {
+            text-align: center;
+            margin-top: 2.5rem;
+            font-size: 0.8rem;
+            color: #9b846c;
+            border-top: 1px solid #eedfcb;
+            padding-top: 1.5rem;
+        }
+
+        @media (max-width: 720px) {
+            .container {
+                padding: 1.2rem;
+            }
+            .digits-grid {
+                grid-template-columns: 1fr;
+            }
+            .card-header h2 {
+                font-size: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="title-wrapper">
+        <h1>Коло життя &nbsp;·&nbsp; Енергії чисел</h1>
+        <div class="sub">нумерологічний код душі в родовій системі</div>
+    </div>
+
+    <!-- сітка з цифрами 1-9 -->
+    <div class="digits-grid">
+        
+        <!-- ЦИФРА 1 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>1 <span>одиниця</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>⚡ Енергія виклику, лідерство</strong><br>
+                Одиниця – енергія лідера, виклику, самостійності. Людина знає, що в неї все вийде. Рід підтримує на енергетичному рівні, навіть якщо фізичні члени роду не розуміють. Дає силу волі, духу та силу слова – важливо розвивати ораторське мистецтво.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 1 (успіх):</strong> лідер, самостійне досягнення цілей. Рід дає можливості.</li>
+                    <li><strong>Сектор 2 (зв’язок із родом):</strong> «обраний» серед братів і сестер, рід передає найкращий досвід. Прославляє рід добрими справами. Важливі дружні стосунки з братами/сестрами.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> фізична енергія – головний ресурс. Потрібні спорт, загартування, вправи.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 2 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>2 <span>двійка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>🤝 Енергія партнерства, стосунків, дипломатії</strong><br>
+                Дипломатичні, емпатичні люди, вміють слухати, піклуватися, окреслювати кордони. Двійка дає містичні здібності, бачення більшого. Тінь: схильність до сумнівів, нерішучості.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 3 (фінанси):</strong> успіх через співпрацю, роботу в парі, приєднання до спільнот. Якщо самотужки не виходить – потрібен партнер.</li>
+                    <li><strong>Сектор 2 (зв’язок із родом):</strong> двійка вносить партнерські, турботливі якості у взаємини з родом.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 3 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>3 <span>трійка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>✨ Енергія активності, творчості, оптимізму</strong><br>
+                Поєднує якості 1 та 2, сила переконання, інтелект. Не має права впадати у відчай чи бездіяльність. Відкритість до нового, подорожі. У фінансах – комунікація з людьми вищого рівня.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 2 (зв’язок із родом):</strong> зв'язок із материнською лінією, можливі родові сценарії, образи на матір. Душа приходить зцілити гармонію через усвідомлену поведінку.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> розвивати нові енергії, впроваджувати нові технології, не опиратись лише старим методам.</li>
+                    <li><strong>Сектор 3 (фінанси):</strong> не боятись змін, інтелект – головний інструмент, постійне навчання, ініціатива.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 4 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>4 <span>четвірка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>🏛️ Енергія відповідальності, порядку, стабільності</strong><br>
+                Дисципліна, організованість. Успіх через систематичну працю. Люди-четвірки – опора сім'ї або колективу. Тінь: педантизм, надмірний контроль.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 4 (сім'я, дім):</strong> керівник, опора сім’ї, встановлює правила, порядок, планує час.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> фізично активні, потужне джерело сили. Спорт, руховий режим, правильне харчування.</li>
+                    <li><strong>Сектор 2 (зв’язок із родом):</strong> пов’язана з родовою лінією батька. Приходить зцілити труднощі по батьківській лінії, навчитись відповідальності, примирення.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 5 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>5 <span>п'ятірка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>🌀 Енергія свободи, руху, змін</strong><br>
+                Свобода, постійний розвиток, подорож. Не любить застою, контролю. Важливо поєднувати свободу з відповідальністю. Тінь: втеча від обов'язків, незавершені справи.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 5 (здоров’я):</strong> потреба в русі, свіжому повітрі, нових місцях для відновлення. Не бути в замкнутому просторі.</li>
+                    <li><strong>Сектор 2 (зв’язок із родом):</strong> привносить зміни, рух у родову систему.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 6 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>6 <span>шістірка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>❤️ Енергія родинних зв’язків, турботи, гармонії</strong><br>
+                Об'єднує сім’ю, примиряє, створює атмосферу любові. Дар любити, бути коханим. Тінь: надмірна жертовність.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 4 (сім'я, дім):</strong> бути хранителем родинного вогнища, об'єднувати сім'ю.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> фізичний стан залежить від емоційної атмосфери в сім'ї. Корисне спілкування з рідними, творчість, волонтерство.</li>
+                    <li><strong>Сектор 3 (фінанси):</strong> гроші приходять через турботу про близьких, добробут сім'ї. Гроші – інструмент любові.</li>
+                    <li><strong>Сектор 6 (місія душі):</strong> пробудження серця, безумовна любов, створення гармонійної сім'ї, служіння через доброту.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 7 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>7 <span>сімка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>🔮 Енергія мудрості, духовного пошуку, кризи</strong><br>
+                Глибока енергія, пошук сенсу, віра, внутрішнє пізнання. Шлях через кризу, яка дає мудрість. Якщо людина занурена лише в матеріальне – доля може відштовхнути.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 1 (успіх):</strong> важливо не занурюватись повністю в матеріальне, інакше успіх може не прийти.</li>
+                    <li><strong>Сектор 3 (фінанси):</strong> гроші через внутрішні наміри, цінності, служіння іншим. Матеріальне поєднувати з духовним розвитком.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> ЗСЖ, медитації, самопізнання, постійне навчання. Людина надихає прикладом.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 8 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>8 <span>вісімка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>⚡ Енергія сили, влади, ресурсів, кар’єри</strong><br>
+                Дар впливати на простір, притягувати ресурси. Шанс проявити себе в кар’єрі, досягти матеріального успіху, визнання. Сила проявляється через сектор, де стоїть вісімка.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 1 (успіх):</strong> знайти справу для самореалізації, відчути значущість.</li>
+                    <li><strong>Сектор 6 (місія душі):</strong> досягти матеріального благополуччя, високого доходу, мудро розпоряджатись ресурсами, мати авторитет у родині та справах.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> знайти баланс роботи та відпочинку, інакше спустошення.</li>
+                    <li><strong>Сектор 4 (сім’я):</strong> бути справедливим, надійною опорою, забезпечувати сім’ю, залишити спадок нащадкам.</li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- ЦИФРА 9 -->
+        <div class="digit-card">
+            <div class="card-header">
+                <h2>9 <span>дев'ятка</span></h2>
+            </div>
+            <div class="card-body">
+                <div class="energy-desc"><strong>🌿 Енергія мудрості, служіння, духовної вершини</strong><br>
+                Високий порядок, альтруїзм. Власники дев’ятки можуть бути незрозумілими, їх цінності – поза матрицею. Дев’ятка містить всі попередні енергії. Шлях через кризи до себе. Важливо долати інтелектуальну гординю, ділитись мудрістю.</div>
+                <div class="sector-title">Прояви в секторах</div>
+                <ul class="sector-list">
+                    <li><strong>Сектор 3 (фінанси):</strong> не ставити матеріальне на перше місце, інакше складнощі. Стати професіоналом своєї справи.</li>
+                    <li><strong>Сектор 4 (сім’я):</strong> хранитель роду, рід покладає надії, шлях через прийняття, прощення, мудрість.</li>
+                    <li><strong>Сектор 5 (здоров’я):</strong> час для відпочинку, усамітнення, контакт із природою. Уникати надмірної жертовності. Можливе хронічне захворювання.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <!-- додатково: місія дитини в сім’ї -->
+    <div class="extra-section">
+        <h3>Місія дитини в сім’ї</h3>
+        <p style="margin-bottom: 0.8rem;">Розрахунок: сума всіх цифр дати народження дитини, зведена до однозначного числа. Короткі тлумачення:</p>
+        <div class="child-mission-grid">
+            <div class="child-item"><strong>1 (одиниця)</strong> – дитина-лідер, пробуджує фінансову силу сім’ї. Може хворіти або мати таланти, що потребують коштів.</div>
+            <div class="child-item"><strong>2 (двійка)</strong> – миротворець. Вчить маму любити себе, допомагає налагоджувати стосунки між батьками (або матір’ю та дітьми).</div>
+            <div class="child-item"><strong>3 (трійка)</strong> – творець, повертає в сім’ю життя, творчий підхід замість виживання через контроль.</div>
+            <div class="child-item"><strong>4 (четвірка)</strong> – вчить батьків фінансової стабільності, відповідальності, раціональних витрат.</div>
+            <div class="child-item"><strong>5 (п’ятірка)</strong> – новатор, руйнує старі сімейні матриці, вчить жити вільно (подорожі, відпочинок).</div>
+            <div class="child-item"><strong>6 (шістірка)</strong> – хранитель, повертає любов у сім’ю через власне ставлення, вчить щирості.</div>
+            <div class="child-item"><strong>7 (сімка)</strong> – пробуджує глибину, показує вищі цінності, вчить розуміти сенс життя.</div>
+            <div class="child-item"><strong>8 (вісімка)</strong> – дитина-суддя, велика справедливість. Говорить правду батькам, викриває невідповідності.</div>
+            <div class="child-item"><strong>9 (дев’ятка)</strong> – гуманіст. Може приходити хворою дитиною (ДЦП, обмежені можливості), через свій стан об’єднує рід, потребує багато уваги та турботи.</div>
+        </div>
+        <div class="note">💡 Ці описи допомагають зрозуміти, чому душа обрала саме цю родину, які уроки та завдання несе дитина.</div>
+    </div>
+
+    <footer>
+        🌟 Кожна цифра має світлі та тіньові прояви. Аналізуйте в контексті власного кола секторів.
+    </footer>
+</div>
+</body>
+</html>
