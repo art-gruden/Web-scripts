@@ -1,0 +1,618 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deutsch Test — Lektionen 1–4</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #5b6af0;
+    --accent-soft: rgba(91,106,240,0.15);
+    --green: #3ecf8e;
+    --green-soft: rgba(62,207,142,0.12);
+    --red: #f05b5b;
+    --red-soft: rgba(240,91,91,0.12);
+    --yellow: #f0c05b;
+    --text: #e8eaf6;
+    --muted: #7880a4;
+    --radius: 10px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    min-height: 100vh;
+    padding: 24px 16px 60px;
+  }
+
+  header {
+    text-align: center;
+    margin-bottom: 36px;
+  }
+
+  .logo {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    letter-spacing: 3px;
+    color: var(--accent);
+    text-transform: uppercase;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--text);
+    margin-bottom: 6px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    font-size: 14px;
+  }
+
+  /* Tabs */
+  .tabs {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    padding: 8px 20px;
+    border-radius: 50px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    font-family: 'Inter', sans-serif;
+  }
+
+  .tab-btn:hover { border-color: var(--accent); color: var(--text); }
+  .tab-btn.active { background: var(--accent); border-color: var(--accent); color: #fff; }
+
+  /* Quiz container */
+  .quiz-wrap { max-width: 720px; margin: 0 auto; }
+
+  .progress-bar {
+    height: 3px;
+    background: var(--border);
+    border-radius: 2px;
+    margin-bottom: 24px;
+    overflow: hidden;
+  }
+
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--green));
+    border-radius: 2px;
+    transition: width 0.4s ease;
+  }
+
+  .progress-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+
+  /* Question card */
+  .question-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 24px;
+    margin-bottom: 20px;
+  }
+
+  .question-num {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--accent);
+    letter-spacing: 1px;
+    margin-bottom: 10px;
+  }
+
+  .question-text {
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    color: var(--text);
+  }
+
+  .question-text .blank {
+    display: inline-block;
+    min-width: 60px;
+    border-bottom: 2px solid var(--accent);
+    color: var(--accent);
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .options {
+    display: grid;
+    gap: 8px;
+  }
+
+  .option-btn {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 11px 16px;
+    border-radius: 8px;
+    text-align: left;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.18s;
+    font-family: 'Inter', sans-serif;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .option-btn:hover:not(:disabled) {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+  }
+
+  .option-btn .opt-label {
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 11px;
+    color: var(--muted);
+    min-width: 18px;
+  }
+
+  .option-btn.correct {
+    border-color: var(--green);
+    background: var(--green-soft);
+    color: var(--green);
+  }
+
+  .option-btn.correct .opt-label { color: var(--green); }
+
+  .option-btn.wrong {
+    border-color: var(--red);
+    background: var(--red-soft);
+    color: var(--red);
+  }
+
+  .option-btn.wrong .opt-label { color: var(--red); }
+
+  .option-btn:disabled { cursor: default; }
+
+  .explanation {
+    margin-top: 12px;
+    padding: 10px 14px;
+    background: var(--surface2);
+    border-left: 3px solid var(--green);
+    border-radius: 6px;
+    font-size: 13px;
+    color: var(--muted);
+    display: none;
+  }
+
+  .explanation.show { display: block; }
+  .explanation strong { color: var(--green); }
+
+  /* Result screen */
+  .result-screen {
+    display: none;
+    text-align: center;
+    padding: 40px 20px;
+  }
+
+  .result-screen.show { display: block; }
+
+  .score-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 4px solid var(--accent);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    background: var(--accent-soft);
+  }
+
+  .score-num {
+    font-size: 32px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+    color: var(--accent);
+    line-height: 1;
+  }
+
+  .score-total {
+    font-size: 12px;
+    color: var(--muted);
+  }
+
+  .result-grade {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+  }
+
+  .result-msg {
+    color: var(--muted);
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-bottom: 28px;
+    flex-wrap: wrap;
+  }
+
+  .stat-badge {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 20px;
+    font-size: 13px;
+  }
+
+  .stat-badge .num {
+    font-size: 20px;
+    font-weight: 700;
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  .stat-badge .lbl { color: var(--muted); font-size: 11px; }
+
+  .btn-primary {
+    background: var(--accent);
+    color: #fff;
+    border: none;
+    padding: 12px 32px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: opacity 0.2s;
+  }
+
+  .btn-primary:hover { opacity: 0.85; }
+
+  /* Navigation */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+    gap: 12px;
+  }
+
+  .btn-nav {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 10px 22px;
+    border-radius: 8px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.18s;
+  }
+
+  .btn-nav:hover { border-color: var(--accent); }
+  .btn-nav:disabled { opacity: 0.3; cursor: default; }
+
+  .btn-finish {
+    background: var(--green);
+    border-color: var(--green);
+    color: #0f1117;
+  }
+
+  .btn-finish:hover { opacity: 0.85; }
+
+  .answered-dot {
+    display: inline-block;
+    width: 8px; height: 8px;
+    border-radius: 50%;
+    background: var(--border);
+    margin: 2px;
+    transition: background 0.2s;
+  }
+
+  .answered-dot.done { background: var(--green); }
+  .answered-dot.wrong-dot { background: var(--red); }
+
+  .dots-row {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 4px;
+    margin-bottom: 20px;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="logo">Deutsch Training</div>
+  <h1>Lektionen 1 – 4</h1>
+  <p class="subtitle">Граматика та лексика • Рівень B1/B2</p>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="loadLektion(0)">Lektion 1</button>
+  <button class="tab-btn" onclick="loadLektion(1)">Lektion 2</button>
+  <button class="tab-btn" onclick="loadLektion(2)">Lektion 3</button>
+  <button class="tab-btn" onclick="loadLektion(3)">Lektion 4</button>
+</div>
+
+<div class="quiz-wrap" id="quizWrap">
+  <!-- injected by JS -->
+</div>
+
+<script>
+const TESTS = [
+  {
+    title: "Lektion 1",
+    questions: [
+      { q: "_____ Produktion", opts: ["der","die","das"], answer: 1, exp: "die Produktion — жіночий рід" },
+      { q: "_____ Unternehmen", opts: ["der","die","das"], answer: 2, exp: "das Unternehmen — середній рід" },
+      { q: "_____ Konkurrenz", opts: ["der","die","das"], answer: 1, exp: "die Konkurrenz — жіночий рід" },
+      { q: "_____ Arbeitswelt", opts: ["der","die","das"], answer: 1, exp: "die Arbeitswelt — жіночий рід" },
+      { q: "_____ Klimawandel", opts: ["der","die","das"], answer: 0, exp: "der Klimawandel — чоловічий рід" },
+      { q: "_____ Lager", opts: ["der","die","das"], answer: 2, exp: "das Lager — середній рід" },
+      { q: "Tim _____ das Auto in die Garage gefahren.", opts: ["hat","ist"], answer: 1, exp: "fahren → Perfekt з sein (дієслово руху)" },
+      { q: "Er _____ einige Punkte seiner Präsentation.", opts: ["vergaß","vergesste","vergesst","vergaßt"], answer: 0, exp: "vergaß — Präteritum від vergessen (нерегулярне)" },
+      { q: "Ich _____ mit dem Bus zur Arbeit gefahren.", opts: ["ist","bin"], answer: 1, exp: "fahren → Perfekt з sein: ich bin gefahren" },
+      { q: "_____ die Kinder klein sind, brauchen sie eine gute Betreuung.", opts: ["Bevor","Nachdem","Sobald","Solange"], answer: 3, exp: "Solange = поки (тривала одночасність)" },
+      { q: "Die Konferenz _____ gestern verspätet.", opts: ["beginnte","begannt","begonn","begann"], answer: 3, exp: "begann — Präteritum від beginnen" },
+      { q: "Der Chef, _____ Auto abgeschleppt wurde, ist verärgert.", opts: ["das","den","dessen","deren"], answer: 2, exp: "dessen — Relativpronomen Genitiv, чол. рід" },
+      { q: "Kennst du eine Firma, bei _____ man eine Ausbildung zur Bürokauffrau machen kann?", opts: ["die","der","dem"], answer: 1, exp: "bei der Firma — Dativ, жіночий рід" },
+      { q: "Die Unternehmen müssen sich immer wieder auf neue Situationen _____.", opts: ["erweitern","einstellen","eröffnen","ökologisch"], answer: 1, exp: "sich einstellen auf = пристосовуватися до" },
+      { q: "_____ ich nach Deutschland kam, beendete ich mein Studium.", opts: ["Vor","Bevor","Solange","Nach"], answer: 1, exp: "Bevor = перш ніж (послідовність у часі)" },
+      { q: "Welcher Satz ist korrekt?", opts: [
+        "Er wollte die Post abholen, aber hatte der Postbote sie noch nicht abgeliefert.",
+        "Er wollte die Post abholen, aber der Postbote hatte sie noch nicht abgeliefert.",
+        "Er wollte die Post abholen, aber der Postbote sie noch nicht abgeliefert hatte.",
+        "Er wollte die Post abholen, aber hatte der Postbote noch nicht sie abgeliefert."
+      ], answer: 1, exp: "Правильний порядок слів у Hauptsatz після aber: підмет → присудок" },
+    ]
+  },
+  {
+    title: "Lektion 2",
+    questions: [
+      { q: "_____ Branche", opts: ["der","die","das"], answer: 1, exp: "die Branche — жіночий рід" },
+      { q: "_____ Pflicht", opts: ["der","die","das"], answer: 1, exp: "die Pflicht — жіночий рід" },
+      { q: "_____ Pflegeheim", opts: ["der","die","das"], answer: 2, exp: "das Pflegeheim — середній рід" },
+      { q: "_____ Flughafen", opts: ["der","die","das"], answer: 0, exp: "der Flughafen — чоловічий рід" },
+      { q: "_____ Gesundheitswesen", opts: ["der","die","das"], answer: 2, exp: "das Gesundheitswesen — середній рід" },
+      { q: "_____ Schulter", opts: ["der","die","das"], answer: 1, exp: "die Schulter — жіночий рід" },
+      { q: "66,67% = …?", opts: ["die Hälfte","ein Drittel","zwei Drittel","drei Viertel"], answer: 2, exp: "66,67% ≈ zwei Drittel (⅔)" },
+      { q: "25% = …?", opts: ["die Hälfte","ein Drittel","ein Fünftel","ein Viertel"], answer: 3, exp: "25% = ein Viertel (¼)" },
+      { q: "50% = …?", opts: ["die Hälfte","ein Fünftel","ein Viertel","drei Viertel"], answer: 0, exp: "50% = die Hälfte (½)" },
+      { q: "Hast du bei der Patientin die Körpertemperatur _____?", opts: ["gemesst","gemessen","gemaßt","gemaßen"], answer: 1, exp: "messen → Partizip II: gemessen (нерегулярне)" },
+      { q: "Der Supermarkt wird mit Videokameras _____.", opts: ["erstellt","gewartet","zubereitet","überwacht"], answer: 3, exp: "überwachen → Passiv: wird überwacht" },
+      { q: "Die _____ in Frankfurt ist unter 5%.", opts: ["Arbeitslosenquote","Homeoffice","Handgepäck","Teilzeitjobs"], answer: 0, exp: "Arbeitslosenquote = рівень безробіття" },
+      { q: "Welcher Satz ist korrekt? (Passiv Perfekt)", opts: [
+        "Er hat geimpft worden.",
+        "Er ist geimpft worden.",
+        "Er ist geimpft wurden.",
+        "Er hat geimpft wurden."
+      ], answer: 1, exp: "Passiv Perfekt: sein + Partizip II + worden" },
+      { q: "Welcher Satz ist korrekt? (Passiv Präteritum)", opts: [
+        "Er hatte geimpft wurde.",
+        "Er wurde geimpft.",
+        "Er wurde geimpft worden.",
+        "Er hatte geimpft wurden."
+      ], answer: 1, exp: "Passiv Präteritum: wurde + Partizip II" },
+      { q: "Er wurde _____. Jetzt ist er Projektleiter.", opts: ["befördern","gefördert","befördert","gebefördern"], answer: 2, exp: "befördern → Partizip II: befördert (просування по службі)" },
+      { q: "Welcher Satz ist korrekt? (Passiv mit Modalverb)", opts: [
+        "Wegen Insolvenz das Geschäft muss geschlossen werden.",
+        "Wegen Insolvenz muss das Geschäft geschlossen werden.",
+        "Wegen Insolvenz muss geschlossen werden das Geschäft.",
+        "Wegen Insolvenz das Geschäft geschlossen werden muss."
+      ], answer: 1, exp: "Модальне дієслово на 2 місці, Infinitiv+werden в кінці" },
+      { q: "Es gefällt mir, _____.", opts: ["Fahrrad fahren","Fahrrad zu fahren","fahren Fahrrad","zu fahren Fahrrad"], answer: 1, exp: "після es gefällt mir → Infinitiv з zu" },
+      { q: "Kleine Kinder bleiben nicht lange still _____.", opts: ["sitzen","zu sitzen","zusitzen"], answer: 0, exp: "bleiben + Infinitiv без zu (модальний Infinitiv)" },
+      { q: "Die Frau hat ihre Hand in der Tür _____.", opts: ["gestolpert","gefallen","eingeklemmt"], answer: 2, exp: "einklemmen = защемити (рука в дверях)" },
+      { q: "Der Boden war glatt. Deshalb ist sie _____.", opts: ["entsorgt","ausgerutscht","befolgt"], answer: 1, exp: "ausrutschen = посковзнутися (слизька підлога)" },
+    ]
+  },
+  {
+    title: "Lektion 3",
+    questions: [
+      { q: "_____ Vergütung", opts: ["der","die","das"], answer: 1, exp: "die Vergütung — жіночий рід" },
+      { q: "_____ Lebenslauf", opts: ["der","die","das"], answer: 0, exp: "der Lebenslauf — чоловічий рід" },
+      { q: "_____ Stärke", opts: ["der","die","das"], answer: 1, exp: "die Stärke — жіночий рід" },
+      { q: "_____ Bildungsweg", opts: ["der","die","das"], answer: 0, exp: "der Bildungsweg — чоловічий рід" },
+      { q: "_____ Teamfähigkeit", opts: ["der","die","das"], answer: 1, exp: "die Teamfähigkeit — жіночий рід" },
+      { q: "_____ Abschluss", opts: ["der","die","das"], answer: 0, exp: "der Abschluss — чоловічий рід" },
+      { q: "Er verfügt _____ viel Berufserfahrung.", opts: ["auf","darauf","über","darüber"], answer: 2, exp: "verfügen über + Akk. — фіксоване керування" },
+      { q: "Ich kann dir _____ helfen, eine Stelle zu finden.", opts: ["daran","dabei","darüber","davon"], answer: 1, exp: "helfen dabei, etw. zu tun" },
+      { q: "Er ist _____ beschäftigt, eine Mail zu schreiben.", opts: ["daran","an","damit","mit"], answer: 2, exp: "beschäftigt sein damit, etw. zu tun" },
+      { q: "Ich habe eine _____ Berufsausbildung.", opts: ["abschließende","abgeschlossene"], answer: 1, exp: "abgeschlossen (Partizip II) = завершений" },
+      { q: "Der _____ Fernseher funktioniert endlich wieder.", opts: ["reparierende","reparierte"], answer: 1, exp: "repariert (Partizip II) → reparierte (чол. Nom.)" },
+      { q: "Er hat eine sehr _____ Bewerbung verfasst.", opts: ["überzeugende","überzeugte"], answer: 0, exp: "überzeugende — Partizip I як прикметник (активна ознака)" },
+      { q: "Ich möchte in einem _____ Team arbeiten.", opts: ["nette","nettes","netten","nettem"], answer: 2, exp: "in einem netten Team — Dat., середній, змішане відмінювання" },
+      { q: "Schichtdienst ist für mich kein _____ Problem.", opts: ["große","großes","großen","großem"], answer: 1, exp: "kein großes Problem — Nom., середній рід" },
+      { q: "Heute hat er einen _____ Job als früher.", opts: ["bessere","besseres","besseren","besserem"], answer: 2, exp: "einen besseren Job — Akk., чоловічий рід" },
+      { q: "In der Zeitung kann man ein Stellengesuch _____.", opts: ["aufgeben","informieren","hinweisen","gründlich"], answer: 0, exp: "ein Stellengesuch aufgeben = подати оголошення про пошук роботи" },
+      { q: "Ihre Anzeige hat direkt mein Interesse _____.", opts: ["hingewiesen","gelesen","geweckt","gefreut"], answer: 2, exp: "Interesse wecken = викликати інтерес → geweckt" },
+      { q: "Gerne nehme ich den Termin um 11 Uhr _____.", opts: ["statt","wahr","nach","über"], answer: 1, exp: "einen Termin wahrnehmen = прийти на зустріч" },
+      { q: "Er legt _____ auf Qualität.", opts: ["Stärke","Wert","Fähigkeit"], answer: 1, exp: "Wert legen auf + Akk. = надавати значення" },
+      { q: "Sie _____ ihre Kenntnisse.", opts: ["verfügt","vertieft","sorgfältig"], answer: 1, exp: "Kenntnisse vertiefen = поглиблювати знання" },
+      { q: "Du bist sehr _____.", opts: ["Flexibilität","Ehrgeiz","kommunikativ"], answer: 2, exp: "kommunikativ — прикметник (не іменник після sein)" },
+    ]
+  },
+  {
+    title: "Lektion 4",
+    questions: [
+      { q: "_____ Vorstellungsgespräch", opts: ["der","die","das"], answer: 2, exp: "das Vorstellungsgespräch — середній рід" },
+      { q: "_____ Mitarbeiterausweis", opts: ["der","die","das"], answer: 0, exp: "der Mitarbeiterausweis — чоловічий рід" },
+      { q: "_____ Zuschuss", opts: ["der","die","das"], answer: 0, exp: "der Zuschuss — чоловічий рід" },
+      { q: "_____ Verabschiedung", opts: ["der","die","das"], answer: 1, exp: "die Verabschiedung — жіночий рід" },
+      { q: "_____ Anlass", opts: ["der","die","das"], answer: 0, exp: "der Anlass — чоловічий рід" },
+      { q: "_____ Dienstplan", opts: ["der","die","das"], answer: 0, exp: "der Dienstplan — чоловічий рід" },
+      { q: "Wo hast du den Autoschlüssel _____?", opts: ["lassen","gelassen","ließ","lässt"], answer: 1, exp: "lassen → Perfekt: hast gelassen" },
+      { q: "Der Chef hat uns früher gehen _____.", opts: ["lassen","gelassen","ließ","lässt"], answer: 2, exp: "lassen → Präteritum: ließ (шеф дозволив)" },
+      { q: "Endlich hat mich mein Nachbar in Ruhe _____.", opts: ["lassen","gelassen","ließ","lässt"], answer: 0, exp: "in Ruhe lassen → Perfekt з Ersatzinfinitiv: hat lassen" },
+      { q: "Sie _____ hier eine Maske zu tragen.", opts: ["müssen","haben","sollten"], answer: 1, exp: "haben + zu + Infinitiv = зобов'язання (= müssen)" },
+      { q: "Sie haben die Räume jeden Abend _____.", opts: ["abschließen","abzuschließen","zu abschließen"], answer: 1, exp: "haben + zu + Infinitiv: abzuschließen" },
+      { q: "Sie müssen die Vorschriften _____.", opts: ["zu beachten","beachten","bezuachten"], answer: 1, exp: "müssen + Infinitiv без zu" },
+      { q: "Aus welchen _____ haben Sie sich bei uns beworben?", opts: ["Eindruck","Anlass","Motiven","Grund"], answer: 2, exp: "aus welchen Motiven — Dativ Plural (Motiv → Motiven)" },
+      { q: "Ich möchte mich _____ dem Stand der Dinge erkundigen.", opts: ["über","von","auf","nach"], answer: 3, exp: "sich nach etw. erkundigen = розпитувати про щось" },
+      { q: "Ich erinnere mich _____ meinen ersten Arbeitstag.", opts: ["über","von","an","auf"], answer: 2, exp: "sich erinnern an + Akk. — фіксоване керування" },
+      { q: "ÖPNV = …?", opts: [
+        "Öffentlicher Personennahverkehr",
+        "Öffentlicher Personennebenverkehr",
+        "Öffentlicher Personalnahverkehr",
+        "Öffentlicher Personalnebenverkehr"
+      ], answer: 0, exp: "ÖPNV = Öffentlicher Personennahverkehr = громадський транспорт" },
+      { q: "Er bekommt ein _____ Gehalt.", opts: ["chaotische","angemessenes","durchschnittlicher","betriebliche"], answer: 1, exp: "ein angemessenes Gehalt — Nom., середній рід" },
+      { q: "Das _____ ist sehr hoch.", opts: ["Einweisung","Betriebsrente","Unfallrisiko"], answer: 2, exp: "das Unfallrisiko — середній рід, логічно за контекстом" },
+      { q: "Rauchen ist hier _____.", opts: ["untersagt","flexible","üblicher"], answer: 0, exp: "untersagt = заборонено (офіційний термін)" },
+      { q: "genehmigen = …?", opts: ["verbieten","verwenden","erlauben"], answer: 2, exp: "genehmigen = erlauben = дозволяти" },
+    ]
+  }
+];
+
+let currentLektion = 0;
+let currentQ = 0;
+let answers = [];
+let answered = [];
+
+function loadLektion(idx) {
+  currentLektion = idx;
+  currentQ = 0;
+  const total = TESTS[idx].questions.length;
+  answers = new Array(total).fill(null);
+  answered = new Array(total).fill(false);
+
+  document.querySelectorAll('.tab-btn').forEach((b, i) => b.classList.toggle('active', i === idx));
+  renderQuiz();
+}
+
+function renderQuiz() {
+  const wrap = document.getElementById('quizWrap');
+  const test = TESTS[currentLektion];
+  const total = test.questions.length;
+
+  wrap.innerHTML = `
+    <div class="progress-label">
+      <span>Питання ${currentQ + 1} з ${total}</span>
+      <span id="scoreLabel">${countCorrect()} правильних</span>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="progFill" style="width:${((currentQ)/total)*100}%"></div></div>
+    <div class="dots-row">${renderDots(total)}</div>
+    ${renderQuestion(test.questions[currentQ], currentQ)}
+    <div class="nav-row">
+      <button class="btn-nav" onclick="navigate(-1)" ${currentQ === 0 ? 'disabled' : ''}>← Назад</button>
+      <button class="btn-nav ${currentQ === total - 1 ? 'btn-finish' : ''}" onclick="${currentQ === total - 1 ? 'showResult()' : 'navigate(1)'}">
+        ${currentQ === total - 1 ? '✓ Результат' : 'Далі →'}
+      </button>
+    </div>
+    <div class="result-screen" id="resultScreen"></div>
+  `;
+}
+
+function renderDots(total) {
+  return Array.from({length: total}, (_, i) => {
+    let cls = 'answered-dot';
+    if (answered[i]) cls += answers[i] === TESTS[currentLektion].questions[i].answer ? ' done' : ' wrong-dot';
+    return `<span class="${cls}"></span>`;
+  }).join('');
+}
+
+function renderQuestion(q, idx) {
+  const opts = q.opts.map((o, i) => {
+    let cls = 'option-btn';
+    if (answered[idx]) {
+      if (i === q.answer) cls += ' correct';
+      else if (i === answers[idx] && answers[idx] !== q.answer) cls += ' wrong';
+    }
+    return `<button class="${cls}" onclick="selectAnswer(${i})" ${answered[idx] ? 'disabled' : ''}>
+      <span class="opt-label">${String.fromCharCode(97+i)})</span> ${o}
+    </button>`;
+  }).join('');
+
+  const expShow = answered[idx] ? 'show' : '';
+
+  return `<div class="question-card">
+    <div class="question-num">FRAGE ${idx + 1}</div>
+    <div class="question-text">${q.q}</div>
+    <div class="options">${opts}</div>
+    <div class="explanation ${expShow}"><strong>✓</strong> ${q.exp}</div>
+  </div>`;
+}
+
+function selectAnswer(optIdx) {
+  if (answered[currentQ]) return;
+  answers[currentQ] = optIdx;
+  answered[currentQ] = true;
+  renderQuiz();
+}
+
+function navigate(dir) {
+  currentQ = Math.max(0, Math.min(TESTS[currentLektion].questions.length - 1, currentQ + dir));
+  renderQuiz();
+}
+
+function countCorrect() {
+  return TESTS[currentLektion].questions.reduce((acc, q, i) => acc + (answers[i] === q.answer ? 1 : 0), 0);
+}
+
+function showResult() {
+  const test = TESTS[currentLektion];
+  const total = test.questions.length;
+  const correct = countCorrect();
+  const pct = Math.round((correct / total) * 100);
+
+  let grade, msg;
+  if (pct >= 90) { grade = "🏆 Відмінно!"; msg = "Чудовий результат! Матеріал засвоєно дуже добре."; }
+  else if (pct >= 75) { grade = "👍 Добре"; msg = "Непоганий результат. Ще трохи практики і буде відмінно!"; }
+  else if (pct >= 55) { grade = "📚 Задовільно"; msg = "Варто повторити матеріал і пройти тест ще раз."; }
+  else { grade = "🔄 Потрібне повторення"; msg = "Рекомендуємо ще раз опрацювати тему."; }
+
+  const wrong = total - correct;
+
+  document.getElementById('quizWrap').innerHTML = `
+    <div class="result-screen show">
+      <div class="score-circle">
+        <div class="score-num">${correct}</div>
+        <div class="score-total">з ${total}</div>
+      </div>
+      <div class="result-grade">${grade}</div>
+      <div class="result-msg">${msg}</div>
+      <div class="stats-row">
+        <div class="stat-badge"><div class="num" style="color:var(--green)">${correct}</div><div class="lbl">Правильно</div></div>
+        <div class="stat-badge"><div class="num" style="color:var(--red)">${wrong}</div><div class="lbl">Помилки</div></div>
+        <div class="stat-badge"><div class="num" style="color:var(--accent)">${pct}%</div><div class="lbl">Результат</div></div>
+      </div>
+      <button class="btn-primary" onclick="loadLektion(${currentLektion})">↺ Пройти ще раз</button>
+    </div>
+  `;
+}
+
+// Init
+loadLektion(0);
+</script>
+</body>
+</html>

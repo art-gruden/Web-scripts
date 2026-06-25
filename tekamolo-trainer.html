@@ -1,0 +1,1080 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TeKaMoLo Trainer — Position der Angaben</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@400;500;700;800&display=swap');
+
+  :root {
+    --bg:      #0b0c14;
+    --surface: #131420;
+    --card:    #1a1b2e;
+    --border:  #252640;
+
+    --te: #4ade80;   /* temporal  – green  */
+    --ka: #f87171;   /* kausal    – red    */
+    --mo: #60a5fa;   /* modal     – blue   */
+    --lo: #fbbf24;   /* lokal     – amber  */
+
+    --te-bg: #052e16;
+    --ka-bg: #2d0707;
+    --mo-bg: #0b1d35;
+    --lo-bg: #2d1a00;
+
+    --text:    #e0e2f0;
+    --muted:   #6064a0;
+    --pill-bg: #1e1f38;
+
+    --radius: 10px;
+    --gap: 12px;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', system-ui, sans-serif;
+    min-height: 100vh;
+    padding: 28px 16px 60px;
+  }
+
+  /* ── LAYOUT ── */
+  .shell { max-width: 740px; margin: 0 auto; }
+
+  /* ── HEADER ── */
+  .header { text-align: center; margin-bottom: 32px; }
+  .header .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 8px;
+  }
+  .header h1 {
+    font-size: clamp(22px, 5vw, 32px);
+    font-weight: 800;
+    line-height: 1.1;
+    background: linear-gradient(120deg, var(--te) 0%, var(--mo) 55%, var(--lo) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 6px;
+  }
+  .header p { color: var(--muted); font-size: 13px; }
+
+  /* ── FORMULA BAR ── */
+  .formula {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 4px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+  }
+  .formula-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 3px;
+  }
+  .formula-chip {
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    font-weight: 500;
+    padding: 5px 12px;
+    border-radius: 7px;
+  }
+  .formula-sub { font-size: 10px; color: var(--muted); }
+  .formula-arrow { color: var(--border); font-size: 16px; margin: 0 2px; margin-top: -14px; }
+
+  /* ── RULE PANEL ── */
+  details.rule-panel {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 28px;
+    overflow: hidden;
+  }
+  details.rule-panel summary {
+    padding: 14px 18px;
+    cursor: pointer;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--muted);
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+  }
+  details.rule-panel summary::-webkit-details-marker { display: none; }
+  details.rule-panel summary::after { content: '▾'; margin-left: auto; transition: transform .2s; }
+  details.rule-panel[open] summary::after { transform: rotate(180deg); }
+  .rule-body { padding: 0 18px 18px; }
+  .rule-row {
+    font-size: 13px;
+    color: #a0a4c8;
+    line-height: 1.7;
+    margin-bottom: 8px;
+    padding-left: 8px;
+    border-left: 3px solid var(--border);
+  }
+  .rule-row strong { color: var(--text); }
+  .example-box {
+    background: var(--card);
+    border-radius: 8px;
+    padding: 10px 14px;
+    margin-top: 10px;
+    font-style: italic;
+    font-size: 14px;
+    color: #c0c4e0;
+  }
+  .example-box span { font-style: normal; font-size: 11px; color: var(--muted); }
+
+  /* ── SECTION TITLE ── */
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: .15em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 10px;
+    margin-top: 28px;
+  }
+
+  /* ── PROGRESS ── */
+  .progress-wrap {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+  .progress-bar {
+    flex: 1;
+    height: 4px;
+    background: var(--border);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--te), var(--mo));
+    border-radius: 4px;
+    transition: width .4s ease;
+  }
+  .progress-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 5px;
+    margin-bottom: 22px;
+  }
+  .tab-btn {
+    flex: 1;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 8px 4px;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background .15s, color .15s;
+    font-family: inherit;
+  }
+  .tab-btn.active {
+    background: var(--card);
+    color: var(--text);
+  }
+
+  /* ── EXERCISE CARD ── */
+  .ex-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 20px 20px 22px;
+    margin-bottom: 14px;
+  }
+  .ex-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--muted);
+    margin-bottom: 10px;
+  }
+  .ex-instruction {
+    font-size: 14px;
+    color: #a0a4c8;
+    margin-bottom: 14px;
+  }
+
+  /* ── SORT EXERCISE ── */
+  .sort-columns {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 8px;
+    margin-bottom: 14px;
+  }
+  @media (max-width: 500px) { .sort-columns { grid-template-columns: repeat(2, 1fr); } }
+  .sort-col-header {
+    text-align: center;
+    font-family: 'DM Mono', monospace;
+    font-size: 11px;
+    font-weight: 500;
+    padding: 6px 4px;
+    border-radius: 7px;
+    margin-bottom: 4px;
+  }
+  .sort-col-header .q-word { font-size: 10px; opacity: .6; display: block; }
+  .drop-zone {
+    min-height: 80px;
+    border: 1px dashed;
+    border-radius: 8px;
+    padding: 6px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    transition: background .2s;
+  }
+  .drop-zone.drag-over { opacity: .8; }
+  .word-chip {
+    background: var(--pill-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 8px;
+    font-size: 12px;
+    cursor: grab;
+    text-align: center;
+    transition: background .15s;
+    user-select: none;
+  }
+  .word-chip:active { cursor: grabbing; }
+  .word-chip.correct { background: #052e16; border-color: #16a34a; color: var(--te); }
+  .word-chip.wrong   { background: #2d0707; border-color: #b91c1c; color: var(--ka); }
+
+  .source-pool {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 10px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+    min-height: 44px;
+  }
+
+  /* ── BUILD EXERCISE ── */
+  .build-dropzone {
+    min-height: 48px;
+    background: #0d0d1a;
+    border: 1px dashed #3a3a6a;
+    border-radius: 8px;
+    padding: 8px 10px;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  .build-dropzone .placeholder { color: #3a3a6a; font-size: 13px; }
+  .build-word {
+    background: var(--pill-bg);
+    color: var(--text);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 6px 11px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: 'DM Mono', monospace;
+    transition: background .15s;
+  }
+  .build-word:hover { background: #252650; }
+  .build-word.selected { background: #1e2060; color: #a0b0ff; border-color: #4050aa; }
+  .build-word.correct  { background: #052e16; color: var(--te); border-color: #16a34a; }
+  .build-word.wrong    { background: #2d0707; color: var(--ka); border-color: #b91c1c; }
+
+  /* ── TEKAMOLO ORDER VISUAL ── */
+  .order-slots {
+    display: grid;
+    grid-template-columns: auto 1fr 1fr 1fr 1fr auto;
+    gap: 4px;
+    margin-bottom: 12px;
+    align-items: start;
+  }
+  .slot-col { display: flex; flex-direction: column; gap: 4px; }
+  .slot-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 9px;
+    text-align: center;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    padding: 2px 4px;
+    border-radius: 4px;
+  }
+  .slot-drop {
+    min-height: 40px;
+    border: 1px dashed;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 4px;
+    font-size: 12px;
+    font-family: 'DM Mono', monospace;
+    text-align: center;
+    cursor: pointer;
+    transition: background .15s;
+  }
+  .slot-drop.filled { border-style: solid; cursor: default; }
+
+  /* ── ERROR EXERCISE ── */
+  .error-wrong {
+    background: #1a0808;
+    border: 1px solid #4a1010;
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: #c08080;
+    margin-bottom: 8px;
+  }
+  .error-hint {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 12px;
+  }
+  .error-options { display: flex; flex-direction: column; gap: 7px; margin-bottom: 12px; }
+  .error-opt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 14px;
+    font-family: 'DM Mono', monospace;
+    font-size: 13px;
+    color: #9090c0;
+    cursor: pointer;
+    text-align: left;
+    font-family: inherit;
+    transition: background .15s, border-color .15s, color .15s;
+  }
+  .error-opt:hover:not(:disabled) { background: var(--card); color: var(--text); }
+  .error-opt.correct { background: var(--te-bg); border-color: #16a34a; color: var(--te); }
+  .error-opt.wrong   { background: var(--ka-bg); border-color: #b91c1c; color: var(--ka); }
+
+  /* ── CONTROLS ── */
+  .ctrl-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-top: 10px;
+  }
+  .btn-check {
+    background: #2e2e9a;
+    color: #c0c0ff;
+    border: none;
+    border-radius: 8px;
+    padding: 8px 20px;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background .15s;
+  }
+  .btn-check:hover { background: #3a3aaa; }
+  .btn-check:disabled { background: #1a1a3a; color: #3a3a6a; cursor: default; }
+  .btn-reset {
+    background: none;
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 8px 16px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+  }
+  .result-ok  { color: var(--te); font-weight: 700; font-size: 13px; }
+  .result-err { color: var(--ka); font-size: 13px; }
+  .result-answer {
+    color: #c0c0d0;
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-style: italic;
+  }
+  .translation { color: var(--muted); font-size: 12px; margin-top: 6px; }
+
+  /* ── NAV ── */
+  .nav-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 16px;
+  }
+  .btn-nav {
+    background: var(--card);
+    border: 1px solid var(--border);
+    color: var(--muted);
+    border-radius: 8px;
+    padding: 8px 18px;
+    font-size: 13px;
+    cursor: pointer;
+    font-family: inherit;
+    font-weight: 700;
+    transition: color .15s, border-color .15s;
+  }
+  .btn-nav:hover:not(:disabled) { color: var(--text); border-color: #4a4a80; }
+  .btn-nav:disabled { opacity: .3; cursor: default; }
+  .btn-nav.primary {
+    background: #2e2e9a; color: #c0c0ff; border-color: transparent;
+  }
+  .btn-nav.primary:hover { background: #3a3aaa; }
+
+  /* ── DOTS ── */
+  .dots { display: flex; gap: 5px; flex-wrap: wrap; justify-content: center; }
+  .dot {
+    width: 9px; height: 9px; border-radius: 50%;
+    background: var(--border);
+    cursor: pointer;
+    transition: background .2s;
+  }
+  .dot.active  { background: #6060c0; }
+  .dot.done-ok { background: var(--te); }
+  .dot.done-err{ background: var(--ka); }
+
+  /* ── FINISH BANNER ── */
+  .finish {
+    background: var(--te-bg);
+    border: 1px solid #16a34a;
+    border-radius: 14px;
+    padding: 24px 20px;
+    text-align: center;
+    margin-top: 20px;
+  }
+  .finish h2 { color: var(--te); font-size: 20px; margin-bottom: 6px; }
+  .finish p  { color: #6ddb9a; font-size: 14px; }
+</style>
+</head>
+<body>
+<div class="shell">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="eyebrow">Deutschkurs B2 · Grammatik</div>
+    <h1>Position der Angaben</h1>
+    <p>Правило Te·Ka·Mo·Lo — розміщення обставин у реченні</p>
+  </div>
+
+  <!-- FORMULA -->
+  <div class="formula">
+    <div class="formula-item">
+      <div class="formula-chip" style="background:#052e1680;color:var(--te);border:1px solid #16a34a40">TE</div>
+      <div class="formula-sub">wann?</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-item">
+      <div class="formula-chip" style="background:#2d070780;color:var(--ka);border:1px solid #b91c1c40">KA</div>
+      <div class="formula-sub">warum?</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-item">
+      <div class="formula-chip" style="background:#0b1d3580;color:var(--mo);border:1px solid #1d4ed840">MO</div>
+      <div class="formula-sub">wie?</div>
+    </div>
+    <div class="formula-arrow">→</div>
+    <div class="formula-item">
+      <div class="formula-chip" style="background:#2d1a0080;color:var(--lo);border:1px solid #b4530040">LO</div>
+      <div class="formula-sub">wo?</div>
+    </div>
+  </div>
+
+  <!-- RULE DETAILS -->
+  <details class="rule-panel">
+    <summary>📐 Правила та винятки</summary>
+    <div class="rule-body">
+      <div class="rule-row"><strong>Базовий порядок:</strong> Temporal → Kausal → Modal → Lokal</div>
+      <div class="rule-row"><strong>Position 1:</strong> будь-яка обставина може стояти на 1-му місці (тоді дієслово — на 2-му): <em>Gestern bin ich … gefahren.</em></div>
+      <div class="rule-row"><strong>Заборона:</strong> Lokal ніколи не стоїть перед Temporal всередині речення.</div>
+      <div class="rule-row"><strong>Temporal (кілька):</strong> від більшого до меншого — <em>vor einem Jahr | im Mai | morgens | um 4 Uhr</em></div>
+      <div class="rule-row"><strong>Lokal (кілька):</strong> від меншого до більшого — <em>zu unseren Freunden | in einem Dorf | im Süden | von Kroatien</em></div>
+      <div class="example-box">
+        <span>Приклад:</span><br>
+        Ich bin <span style="color:var(--te)">gestern</span> <span style="color:var(--ka)">wegen des U-Bahn-Streiks</span> <span style="color:var(--mo)">mit dem Taxi</span> <span style="color:var(--lo)">zur Arbeit</span> gefahren.
+      </div>
+    </div>
+  </details>
+
+  <!-- TABS -->
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab('sort')">✦ Сортування</button>
+    <button class="tab-btn" onclick="switchTab('build')">⊞ Склади речення</button>
+    <button class="tab-btn" onclick="switchTab('error')">⊘ Знайди помилку</button>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="progress-wrap">
+    <div class="progress-bar"><div class="progress-fill" id="progress-fill" style="width:0%"></div></div>
+    <div class="progress-label" id="progress-label">0 / 0</div>
+  </div>
+  <div class="dots" id="dots-row"></div>
+
+  <div style="height:18px"></div>
+
+  <!-- EXERCISE AREA -->
+  <div id="exercise-area"></div>
+
+  <!-- NAV -->
+  <div class="nav-row">
+    <button class="btn-nav" id="btn-prev" onclick="navigate(-1)">← Назад</button>
+    <button class="btn-nav primary" id="btn-next" onclick="navigate(1)">Далі →</button>
+  </div>
+
+  <div id="finish-area"></div>
+</div>
+
+<script>
+// ─────────────────────────────────────────────────────────────────────────────
+// DATA
+// ─────────────────────────────────────────────────────────────────────────────
+
+const SORT_WORDS = [
+  { w: "im Sommer",               cat: "te" },
+  { w: "aus London",              cat: "lo" },
+  { w: "sofort",                  cat: "te" },
+  { w: "oft",                     cat: "te" },
+  { w: "aus Liebe",               cat: "ka" },
+  { w: "mit Liebe",               cat: "mo" },
+  { w: "trotz des Regens",        cat: "ka" },
+  { w: "gerne",                   cat: "mo" },
+  { w: "mit dem Auto",            cat: "mo" },
+  { w: "zwei Stunden lang",       cat: "te" },
+  { w: "beim Sport",              cat: "lo" },
+  { w: "während der Arbeitszeit", cat: "te" },
+  { w: "wegen seiner Verletzung", cat: "ka" },
+  { w: "vor Freude",              cat: "ka" },
+  { w: "diese Woche",             cat: "te" },
+  { w: "nach Australien",         cat: "lo" },
+  { w: "mit viel Freude",         cat: "mo" },
+  { w: "ohne Grund",              cat: "ka" },
+  { w: "in großer Eile",          cat: "mo" },
+];
+
+const BUILD_EXERCISES = [
+  {
+    words: ["Er", "ist", "gestern", "wegen", "Krankheit", "langsam", "nach", "Hause", "gegangen"],
+    answer: "Er ist gestern wegen Krankheit langsam nach Hause gegangen",
+    ua: "Він вчора через хворобу повільно пішов додому."
+  },
+  {
+    words: ["Sie", "fährt", "jeden", "Tag", "wegen", "des", "Staus", "mit", "dem", "Fahrrad", "zur", "Arbeit"],
+    answer: "Sie fährt jeden Tag wegen des Staus mit dem Fahrrad zur Arbeit",
+    ua: "Вона їде щодня через затори на велосипеді на роботу."
+  },
+  {
+    words: ["Wir", "haben", "letzten", "Sommer", "aus", "Neugierde", "allein", "in", "Kroatien", "gereist"],
+    answer: "Wir haben letzten Sommer aus Neugierde allein in Kroatien gereist",
+    ua: "Минулого літа ми з цікавості самостійно подорожували в Хорватії."
+  },
+  {
+    words: ["Das", "Kind", "hat", "lange", "vor", "Freude", "laut", "im", "Park", "gespielt"],
+    answer: "Das Kind hat lange vor Freude laut im Park gespielt",
+    ua: "Дитина довго від радості голосно гралась у парку."
+  },
+  {
+    words: ["Er", "hat", "abends", "wegen", "der", "Prüfung", "konzentriert", "in", "der", "Bibliothek", "gelernt"],
+    answer: "Er hat abends wegen der Prüfung konzentriert in der Bibliothek gelernt",
+    ua: "Він увечері через іспит зосереджено вчився у бібліотеці."
+  },
+  {
+    words: ["Ich", "bin", "morgens", "aus", "Gewohnheit", "schnell", "ins", "Büro", "gelaufen"],
+    answer: "Ich bin morgens aus Gewohnheit schnell ins Büro gelaufen",
+    ua: "Вранці я за звичкою швидко побіг до офісу."
+  },
+];
+
+const ERROR_EXERCISES = [
+  {
+    wrong: "Er ist zur Arbeit gestern mit dem Auto wegen des Regens gefahren.",
+    hint: "💡 Перевір порядок: Temporal → Kausal → Modal → Lokal",
+    opts: [
+      "Er ist gestern wegen des Regens mit dem Auto zur Arbeit gefahren.",
+      "Er ist gestern mit dem Auto wegen des Regens zur Arbeit gefahren.",
+      "Er ist wegen des Regens gestern mit dem Auto zur Arbeit gefahren.",
+      "Er ist zur Arbeit mit dem Auto wegen des Regens gestern gefahren.",
+    ],
+    ci: 0,
+    ua: "Вчора через дощ він поїхав на роботу на машині."
+  },
+  {
+    wrong: "Sie hat ins Büro aus Versehen die wichtigen Dokumente heute vergessen.",
+    hint: "💡 Lokal не може стояти перед Temporal всередині речення.",
+    opts: [
+      "Sie hat heute aus Versehen die wichtigen Dokumente ins Büro vergessen.",
+      "Sie hat aus Versehen heute ins Büro die wichtigen Dokumente vergessen.",
+      "Sie hat heute ins Büro aus Versehen die wichtigen Dokumente vergessen.",
+      "Sie hat die wichtigen Dokumente heute aus Versehen ins Büro vergessen.",
+    ],
+    ci: 3,
+    ua: "Вона сьогодні випадково забула важливі документи в офісі."
+  },
+  {
+    wrong: "Wir sind im Süden mit dem Zug letztes Jahr wegen des Urlaubs gefahren.",
+    hint: "💡 Temporal завжди йде перед Kausal і Lokal.",
+    opts: [
+      "Wir sind letztes Jahr wegen des Urlaubs mit dem Zug im Süden gefahren.",
+      "Wir sind wegen des Urlaubs letztes Jahr mit dem Zug im Süden gefahren.",
+      "Wir sind mit dem Zug letztes Jahr wegen des Urlaubs im Süden gefahren.",
+      "Wir sind letztes Jahr im Süden mit dem Zug wegen des Urlaubs gefahren.",
+    ],
+    ci: 0,
+    ua: "Минулого року через відпустку ми поїхали на південь на поїзді."
+  },
+  {
+    wrong: "Das Kind läuft im Park wegen des schönen Wetters morgens fröhlich.",
+    hint: "💡 Modal і Temporal стоять не на своїх місцях.",
+    opts: [
+      "Das Kind läuft morgens wegen des schönen Wetters fröhlich im Park.",
+      "Das Kind läuft wegen des schönen Wetters morgens im Park fröhlich.",
+      "Das Kind läuft im Park morgens fröhlich wegen des schönen Wetters.",
+      "Das Kind läuft morgens fröhlich im Park wegen des schönen Wetters.",
+    ],
+    ci: 0,
+    ua: "Дитина вранці через гарну погоду весело бігає у парку."
+  },
+];
+
+// ─────────────────────────────────────────────────────────────────────────────
+// STATE
+// ─────────────────────────────────────────────────────────────────────────────
+
+let activeTab = 'sort';
+let currentIdx = 0;
+let scores = {};      // { key: true/false }
+let sortState = {};   // { cat: [word,...] }  pool + 4 bins
+let buildState = {};  // per exercise
+let errorState = {};
+
+// ─────────────────────────────────────────────────────────────────────────────
+// HELPERS
+// ─────────────────────────────────────────────────────────────────────────────
+
+function shuffle(arr) { return [...arr].sort(() => Math.random() - 0.5); }
+
+function key(tab, idx) { return `${tab}-${idx}`; }
+
+function exercises() {
+  if (activeTab === 'sort')  return [{ type: 'sort' }];
+  if (activeTab === 'build') return BUILD_EXERCISES;
+  if (activeTab === 'error') return ERROR_EXERCISES;
+  return [];
+}
+
+function totalCount() { return exercises().length; }
+
+function doneCount() {
+  return exercises().map((_, i) => key(activeTab, i)).filter(k => k in scores).length;
+}
+
+function correctCount() {
+  return exercises().map((_, i) => key(activeTab, i)).filter(k => scores[k] === true).length;
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// TAB SWITCH
+// ─────────────────────────────────────────────────────────────────────────────
+
+function switchTab(tab) {
+  activeTab = tab;
+  currentIdx = 0;
+  document.querySelectorAll('.tab-btn').forEach((b, i) => {
+    b.classList.toggle('active', ['sort','build','error'][i] === tab);
+  });
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// NAVIGATE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function navigate(dir) {
+  currentIdx = Math.max(0, Math.min(totalCount() - 1, currentIdx + dir));
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// RENDER ROUTER
+// ─────────────────────────────────────────────────────────────────────────────
+
+function render() {
+  updateProgress();
+  updateDots();
+  updateNav();
+  const area = document.getElementById('exercise-area');
+  if (activeTab === 'sort')  area.innerHTML = renderSort();
+  if (activeTab === 'build') area.innerHTML = renderBuild(currentIdx);
+  if (activeTab === 'error') area.innerHTML = renderError(currentIdx);
+  attachListeners();
+  checkFinish();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// PROGRESS + DOTS + NAV
+// ─────────────────────────────────────────────────────────────────────────────
+
+function updateProgress() {
+  const done = doneCount(), total = totalCount();
+  const pct = total ? (done / total * 100) : 0;
+  document.getElementById('progress-fill').style.width = pct + '%';
+  document.getElementById('progress-label').textContent = `${correctCount()} / ${total} ✓`;
+}
+
+function updateDots() {
+  const row = document.getElementById('dots-row');
+  row.innerHTML = exercises().map((_, i) => {
+    const k = key(activeTab, i);
+    let cls = 'dot';
+    if (i === currentIdx) cls += ' active';
+    else if (scores[k] === true) cls += ' done-ok';
+    else if (scores[k] === false) cls += ' done-err';
+    return `<div class="${cls}" onclick="currentIdx=${i};render()"></div>`;
+  }).join('');
+}
+
+function updateNav() {
+  document.getElementById('btn-prev').disabled = (currentIdx === 0);
+  document.getElementById('btn-next').disabled = (currentIdx === totalCount() - 1);
+}
+
+function checkFinish() {
+  const fin = document.getElementById('finish-area');
+  const done = doneCount(), total = totalCount();
+  if (done === total && total > 0) {
+    const pct = Math.round(correctCount() / total * 100);
+    fin.innerHTML = `<div class="finish"><h2>🎉 Alle Aufgaben erledigt!</h2>
+      <p>${correctCount()} з ${total} правильно (${pct}%) ${pct === 100 ? '— Ausgezeichnet! 🏆' : ''}</p></div>`;
+  } else {
+    fin.innerHTML = '';
+  }
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// SORT EXERCISE
+// ─────────────────────────────────────────────────────────────────────────────
+
+const CATS = ['te','ka','mo','lo'];
+const CAT_META = {
+  te: { label:'TEMPORAL', q:'wann?', col:'var(--te)', bg:'var(--te-bg)', border:'#16a34a' },
+  ka: { label:'KAUSAL',   q:'warum?', col:'var(--ka)', bg:'var(--ka-bg)', border:'#b91c1c' },
+  mo: { label:'MODAL',    q:'wie?',   col:'var(--mo)', bg:'var(--mo-bg)', border:'#1d4ed8' },
+  lo: { label:'LOKAL',    q:'wo?',    col:'var(--lo)', bg:'var(--lo-bg)', border:'#b45309' },
+};
+
+function getSortState() {
+  if (!sortState._pool) {
+    sortState._pool = shuffle(SORT_WORDS.map(x => x.w));
+    CATS.forEach(c => { sortState[c] = []; });
+    sortState._checked = false;
+  }
+  return sortState;
+}
+
+function renderSort() {
+  const s = getSortState();
+  const checked = s._checked;
+  const k = key('sort', 0);
+
+  let html = `<div class="ex-card">
+    <div class="ex-type-badge">✦ Сортування</div>
+    <div class="ex-instruction">Перетягни або натисни слово, щоб розмістити його у правильну колонку</div>
+    <div class="source-pool" id="sort-pool">`;
+
+  s._pool.forEach((w, i) => {
+    html += `<div class="word-chip" draggable="true" data-word="${w}" data-src="pool"
+      onclick="sortWordClick('${encodeURI(w)}','pool')">${w}</div>`;
+  });
+  html += `</div>
+    <div class="sort-columns">`;
+
+  CATS.forEach(cat => {
+    const m = CAT_META[cat];
+    html += `<div>
+      <div class="sort-col-header" style="background:${m.bg};color:${m.col}">
+        ${m.label}<span class="q-word">${m.q}</span>
+      </div>
+      <div class="drop-zone" id="drop-${cat}" data-cat="${cat}"
+        style="border-color:${m.border}40; background:${m.bg}66"
+        ondragover="event.preventDefault();this.classList.add('drag-over')"
+        ondragleave="this.classList.remove('drag-over')"
+        ondrop="sortDrop(event,'${cat}')">`;
+    s[cat].forEach(w => {
+      let cls = 'word-chip';
+      if (checked) {
+        const actual = SORT_WORDS.find(x => x.w === w);
+        cls += actual && actual.cat === cat ? ' correct' : ' wrong';
+      }
+      html += `<div class="${cls}" draggable="true" data-word="${w}" data-src="${cat}"
+        onclick="sortWordClick('${encodeURI(w)}','${cat}')"
+        ondragstart="dragStart(event,'${w}','${cat}')">${w}</div>`;
+    });
+    html += `</div></div>`;
+  });
+
+  html += `</div><div class="ctrl-row">`;
+
+  if (!checked) {
+    html += `<button class="btn-check" onclick="checkSort()" ${s._pool.length > 0 ? 'disabled' : ''}>Перевірити</button>`;
+  } else {
+    const wrong = CATS.some(cat =>
+      s[cat].some(w => { const a = SORT_WORDS.find(x => x.w === w); return !a || a.cat !== cat; })
+    );
+    if (!wrong) {
+      html += `<span class="result-ok">✓ Richtig! Alle Wörter korrekt sortiert.</span>`;
+    } else {
+      html += `<span class="result-err">✗ Є помилки — виділено червоним</span>`;
+    }
+    html += `<button class="btn-reset" onclick="resetSort()">↺ Знову</button>`;
+  }
+  html += `</div></div>`;
+  return html;
+}
+
+let dragWord = '', dragSrc = '';
+function dragStart(e, w, src) { dragWord = w; dragSrc = src; e.dataTransfer.setData('text', w); }
+
+function sortDrop(e, targetCat) {
+  e.preventDefault();
+  document.querySelectorAll('.drop-zone').forEach(z => z.classList.remove('drag-over'));
+  const w = dragWord || e.dataTransfer.getData('text');
+  moveWord(w, dragSrc, targetCat);
+}
+
+function sortWordClick(encodedW, src) {
+  if (sortState._checked) return;
+  const w = decodeURI(encodedW);
+  if (src === 'pool') {
+    // ask which category via a small popup
+    const chosen = prompt(`Яка категорія для "${w}"?\n1 = Temporal\n2 = Kausal\n3 = Modal\n4 = Lokal`);
+    const map = {'1':'te','2':'ka','3':'mo','4':'lo'};
+    if (map[chosen]) moveWord(w, 'pool', map[chosen]);
+  } else {
+    // move back to pool
+    moveWord(w, src, 'pool');
+  }
+}
+
+function moveWord(w, src, target) {
+  const s = getSortState();
+  if (src === 'pool') {
+    s._pool = s._pool.filter(x => x !== w);
+  } else {
+    s[src] = s[src].filter(x => x !== w);
+  }
+  if (target === 'pool') {
+    s._pool.push(w);
+  } else {
+    s[target].push(w);
+  }
+  render();
+}
+
+function checkSort() {
+  const s = getSortState();
+  s._checked = true;
+  const wrong = CATS.some(cat =>
+    s[cat].some(w => { const a = SORT_WORDS.find(x => x.w === w); return !a || a.cat !== cat; })
+  );
+  scores[key('sort', 0)] = !wrong;
+  render();
+}
+
+function resetSort() {
+  sortState = {};
+  delete scores[key('sort', 0)];
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// BUILD EXERCISE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function getBuildState(idx) {
+  if (!buildState[idx]) {
+    buildState[idx] = {
+      pool: shuffle(BUILD_EXERCISES[idx].words.map((w, i) => ({ w, id: i }))),
+      selected: [],
+      status: null,
+    };
+  }
+  return buildState[idx];
+}
+
+function renderBuild(idx) {
+  const ex = BUILD_EXERCISES[idx];
+  const s = getBuildState(idx);
+  const k = key('build', idx);
+
+  let html = `<div class="ex-card">
+    <div class="ex-type-badge">⊞ Склади речення</div>
+    <div class="ex-instruction">Натискай слова у правильному порядку (Te·Ka·Mo·Lo)</div>
+    <div class="build-dropzone" id="build-drop">`;
+
+  if (s.selected.length === 0) {
+    html += `<span class="placeholder">Клікай слова нижче...</span>`;
+  }
+  s.selected.forEach((item, i) => {
+    let cls = 'build-word selected';
+    if (s.status === 'correct') cls = 'build-word correct';
+    if (s.status === 'wrong')   cls = 'build-word wrong';
+    html += `<span class="${cls}" data-id="${item.id}" onclick="buildRemove(${idx},${i})">${item.w}</span>`;
+  });
+  html += `</div>
+    <div class="source-pool" id="build-pool">`;
+
+  s.pool.forEach(item => {
+    html += `<span class="build-word" data-id="${item.id}" onclick="buildPick(${idx},${item.id})">${item.w}</span>`;
+  });
+
+  html += `</div><div class="ctrl-row">`;
+  if (!s.status) {
+    html += `<button class="btn-check" onclick="checkBuild(${idx})" ${s.selected.length < 2 ? 'disabled' : ''}>Перевірити</button>`;
+  } else {
+    if (s.status === 'correct') {
+      html += `<span class="result-ok">✓ Richtig!</span>`;
+    } else {
+      html += `<span class="result-err">✗ &nbsp;<span class="result-answer">→ ${ex.answer}</span></span>`;
+    }
+    html += `<button class="btn-reset" onclick="resetBuild(${idx})">↺ Знову</button>`;
+  }
+  html += `</div>`;
+  if (s.status) html += `<div class="translation">🇺🇦 ${ex.ua}</div>`;
+  html += `</div>`;
+  return html;
+}
+
+function buildPick(idx, id) {
+  const s = getBuildState(idx);
+  if (s.status) return;
+  const item = s.pool.find(x => x.id === id);
+  if (!item) return;
+  s.pool = s.pool.filter(x => x.id !== id);
+  s.selected.push(item);
+  render();
+}
+
+function buildRemove(idx, selIdx) {
+  const s = getBuildState(idx);
+  if (s.status) return;
+  const [item] = s.selected.splice(selIdx, 1);
+  s.pool.push(item);
+  render();
+}
+
+function checkBuild(idx) {
+  const s = getBuildState(idx);
+  const answer = s.selected.map(x => x.w).join(' ');
+  const ok = answer === BUILD_EXERCISES[idx].answer;
+  s.status = ok ? 'correct' : 'wrong';
+  scores[key('build', idx)] = ok;
+  render();
+}
+
+function resetBuild(idx) {
+  delete buildState[idx];
+  delete scores[key('build', idx)];
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ERROR EXERCISE
+// ─────────────────────────────────────────────────────────────────────────────
+
+function getErrorState(idx) {
+  if (!errorState[idx]) errorState[idx] = { chosen: null };
+  return errorState[idx];
+}
+
+function renderError(idx) {
+  const ex = ERROR_EXERCISES[idx];
+  const s = getErrorState(idx);
+  const k = key('error', idx);
+
+  let html = `<div class="ex-card">
+    <div class="ex-type-badge">⊘ Знайди помилку</div>
+    <div class="ex-instruction">Яке речення правильне? Вибери варіант.</div>
+    <div class="error-wrong">❌ ${ex.wrong}</div>
+    <div class="error-hint">${ex.hint}</div>
+    <div class="error-options">`;
+
+  ex.opts.forEach((opt, i) => {
+    let cls = 'error-opt';
+    if (s.chosen !== null) {
+      if (i === ex.ci) cls += ' correct';
+      else if (i === s.chosen) cls += ' wrong';
+    }
+    html += `<button class="${cls}" onclick="pickError(${idx},${i})" ${s.chosen !== null ? 'disabled' : ''}>${opt}</button>`;
+  });
+
+  html += `</div>`;
+  if (s.chosen !== null) {
+    if (s.chosen === ex.ci) {
+      html += `<div class="ctrl-row"><span class="result-ok">✓ Richtig!</span></div>`;
+    } else {
+      html += `<div class="ctrl-row"><span class="result-err">✗ Правильний варіант виділено зеленим</span></div>`;
+    }
+    html += `<div class="translation">🇺🇦 ${ex.ua}</div>`;
+    html += `<div class="ctrl-row"><button class="btn-reset" onclick="resetError(${idx})">↺ Знову</button></div>`;
+  }
+  html += `</div>`;
+  return html;
+}
+
+function pickError(idx, chosen) {
+  const s = getErrorState(idx);
+  s.chosen = chosen;
+  scores[key('error', idx)] = (chosen === ERROR_EXERCISES[idx].ci);
+  render();
+}
+
+function resetError(idx) {
+  delete errorState[idx];
+  delete scores[key('error', idx)];
+  render();
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// ATTACH LISTENERS (drag for sort pool)
+// ─────────────────────────────────────────────────────────────────────────────
+
+function attachListeners() {
+  document.querySelectorAll('#sort-pool .word-chip').forEach(chip => {
+    chip.addEventListener('dragstart', e => {
+      dragWord = chip.dataset.word;
+      dragSrc = 'pool';
+      e.dataTransfer.setData('text', dragWord);
+    });
+  });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// INIT
+// ─────────────────────────────────────────────────────────────────────────────
+
+render();
+</script>
+</body>
+</html>
