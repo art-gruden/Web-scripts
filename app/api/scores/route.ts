@@ -58,8 +58,11 @@ export async function POST(req: NextRequest) {
     // Зберігаємо ім'я + режим як ключ, щоб одна людина мала запис у кожному режимі
     const member = `${cleanName}__${mode || "quiz"}`;
 
-    // ZADD з GT — оновлює тільки якщо новий score більший
-    await redis.zadd(KEY, { score, member, gt: true } as Parameters<typeof redis.zadd>[1]);
+    // Оновлюємо тільки якщо новий score більший за існуючий
+    const existing = await redis.zscore(KEY, member);
+    if (existing === null || score > Number(existing)) {
+      await redis.zadd(KEY, { score, member });
+    }
 
     // Дізнаємось поточний ранг
     const rank = await redis.zrevrank(KEY, member);
