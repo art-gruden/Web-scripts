@@ -159,17 +159,38 @@ function MeaningCard({ m }: { m: typeof meanings[0] }) {
   );
 }
 
-// --- Квіз ---
+// --- Квіз (исправленный) ---
 function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mode: QuizMode }) {
-const [shuffled, setShuffled] = useState<typeof questions>([]);
-const [opts, setOpts] = useState<string[][]>([]);
+  // Флаг, указывающий, что мы на клиенте (после гидратации)
+  const [isClient, setIsClient] = useState(false);
+  // Данные квиза (перемешанные) – инициализируем пустыми
+  const [shuffled, setShuffled] = useState<typeof questions>([]);
+  const [opts, setOpts] = useState<string[][]>([]);
 
-useEffect(() => {
-  const s = shuffle(questions);
-  setShuffled(s);
-  setOpts(s.map(q => shuffle(q.options)));
-}, []);
-if (shuffled.length === 0) return null;
+  // После монтирования на клиенте генерируем случайные порядки
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+
+  useEffect(() => {
+    if (isClient) {
+      const s = shuffle(questions);
+      setShuffled(s);
+      setOpts(s.map(q => shuffle(q.options)));
+    }
+  }, [isClient, questions]);
+
+  // На сервере и во время первой клиентской отрисовки показываем заглушку,
+  // чтобы избежать расхождений с серверным HTML.
+  if (!isClient || shuffled.length === 0) {
+    return (
+      <div style={{ textAlign: "center", padding: "40px 20px", background: "var(--surface)", borderRadius: 16, border: "1px solid var(--border)" }}>
+        <div style={{ fontSize: "1.2rem", color: "var(--muted)" }}>Завантаження…</div>
+      </div>
+    );
+  }
+
+  // ========== Внутренний стейт квиза (инициализируется только после isClient) ==========
   const [idx, setIdx] = useState(0);
   const [ok, setOk] = useState(0);
   const [bad, setBad] = useState(0);
@@ -219,6 +240,7 @@ if (shuffled.length === 0) return null;
   }
 
   function restart() {
+    // Сбрасываем состояние, но оставляем перемешанные вопросы неизменными
     setIdx(0); setOk(0); setBad(0); setChosen(null);
     setDone(false); setSaved(false); setSaveName("");
     setSaveStatus("idle"); setMyRank(null);
@@ -332,7 +354,7 @@ if (shuffled.length === 0) return null;
   );
 }
 
-// --- Побудова речень ---
+// --- Побудова речень (без изменений) ---
 function BuilderSection() {
   const [idx, setIdx] = useState(0);
   const [val, setVal] = useState("");
@@ -417,7 +439,7 @@ function BuilderSection() {
   );
 }
 
-// --- Таблиця лідерів ---
+// --- Таблиця лідерів (без изменений) ---
 function LeaderboardSection() {
   const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
