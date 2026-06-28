@@ -161,7 +161,15 @@ function MeaningCard({ m }: { m: typeof meanings[0] }) {
 
 // --- Квіз ---
 function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mode: QuizMode }) {
-  const [shuffled] = useState(() => shuffle(questions));
+const [shuffled, setShuffled] = useState<typeof questions>([]);
+const [opts, setOpts] = useState<string[][]>([]);
+
+useEffect(() => {
+  const s = shuffle(questions);
+  setShuffled(s);
+  setOpts(s.map(q => shuffle(q.options)));
+}, []);
+if (shuffled.length === 0) return null;
   const [idx, setIdx] = useState(0);
   const [ok, setOk] = useState(0);
   const [bad, setBad] = useState(0);
@@ -173,7 +181,6 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
   const [myRank, setMyRank] = useState<number | null>(null);
 
   const q = shuffled[idx];
-  const [opts] = useState(() => shuffled.map(q => shuffle(q.options)));
   const total = shuffled.length;
   const pct = Math.round((ok / total) * 100);
 
