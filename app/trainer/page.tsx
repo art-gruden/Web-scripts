@@ -159,10 +159,9 @@ function MeaningCard({ m }: { m: typeof meanings[0] }) {
   );
 }
 
-// --- Квіз (исправленный 2) ---
-
+// --- Квіз (исправленный) ---
 function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mode: QuizMode }) {
-  // ===== ХУКИ ВЫЗЫВАЮТСЯ ВСЕГДА, В ОДИНАКОВОМ ПОРЯДКЕ =====
+  // ===== ВСЕ ХУКИ ВЫЗЫВАЮТСЯ В ОДИНАКОВОМ ПОРЯДКЕ ПРИ КАЖДОМ РЕНДЕРЕ =====
   const [isClient, setIsClient] = useState(false);
   const [shuffled, setShuffled] = useState<typeof questions>([]);
   const [opts, setOpts] = useState<string[][]>([]);
@@ -176,12 +175,10 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
   const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "ok" | "err">("idle");
   const [myRank, setMyRank] = useState<number | null>(null);
 
-  // Эффект для установки флага клиента
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  // Эффект для генерации перемешанных данных (только на клиенте)
   useEffect(() => {
     if (isClient) {
       const s = shuffle(questions);
@@ -199,7 +196,7 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
     );
   }
 
-  // ===== ДАЛЬШЕ ИДЁТ ОСНОВНАЯ ЛОГИКА КОМПОНЕНТА =====
+  // ===== ОСНОВНА ЛОГИКА =====
   const q = shuffled[idx];
   const total = shuffled.length;
   const pct = Math.round((ok / total) * 100);
@@ -244,116 +241,7 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
     setSaveStatus("idle"); setMyRank(null);
   }
 
-  // ===== РЕНДЕР (ЗАВЕРШЕНИЕ) =====
-  if (done) {
-    // ... (код для финального экрана остаётся без изменений)
-    return ( ... );
-  }
-
-  return (
-    <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "28px 28px 24px" }}>
-      {/* Прогрес */}
-      <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: "0.75rem", color: "var(--muted)", fontFamily: "var(--mono)" }}>
-        <span>✓ <span style={{ color: "var(--green)" }}>{ok}</span> &nbsp; ✗ <span style={{ color: "var(--red)" }}>{bad}</span></span>
-        <span>{idx + 1} / {total}</span>
-      </div>
-      <div style={{ width: "100%", height: 3, background: "var(--border)", borderRadius: 99, marginBottom: 22, overflow: "hidden" }}>
-        <div style={{ height: "100%", background: "linear-gradient(90deg, var(--accent), var(--accent2))", width: `${(idx / total) * 100}%`, transition: "width 0.4s" }} />
-      </div>
-
-      {/* Питання */}
-      <div style={{ fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.5, marginBottom: 22, minHeight: 52 }}
-        dangerouslySetInnerHTML={{ __html: q.q }} />
-
-      {/* Варіанти */}
-      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
-        {opts[idx].map(opt => {
-          let bg = "var(--surface2)", borderColor = "var(--border)", color = "var(--text)";
-          if (chosen) {
-            if (opt === q.correct) { bg = "rgba(52,211,153,0.1)"; borderColor = "var(--green)"; color = "var(--green)"; }
-            else if (opt === chosen) { bg = "rgba(248,113,113,0.1)"; borderColor = "var(--red)"; color = "var(--red)"; }
-          }
-          return (
-            <button key={opt} onClick={() => select(opt)} disabled={!!chosen}
-              style={{ padding: "12px 16px", borderRadius: 10, border: `1.5px solid ${borderColor}`, background: bg, color, fontSize: "0.84rem", fontFamily: "var(--sans)", cursor: chosen ? "default" : "pointer", textAlign: "left", lineHeight: 1.4, transition: "all 0.15s" }}>
-              {opt}
-            </button>
-          );
-        })}
-      </div>
-
-      {/* Пояснення */}
-      {chosen && (
-        <div style={{ borderRadius: 10, padding: "12px 16px", marginBottom: 16, fontSize: "0.83rem", lineHeight: 1.5, background: chosen === q.correct ? "rgba(52,211,153,0.08)" : "rgba(248,113,113,0.08)", border: `1px solid ${chosen === q.correct ? "var(--green)" : "var(--red)"}`, color: chosen === q.correct ? "var(--green)" : "var(--red)" }}>
-          {chosen === q.correct ? "✓ Правильно!" : "✗ Неправильно."}
-          <div style={{ color: "var(--text)", marginTop: 5, fontSize: "0.79rem" }}>{q.explanation}</div>
-        </div>
-      )}
-
-      {chosen && (
-        <button onClick={next} style={{ width: "100%", padding: 12, borderRadius: 10, background: "var(--accent)", color: "#fff", border: "none", fontFamily: "var(--sans)", fontWeight: 600, fontSize: "0.9rem", cursor: "pointer" }}>
-          Далі →
-        </button>
-      )}
-    </div>
-  );
-}
-  // ========== Внутренний стейт квиза (инициализируется только после isClient) ==========
-  const [idx, setIdx] = useState(0);
-  const [ok, setOk] = useState(0);
-  const [bad, setBad] = useState(0);
-  const [chosen, setChosen] = useState<string | null>(null);
-  const [done, setDone] = useState(false);
-  const [saved, setSaved] = useState(false);
-  const [saveName, setSaveName] = useState("");
-  const [saveStatus, setSaveStatus] = useState<"idle" | "saving" | "ok" | "err">("idle");
-  const [myRank, setMyRank] = useState<number | null>(null);
-
-  const q = shuffled[idx];
-  const total = shuffled.length;
-  const pct = Math.round((ok / total) * 100);
-
-  function select(opt: string) {
-    if (chosen) return;
-    setChosen(opt);
-    if (opt === q.correct) setOk(v => v + 1);
-    else setBad(v => v + 1);
-  }
-
-  function next() {
-    if (idx + 1 >= total) setDone(true);
-    else { setIdx(i => i + 1); setChosen(null); }
-  }
-
-  async function saveScore() {
-    if (!saveName.trim()) return;
-    setSaveStatus("saving");
-    try {
-      const res = await fetch("/api/scores", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: saveName.trim(), score: ok, mode }),
-      });
-      const data = await res.json();
-      if (data.ok) {
-        setSaved(true);
-        setSaveStatus("ok");
-        if (data.rank) setMyRank(data.rank);
-      } else {
-        setSaveStatus("err");
-      }
-    } catch {
-      setSaveStatus("err");
-    }
-  }
-
-  function restart() {
-    // Сбрасываем состояние, но оставляем перемешанные вопросы неизменными
-    setIdx(0); setOk(0); setBad(0); setChosen(null);
-    setDone(false); setSaved(false); setSaveName("");
-    setSaveStatus("idle"); setMyRank(null);
-  }
-
+  // ===== РЕНДЕР ФИНАЛЬНОГО ЭКРАНА =====
   if (done) {
     const emoji = pct >= 80 ? "🏆" : pct >= 50 ? "💪" : "📚";
     const msg = pct >= 80 ? "Відмінно!" : pct >= 50 ? "Непогано, продовжуй!" : "Потренуйся ще раз!";
@@ -365,7 +253,6 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
           Результат: <strong style={{ color: "var(--green)" }}>{ok}</strong> / {total} ({pct}%)
         </p>
 
-        {/* Форма збереження */}
         {!saved ? (
           <div style={{ maxWidth: 360, margin: "0 auto 24px", textAlign: "left" }}>
             <div style={{ fontSize: "0.8rem", color: "var(--muted)", marginBottom: 8, textAlign: "center" }}>
@@ -413,9 +300,9 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
     );
   }
 
+  // ===== РЕНДЕР АКТИВНОГО КВИЗА =====
   return (
     <div style={{ background: "var(--surface)", border: "1px solid var(--border)", borderRadius: 16, padding: "28px 28px 24px" }}>
-      {/* Прогрес */}
       <div style={{ display: "flex", justifyContent: "space-between", marginBottom: 8, fontSize: "0.75rem", color: "var(--muted)", fontFamily: "var(--mono)" }}>
         <span>✓ <span style={{ color: "var(--green)" }}>{ok}</span> &nbsp; ✗ <span style={{ color: "var(--red)" }}>{bad}</span></span>
         <span>{idx + 1} / {total}</span>
@@ -424,11 +311,9 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
         <div style={{ height: "100%", background: "linear-gradient(90deg, var(--accent), var(--accent2))", width: `${(idx / total) * 100}%`, transition: "width 0.4s" }} />
       </div>
 
-      {/* Питання */}
       <div style={{ fontSize: "1.1rem", fontWeight: 600, lineHeight: 1.5, marginBottom: 22, minHeight: 52 }}
         dangerouslySetInnerHTML={{ __html: q.q }} />
 
-      {/* Варіанти */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, marginBottom: 18 }}>
         {opts[idx].map(opt => {
           let bg = "var(--surface2)", borderColor = "var(--border)", color = "var(--text)";
@@ -445,7 +330,6 @@ function QuizSection({ questions, mode }: { questions: typeof quizQuestions; mod
         })}
       </div>
 
-      {/* Пояснення */}
       {chosen && (
         <div style={{ borderRadius: 10, padding: "12px 16px", marginBottom: 16, fontSize: "0.83rem", lineHeight: 1.5, background: chosen === q.correct ? "rgba(52,211,153,0.08)" : "rgba(248,113,113,0.08)", border: `1px solid ${chosen === q.correct ? "var(--green)" : "var(--red)"}`, color: chosen === q.correct ? "var(--green)" : "var(--red)" }}>
           {chosen === q.correct ? "✓ Правильно!" : "✗ Неправильно."}
@@ -590,7 +474,6 @@ function LeaderboardSection() {
       {!loading && data.length > 0 && (
         <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
           {data.map((entry, i) => {
-            // Ім'я може містити __mode суфікс — прибираємо
             const displayName = entry.name.includes("__") ? entry.name.split("__")[0] : entry.name;
             const modeTag = entry.name.includes("__") ? entry.name.split("__")[1] : "";
             return (
@@ -637,13 +520,11 @@ export default function TrainerPage() {
   return (
     <div style={{ background: "var(--bg)", color: "var(--text)", fontFamily: "var(--sans)", minHeight: "100vh", display: "flex", flexDirection: "column", alignItems: "center", padding: "0 16px 60px" }}>
 
-      {/* Header */}
       <header style={{ width: "100%", maxWidth: 860, padding: "28px 0 12px", display: "flex", alignItems: "baseline", gap: 14, borderBottom: "1px solid var(--border)", marginBottom: 28 }}>
         <h1 style={{ fontFamily: "var(--mono)", fontSize: "1.5rem", color: "var(--accent)", letterSpacing: "-0.5px" }}>lassen</h1>
         <span style={{ fontSize: "0.75rem", color: "var(--muted)", background: "var(--surface2)", padding: "2px 10px", borderRadius: 99, border: "1px solid var(--border)" }}>B2 · Verb Trainer</span>
       </header>
 
-      {/* Tabs */}
       <div style={{ display: "flex", gap: 6, width: "100%", maxWidth: 860, marginBottom: 24, flexWrap: "wrap" }}>
         {tabs.map(t => (
           <button key={t.id} onClick={() => setTab(t.id)}
@@ -653,7 +534,6 @@ export default function TrainerPage() {
         ))}
       </div>
 
-      {/* Content */}
       <div style={{ width: "100%", maxWidth: 860 }}>
         {tab === "meanings" && (
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(260px, 1fr))", gap: 14 }}>
