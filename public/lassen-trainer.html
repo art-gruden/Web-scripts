@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verb LASSEN – Trainer B2</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&family=Inter:wght@300;400;600;700&display=swap');
+
+  :root {
+    --bg: #0f1117;
+    --surface: #1a1d27;
+    --surface2: #22263a;
+    --border: #2e3350;
+    --accent: #6c8ef5;
+    --accent2: #a78bfa;
+    --green: #34d399;
+    --red: #f87171;
+    --yellow: #fbbf24;
+    --text: #e2e8f0;
+    --muted: #64748b;
+    --mono: 'JetBrains Mono', monospace;
+    --sans: 'Inter', sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: var(--sans);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 16px 60px;
+  }
+
+  header {
+    width: 100%;
+    max-width: 860px;
+    padding: 28px 0 12px;
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 28px;
+  }
+
+  header h1 {
+    font-family: var(--mono);
+    font-size: 1.5rem;
+    color: var(--accent);
+    letter-spacing: -0.5px;
+  }
+
+  header span {
+    font-size: 0.75rem;
+    color: var(--muted);
+    background: var(--surface2);
+    padding: 2px 10px;
+    border-radius: 99px;
+    border: 1px solid var(--border);
+  }
+
+  /* TABS */
+  .tabs {
+    display: flex;
+    gap: 6px;
+    width: 100%;
+    max-width: 860px;
+    margin-bottom: 24px;
+    flex-wrap: wrap;
+  }
+
+  .tab-btn {
+    padding: 7px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    background: var(--surface);
+    color: var(--muted);
+    font-size: 0.8rem;
+    font-family: var(--sans);
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .tab-btn:hover { color: var(--text); border-color: var(--accent); }
+  .tab-btn.active {
+    background: var(--accent);
+    color: #fff;
+    border-color: var(--accent);
+    font-weight: 600;
+  }
+
+  /* SECTION */
+  .section { display: none; width: 100%; max-width: 860px; }
+  .section.active { display: block; }
+
+  /* MEANING CARDS */
+  .meaning-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 14px;
+    margin-bottom: 28px;
+  }
+
+  .meaning-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 18px;
+    position: relative;
+    overflow: hidden;
+    cursor: default;
+    transition: border-color 0.2s;
+  }
+  .meaning-card:hover { border-color: var(--accent); }
+  .meaning-card::before {
+    content: attr(data-num);
+    position: absolute;
+    top: -6px; right: 10px;
+    font-family: var(--mono);
+    font-size: 3.5rem;
+    font-weight: 700;
+    color: var(--surface2);
+    line-height: 1;
+    pointer-events: none;
+  }
+
+  .meaning-card .tag {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent2);
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .meaning-card .tag .dot {
+    width: 6px; height: 6px;
+    border-radius: 50%;
+    background: var(--accent2);
+  }
+
+  .meaning-card h3 {
+    font-size: 0.95rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 10px;
+  }
+
+  .example {
+    font-size: 0.82rem;
+    color: var(--muted);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  .example em {
+    font-style: italic;
+    color: var(--accent);
+  }
+
+  .perfekt-badge {
+    display: inline-block;
+    margin-top: 10px;
+    font-size: 0.68rem;
+    font-family: var(--mono);
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 2px 8px;
+    color: var(--yellow);
+  }
+
+  /* QUIZ */
+  .quiz-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 28px 24px;
+    position: relative;
+  }
+
+  .quiz-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 18px;
+    font-size: 0.75rem;
+    color: var(--muted);
+  }
+
+  .quiz-progress-bar {
+    width: 100%;
+    height: 3px;
+    background: var(--border);
+    border-radius: 99px;
+    margin-bottom: 22px;
+    overflow: hidden;
+  }
+  .quiz-progress-fill {
+    height: 100%;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    border-radius: 99px;
+    transition: width 0.4s ease;
+  }
+
+  .quiz-question {
+    font-size: 1.15rem;
+    font-weight: 600;
+    line-height: 1.5;
+    margin-bottom: 22px;
+    min-height: 56px;
+  }
+
+  .quiz-question .highlight {
+    color: var(--accent2);
+    font-style: italic;
+  }
+
+  .options {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 20px;
+  }
+
+  @media (max-width: 500px) {
+    .options { grid-template-columns: 1fr; }
+  }
+
+  .opt-btn {
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.85rem;
+    font-family: var(--sans);
+    cursor: pointer;
+    text-align: left;
+    transition: all 0.15s;
+    line-height: 1.4;
+  }
+  .opt-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+  .opt-btn.correct { border-color: var(--green); background: rgba(52,211,153,0.1); color: var(--green); }
+  .opt-btn.wrong { border-color: var(--red); background: rgba(248,113,113,0.1); color: var(--red); }
+  .opt-btn:disabled { cursor: default; }
+
+  .feedback-box {
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.84rem;
+    line-height: 1.5;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .feedback-box.show { display: block; }
+  .feedback-box.ok { background: rgba(52,211,153,0.1); border: 1px solid var(--green); color: var(--green); }
+  .feedback-box.bad { background: rgba(248,113,113,0.1); border: 1px solid var(--red); color: var(--red); }
+  .feedback-box .explanation { color: var(--text); margin-top: 6px; font-size: 0.8rem; }
+
+  .next-btn {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    font-family: var(--sans);
+    border: none;
+    cursor: pointer;
+    display: none;
+    transition: opacity 0.15s;
+  }
+  .next-btn:hover { opacity: 0.88; }
+  .next-btn.show { display: block; }
+
+  /* SCORE */
+  .score-bar {
+    display: flex;
+    gap: 12px;
+    font-size: 0.78rem;
+    color: var(--muted);
+    font-family: var(--mono);
+  }
+  .score-bar .s-ok { color: var(--green); }
+  .score-bar .s-bad { color: var(--red); }
+
+  /* SENTENCE BUILDER */
+  .sb-wrap {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px;
+  }
+
+  .sb-task {
+    font-size: 0.85rem;
+    color: var(--muted);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    font-weight: 600;
+  }
+
+  .sb-prompt {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: 6px;
+    line-height: 1.5;
+  }
+
+  .sb-translation {
+    font-size: 0.82rem;
+    color: var(--muted);
+    margin-bottom: 20px;
+    font-style: italic;
+  }
+
+  .sb-input-wrap {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 14px;
+    flex-wrap: wrap;
+  }
+
+  .sb-input {
+    flex: 1;
+    min-width: 200px;
+    padding: 12px 16px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-size: 0.9rem;
+    font-family: var(--sans);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .sb-input:focus { border-color: var(--accent); }
+
+  .sb-check-btn {
+    padding: 12px 22px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.88rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+    transition: opacity 0.15s;
+  }
+  .sb-check-btn:hover { opacity: 0.88; }
+
+  .sb-feedback {
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    display: none;
+    margin-bottom: 16px;
+  }
+  .sb-feedback.show { display: block; }
+  .sb-feedback.ok { background: rgba(52,211,153,0.1); border: 1px solid var(--green); color: var(--green); }
+  .sb-feedback.bad { background: rgba(248,113,113,0.1); border: 1px solid var(--red); color: var(--red); }
+  .sb-feedback .answer { color: var(--text); font-family: var(--mono); margin-top: 6px; font-size: 0.8rem; }
+
+  .sb-nav {
+    display: flex;
+    gap: 10px;
+    margin-top: 6px;
+  }
+  .sb-nav button {
+    padding: 9px 18px;
+    border-radius: 9px;
+    border: 1px solid var(--border);
+    background: var(--surface2);
+    color: var(--text);
+    font-family: var(--sans);
+    font-size: 0.82rem;
+    cursor: pointer;
+    transition: all 0.15s;
+  }
+  .sb-nav button:hover { border-color: var(--accent); color: var(--accent); }
+  .sb-nav button.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #fff;
+    font-weight: 600;
+  }
+  .sb-nav button.primary:hover { opacity: 0.88; }
+
+  .sb-counter {
+    font-size: 0.75rem;
+    color: var(--muted);
+    font-family: var(--mono);
+    margin-bottom: 20px;
+  }
+
+  .result-screen {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .result-screen .big { font-size: 3.5rem; margin-bottom: 12px; }
+  .result-screen h2 { font-size: 1.4rem; margin-bottom: 8px; }
+  .result-screen p { color: var(--muted); margin-bottom: 24px; }
+  .result-screen button {
+    padding: 12px 28px;
+    border-radius: 10px;
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    border: none;
+    cursor: pointer;
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>lassen</h1>
+  <span>B2 · Verb Trainer</span>
+</header>
+
+<div class="tabs">
+  <button class="tab-btn active" onclick="showTab('meanings')">📚 Значення</button>
+  <button class="tab-btn" onclick="showTab('quiz')">🎯 Тест на значення</button>
+  <button class="tab-btn" onclick="showTab('builder')">✍️ Побудова речень</button>
+  <button class="tab-btn" onclick="showTab('perfekt')">⏱ Перфект-тест</button>
+</div>
+
+<!-- TAB 1: MEANINGS -->
+<div class="section active" id="tab-meanings">
+  <div class="meaning-grid" id="meaningGrid"></div>
+</div>
+
+<!-- TAB 2: QUIZ -->
+<div class="section" id="tab-quiz">
+  <div class="quiz-wrap">
+    <div class="quiz-meta">
+      <div class="score-bar">
+        <span>✓ <span class="s-ok" id="qOk">0</span></span>
+        <span>✗ <span class="s-bad" id="qBad">0</span></span>
+      </div>
+      <span id="qCounter" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">1 / 12</span>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="qProgress" style="width:0%"></div></div>
+    <div class="quiz-question" id="qQuestion"></div>
+    <div class="options" id="qOptions"></div>
+    <div class="feedback-box" id="qFeedback"></div>
+    <button class="next-btn" id="qNext" onclick="nextQuizQ()">Далі →</button>
+  </div>
+</div>
+
+<!-- TAB 3: SENTENCE BUILDER -->
+<div class="section" id="tab-builder">
+  <div class="sb-wrap">
+    <div class="sb-counter" id="sbCounter">Завдання 1 / 12</div>
+    <div class="sb-task">Перекладіть / Доповніть речення</div>
+    <div class="sb-prompt" id="sbPrompt"></div>
+    <div class="sb-translation" id="sbTranslation"></div>
+    <div class="sb-input-wrap">
+      <input class="sb-input" id="sbInput" placeholder="Введіть відповідь..." onkeydown="if(event.key==='Enter')checkSb()">
+      <button class="sb-check-btn" onclick="checkSb()">Перевірити</button>
+    </div>
+    <div class="sb-feedback" id="sbFeedback"></div>
+    <div class="sb-nav">
+      <button onclick="showSbHint()">💡 Підказка</button>
+      <button onclick="skipSb()">Пропустити</button>
+      <button class="primary" id="sbNextBtn" onclick="nextSb()" style="display:none">Далі →</button>
+    </div>
+  </div>
+</div>
+
+<!-- TAB 4: PERFEKT QUIZ -->
+<div class="section" id="tab-perfekt">
+  <div class="quiz-wrap">
+    <div class="quiz-meta">
+      <div class="score-bar">
+        <span>✓ <span class="s-ok" id="pOk">0</span></span>
+        <span>✗ <span class="s-bad" id="pBad">0</span></span>
+      </div>
+      <span id="pCounter" style="font-family:var(--mono);font-size:0.75rem;color:var(--muted)">1 / 8</span>
+    </div>
+    <div class="quiz-progress-bar"><div class="quiz-progress-fill" id="pProgress" style="width:0%"></div></div>
+    <div class="quiz-question" id="pQuestion"></div>
+    <div class="options" id="pOptions"></div>
+    <div class="feedback-box" id="pFeedback"></div>
+    <button class="next-btn" id="pNext" onclick="nextPerfektQ()">Далі →</button>
+  </div>
+</div>
+
+<script>
+// ===================== DATA =====================
+
+const meanings = [
+  {
+    num: "1",
+    tag: "nicht mitnehmen",
+    title: "Залишити / не брати з собою",
+    examples: [
+      { de: "Kann ich meinen Koffer hier <em>lassen</em>?", ua: "Можна залишити валізу тут?" },
+      { de: "Ich habe meinen Koffer hier ge<em>lassen</em>.", ua: "Я залишив валізу тут." }
+    ],
+    perfekt: "gelassen",
+    color: "#6c8ef5"
+  },
+  {
+    num: "2",
+    tag: "nicht selbst machen",
+    title: "Доручити / зробити через когось іншого",
+    examples: [
+      { de: "Ich <em>lasse</em> meine Haare schneiden.", ua: "Я стрижуся (у когось)." },
+      { de: "Ich habe meine Haare schneiden <em>lassen</em>.", ua: "Я постригся." }
+    ],
+    perfekt: "(Verb) + lassen",
+    color: "#a78bfa"
+  },
+  {
+    num: "3",
+    tag: "(nicht) erlauben",
+    title: "Дозволяти / не дозволяти",
+    examples: [
+      { de: "Ich <em>lasse</em> mein Kind nicht fernsehen.", ua: "Я не дозволяю дитині дивитися ТВ." },
+      { de: "Ich habe mein Kind nicht fernsehen <em>lassen</em>.", ua: "(перфект)" }
+    ],
+    perfekt: "(Verb) + lassen",
+    color: "#34d399"
+  },
+  {
+    num: "4",
+    tag: "Aufforderung zu einer gemeinsamen Aktion",
+    title: "Заклик до спільної дії",
+    examples: [
+      { de: "<em>Lass(t)</em> uns gehen!", ua: "Ходімо! / Давай підемо!" }
+    ],
+    perfekt: "— (kein Perfekt)",
+    color: "#fbbf24"
+  },
+  {
+    num: "5",
+    tag: "etwas für jemanden tun",
+    title: "Зробити щось для когось",
+    examples: [
+      { de: "Der Koffer ist zu schwer. <em>Lass</em> mich ihn tragen.", ua: "Дай я понесу (для тебе)." }
+    ],
+    perfekt: "— (kein Perfekt)",
+    color: "#f87171"
+  },
+  {
+    num: "6",
+    tag: "kann … werden",
+    title: "Можливість / пасивний потенціал",
+    examples: [
+      { de: "Viele Krankheiten <em>lassen</em> sich heilen.", ua: "Багато хвороб піддаються лікуванню." },
+      { de: "Sie haben sich heilen <em>lassen</em>.", ua: "(перфект)" }
+    ],
+    perfekt: "(Verb) + lassen",
+    color: "#38bdf8"
+  },
+  {
+    num: "7",
+    tag: "nicht machen / aufhören",
+    title: "Припинити / перестати",
+    examples: [
+      { de: "Viele Leute können das Rauchen nicht <em>lassen</em>.", ua: "Багато людей не можуть кинути курити." },
+      { de: "Er hat das Rauchen nicht ge<em>lassen</em>.", ua: "(перфект)" }
+    ],
+    perfekt: "gelassen",
+    color: "#fb923c"
+  },
+  {
+    num: "8",
+    tag: "der Grund sein",
+    title: "Бути причиною / спонукати",
+    examples: [
+      { de: "Das schlechte Wetter ließ sie depressiv werden.", ua: "Погода змусила її впасти у депресію." },
+      { de: "Es hat sie depressiv werden <em>lassen</em>.", ua: "(перфект)" }
+    ],
+    perfekt: "(Verb) + lassen",
+    color: "#e879f9"
+  }
+];
+
+// QUIZ questions
+const quizQuestions = [
+  {
+    q: "«Das Erdbeben <em>ließ</em> viele Häuser einstürzen.» — яке значення lassen?",
+    correct: "der Grund sein (бути причиною)",
+    options: ["nicht mitnehmen", "der Grund sein (бути причиною)", "nicht machen / aufhören", "Aufforderung zu Aktion"],
+    explanation: "Землетрус спричинив руйнування — lassen = бути причиною (Bedeutung 8)."
+  },
+  {
+    q: "«<em>Lass</em> doch das Trinken!» — яке значення lassen?",
+    correct: "nicht machen / aufhören",
+    options: ["etwas für jemanden tun", "nicht selbst machen", "nicht machen / aufhören", "der Grund sein"],
+    explanation: "Припини пити! — lassen = перестати (Bedeutung 7)."
+  },
+  {
+    q: "«Kann ich meinen Koffer am Flughafen <em>lassen</em>?» — яке значення?",
+    correct: "nicht mitnehmen (залишити)",
+    options: ["nicht mitnehmen (залишити)", "(nicht) erlauben", "nicht selbst machen", "kann … werden"],
+    explanation: "Залишити валізу — lassen = nicht mitnehmen (Bedeutung 1)."
+  },
+  {
+    q: "«Ich möchte meine Wohnung renovieren <em>lassen</em>.» — яке значення?",
+    correct: "nicht selbst machen (доручити)",
+    options: ["nicht machen / aufhören", "nicht selbst machen (доручити)", "der Grund sein", "Aufforderung zu Aktion"],
+    explanation: "Хочу, щоб хтось відремонтував — lassen = nicht selbst machen (Bedeutung 2)."
+  },
+  {
+    q: "«Wir haben den Vogel fliegen <em>lassen</em>.» — яке значення?",
+    correct: "(nicht) erlauben / дозволити",
+    options: ["nicht mitnehmen", "nicht machen / aufhören", "(nicht) erlauben / дозволити", "etwas für jemanden tun"],
+    explanation: "Ми дозволили птаху летіти (відпустили) — lassen = (nicht) erlauben (Bedeutung 3)."
+  },
+  {
+    q: "«<em>Lasst</em> uns endlich aufhören zu arbeiten!» — яке значення?",
+    correct: "Aufforderung zu Aktion (заклик до спільної дії)",
+    options: ["nicht machen / aufhören", "Aufforderung zu Aktion (заклик до спільної дії)", "etwas für jemanden tun", "der Grund sein"],
+    explanation: "Давайте нарешті закінчимо! — lassen = спільний заклик (Bedeutung 4)."
+  },
+  {
+    q: "«<em>Lass</em> mich das machen! Ich habe Zeit.» — яке значення?",
+    correct: "etwas für jemanden tun (зробити для когось)",
+    options: ["nicht selbst machen", "kann … werden", "etwas für jemanden tun (зробити для когось)", "nicht mitnehmen"],
+    explanation: "Дай я це зроблю — lassen = пропозиція допомоги (Bedeutung 5)."
+  },
+  {
+    q: "«<em>Lässt</em> sich das Auto noch reparieren?» — яке значення?",
+    correct: "kann … werden (потенціал/можливість)",
+    options: ["der Grund sein", "nicht machen / aufhören", "(nicht) erlauben", "kann … werden (потенціал/можливість)"],
+    explanation: "Чи можна відремонтувати? — sich lassen = kann … werden (Bedeutung 6)."
+  },
+  {
+    q: "Яка форма Perfekt для речення «Ich habe meine Haare schneiden ___»?",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "zu lassen", "lässt"],
+    explanation: "Якщо lassen використовується з іншим дієсловом у значеннях 2,3,5,6,8 — Perfekt: Verb + lassen (інфінітив, НЕ gelassen)."
+  },
+  {
+    q: "«Er hat das Rauchen nicht ___» — яка форма Perfekt?",
+    correct: "gelassen",
+    options: ["lassen", "gelassen", "lässt", "zu lassen"],
+    explanation: "У значенні 7 (nicht machen) lassen стоїть ОКРЕМО без іншого дієслова → Perfekt: gelassen."
+  },
+  {
+    q: "Яка форма Perfekt: «Sie haben sich heilen ___» (Krankheit)?",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "lässt", "zu lassen"],
+    explanation: "Bedeutung 6 (sich lassen = kann werden) → Perfekt: Verb + lassen (інфінітив)."
+  },
+  {
+    q: "«Ich lasse mein Kind NICHT fernsehen.» — яке значення lassen?",
+    correct: "(nicht) erlauben — НЕ дозволяти",
+    options: ["nicht mitnehmen", "nicht machen / aufhören", "nicht selbst machen", "(nicht) erlauben — НЕ дозволяти"],
+    explanation: "Не дозволяю дивитися ТВ — lassen = (nicht) erlauben (Bedeutung 3)."
+  }
+];
+
+// Perfekt quiz
+const perfektQuestions = [
+  {
+    q: "«Ich habe meinen Koffer hier ___» (залишив — sам, без другого дієслова)",
+    correct: "gelassen",
+    options: ["lassen", "gelassen", "gelasst", "lässt"],
+    explanation: "Bedeutung 1 (nicht mitnehmen) — lassen без іншого дієслова → gelassen."
+  },
+  {
+    q: "«Ich habe meine Haare schneiden ___» (у майстра)",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "gelasst", "zu lassen"],
+    explanation: "Bedeutung 2 — з іншим дієсловом → Verb + lassen (НЕ gelassen)."
+  },
+  {
+    q: "«Er hat das Rauchen nicht ___»",
+    correct: "gelassen",
+    options: ["lassen", "gelassen", "lässt", "gelasst"],
+    explanation: "Bedeutung 7 (aufhören) — lassen без іншого дієслова → gelassen."
+  },
+  {
+    q: "«Das Wetter hat sie depressiv werden ___»",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "gelasst", "zu lassen"],
+    explanation: "Bedeutung 8 — з іншим дієсловом → Verb + lassen."
+  },
+  {
+    q: "«Ich habe mein Kind nicht fernsehen ___»",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "lässt", "gelasst"],
+    explanation: "Bedeutung 3 (erlauben) — з іншим дієсловом → Verb + lassen."
+  },
+  {
+    q: "«Sie haben sich heilen ___» (хворі вилікувались)",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "gelasst", "zu lassen"],
+    explanation: "Bedeutung 6 (sich lassen) — з іншим дієсловом → Verb + lassen."
+  },
+  {
+    q: "Визнач правило: коли Perfekt → GELASSEN?",
+    correct: "Коли lassen без іншого інфінітива (Bed. 1, 7)",
+    options: [
+      "Коли lassen без іншого інфінітива (Bed. 1, 7)",
+      "Завжди",
+      "Коли lassen з іншим дієсловом",
+      "Тільки у значенні 4"
+    ],
+    explanation: "Правило: lassen + інший інфінітив → lassen (залишається). Lassen один → gelassen."
+  },
+  {
+    q: "«Wir haben ihn warten ___» (змусили чекати)",
+    correct: "lassen",
+    options: ["gelassen", "lassen", "lässt", "zu lassen"],
+    explanation: "Zwei Verben (warten + lassen) → Perfekt: warten lassen."
+  }
+];
+
+// SENTENCE BUILDER exercises
+const sbExercises = [
+  {
+    prompt: "Залиш валізу тут! (du, Imperativ)",
+    translation: "(ти, наказовий спосіб)",
+    answers: ["Lass den Koffer hier!", "Lass die Koffer hier!", "Lass deinen Koffer hier!"],
+    hint: "lassen → Imperativ du = Lass",
+    explanation: "Lass [Akk] hier! — Bedeutung 1: nicht mitnehmen"
+  },
+  {
+    prompt: "Я постриглася у перукаря. (Perfekt)",
+    translation: "Ich habe... schneiden...",
+    answers: ["Ich habe meine Haare schneiden lassen.", "Ich habe mir die Haare schneiden lassen."],
+    hint: "haben + Haare + schneiden + lassen",
+    explanation: "Значення 2: nicht selbst machen. Perfekt: Verb + lassen"
+  },
+  {
+    prompt: "Ходімо нарешті! (Lass uns...)",
+    translation: "",
+    answers: ["Lasst uns endlich gehen!", "Lass uns endlich gehen!"],
+    hint: "Lasst uns / Lass uns + Infinitiv",
+    explanation: "Bedeutung 4: Aufforderung. Kein Perfekt."
+  },
+  {
+    prompt: "Дай я це зроблю — у мене є час.",
+    translation: "",
+    answers: ["Lass mich das machen! Ich habe Zeit.", "Lass mich das tun! Ich habe Zeit."],
+    hint: "Lass mich + Infinitiv",
+    explanation: "Bedeutung 5: etwas für jemanden tun. Kein Perfekt."
+  },
+  {
+    prompt: "Ця проблема не піддається вирішенню. (sich lassen)",
+    translation: "Dieses Problem...",
+    answers: ["Dieses Problem lässt sich nicht lösen.", "Das Problem lässt sich nicht lösen."],
+    hint: "lässt sich + Infinitiv",
+    explanation: "Bedeutung 6: kann nicht gelöst werden."
+  },
+  {
+    prompt: "Я відремонтував машину (у майстра). (Perfekt)",
+    translation: "Ich habe das Auto reparieren...",
+    answers: ["Ich habe das Auto reparieren lassen.", "Ich habe mein Auto reparieren lassen."],
+    hint: "haben + reparieren + lassen",
+    explanation: "Bedeutung 2: nicht selbst machen. Perfekt: Verb + lassen."
+  },
+  {
+    prompt: "Він не може кинути куріти. (nicht lassen können)",
+    translation: "Er kann das Rauchen...",
+    answers: ["Er kann das Rauchen nicht lassen.", "Er kann das Rauchen nicht aufgeben."],
+    hint: "nicht + lassen як фінальне дієслово",
+    explanation: "Bedeutung 7: nicht machen / aufhören."
+  },
+  {
+    prompt: "Погана новина змусила її плакати. (liess + Infinitiv)",
+    translation: "Die schlechte Nachricht...",
+    answers: ["Die schlechte Nachricht ließ sie weinen.", "Die schlechte Nachricht hat sie weinen lassen."],
+    hint: "ließ + Akk + Infinitiv або Perfekt",
+    explanation: "Bedeutung 8: der Grund sein."
+  },
+  {
+    prompt: "Ми не дозволяємо собаці спати на дивані. (Präsens)",
+    translation: "Wir lassen...",
+    answers: ["Wir lassen den Hund nicht auf dem Sofa schlafen.", "Wir lassen unseren Hund nicht auf dem Sofa schlafen."],
+    hint: "lassen + Akk + nicht + Infinitiv",
+    explanation: "Bedeutung 3: nicht erlauben."
+  },
+  {
+    prompt: "Залишіть мені повідомлення! (ihr, Imperativ)",
+    translation: "(команда до групи людей)",
+    answers: ["Lasst mir eine Nachricht!", "Hinterlasst mir eine Nachricht!"],
+    hint: "Lasst = Imperativ für ihr",
+    explanation: "Imperativ ihr von lassen = Lasst."
+  },
+  {
+    prompt: "Чи можна це завдання автоматизувати? (sich lassen — DevOps)",
+    translation: "Lässt sich diese Aufgabe...?",
+    answers: ["Lässt sich diese Aufgabe automatisieren?", "Lässt sich die Aufgabe automatisieren?"],
+    hint: "Lässt sich + Infinitiv (питання)",
+    explanation: "Bedeutung 6 у DevOps-контексті: kann automatisiert werden?"
+  },
+  {
+    prompt: "Вона попросила нас відремонтувати сервер. (Perfekt, sie = вона)",
+    translation: "Sie hat den Server reparieren...",
+    answers: ["Sie hat den Server reparieren lassen.", "Sie hat den Server repariert lassen."],
+    hint: "Perfekt: hat + reparieren + lassen",
+    explanation: "Nicht selbst machen. Perfekt: Verb + lassen."
+  }
+];
+
+// ===================== MEANINGS =====================
+function renderMeanings() {
+  const grid = document.getElementById('meaningGrid');
+  grid.innerHTML = meanings.map(m => `
+    <div class="meaning-card" data-num="${m.num}">
+      <div class="tag"><span class="dot" style="background:${m.color}"></span>${m.tag}</div>
+      <h3>${m.num}. ${m.title}</h3>
+      ${m.examples.map(e => `
+        <div class="example">${e.de}</div>
+        <div class="example" style="color:#475569;font-size:0.77rem;margin-bottom:6px">${e.ua}</div>
+      `).join('')}
+      <span class="perfekt-badge">Perfekt: ${m.perfekt}</span>
+    </div>
+  `).join('');
+}
+
+// ===================== QUIZ =====================
+let qIndex = 0, qOk = 0, qBad = 0;
+const shuffledQ = [...quizQuestions].sort(() => Math.random() - 0.5);
+
+function renderQuizQ() {
+  const q = shuffledQ[qIndex];
+  document.getElementById('qCounter').textContent = `${qIndex+1} / ${shuffledQ.length}`;
+  document.getElementById('qProgress').style.width = `${(qIndex/shuffledQ.length)*100}%`;
+  document.getElementById('qQuestion').innerHTML = q.q;
+  document.getElementById('qFeedback').className = 'feedback-box';
+  document.getElementById('qFeedback').innerHTML = '';
+  document.getElementById('qNext').className = 'next-btn';
+  const opts = document.getElementById('qOptions');
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+  opts.innerHTML = shuffled.map(o => `
+    <button class="opt-btn" onclick="selectQuizOpt(this,'${o.replace(/'/g,"\\'")}','${q.correct.replace(/'/g,"\\'")}','${q.explanation.replace(/'/g,"\\'")}')">${o}</button>
+  `).join('');
+}
+
+function selectQuizOpt(btn, chosen, correct, expl) {
+  document.querySelectorAll('#qOptions .opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  const fb = document.getElementById('qFeedback');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    qOk++; document.querySelector('.s-ok').textContent = qOk;
+    fb.className = 'feedback-box ok show';
+    fb.innerHTML = `✓ Правильно! <div class="explanation">${expl}</div>`;
+  } else {
+    btn.classList.add('wrong');
+    qBad++; document.querySelector('.s-bad').textContent = qBad;
+    fb.className = 'feedback-box bad show';
+    fb.innerHTML = `✗ Неправильно. <div class="explanation">${expl}</div>`;
+  }
+  document.getElementById('qNext').className = 'next-btn show';
+}
+
+function nextQuizQ() {
+  qIndex++;
+  if (qIndex >= shuffledQ.length) {
+    showResult('quiz', qOk, shuffledQ.length);
+  } else {
+    renderQuizQ();
+  }
+}
+
+// ===================== SENTENCE BUILDER =====================
+let sbIndex = 0;
+
+function renderSb() {
+  const ex = sbExercises[sbIndex];
+  document.getElementById('sbCounter').textContent = `Завдання ${sbIndex+1} / ${sbExercises.length}`;
+  document.getElementById('sbPrompt').textContent = ex.prompt;
+  document.getElementById('sbTranslation').textContent = ex.translation || '';
+  document.getElementById('sbFeedback').className = 'sb-feedback';
+  document.getElementById('sbFeedback').innerHTML = '';
+  document.getElementById('sbInput').value = '';
+  document.getElementById('sbInput').focus();
+  document.getElementById('sbNextBtn').style.display = 'none';
+}
+
+function normalize(s) {
+  return s.trim().toLowerCase().replace(/[.,!?]/g,'').replace(/\s+/g,' ');
+}
+
+function checkSb() {
+  const val = document.getElementById('sbInput').value;
+  const ex = sbExercises[sbIndex];
+  const fb = document.getElementById('sbFeedback');
+  const isOk = ex.answers.some(a => normalize(a) === normalize(val));
+  if (isOk) {
+    fb.className = 'sb-feedback ok show';
+    fb.innerHTML = `✓ Чудово! <div class="answer">${ex.answers[0]}</div><div style="color:var(--muted);font-size:0.77rem;margin-top:4px">${ex.explanation}</div>`;
+  } else {
+    fb.className = 'sb-feedback bad show';
+    fb.innerHTML = `✗ Не зовсім. Правильна відповідь:<div class="answer">${ex.answers[0]}</div><div style="color:var(--muted);font-size:0.77rem;margin-top:4px">${ex.explanation}</div>`;
+  }
+  document.getElementById('sbNextBtn').style.display = 'inline-block';
+}
+
+function showSbHint() {
+  const ex = sbExercises[sbIndex];
+  const fb = document.getElementById('sbFeedback');
+  fb.className = 'sb-feedback show';
+  fb.style.background = 'rgba(251,191,36,0.08)';
+  fb.style.borderColor = 'var(--yellow)';
+  fb.style.color = 'var(--yellow)';
+  fb.innerHTML = `💡 Підказка: ${ex.hint}`;
+}
+
+function skipSb() {
+  const ex = sbExercises[sbIndex];
+  const fb = document.getElementById('sbFeedback');
+  fb.className = 'sb-feedback bad show';
+  fb.innerHTML = `→ Пропущено. Відповідь:<div class="answer">${ex.answers[0]}</div>`;
+  document.getElementById('sbNextBtn').style.display = 'inline-block';
+}
+
+function nextSb() {
+  sbIndex++;
+  if (sbIndex >= sbExercises.length) {
+    document.querySelector('#tab-builder .sb-wrap').innerHTML = `
+      <div class="result-screen">
+        <div class="big">🎉</div>
+        <h2>Завдання завершено!</h2>
+        <p>Ти пройшов усі ${sbExercises.length} вправ на побудову речень.</p>
+        <button onclick="sbIndex=0;renderSb();document.querySelector('#tab-builder .sb-wrap').innerHTML='';" onclick="resetSb()">Почати знову</button>
+      </div>`;
+  } else {
+    renderSb();
+  }
+}
+
+function resetSb() { sbIndex = 0; /* handled in onclick */ }
+
+// ===================== PERFEKT QUIZ =====================
+let pIndex = 0, pOk = 0, pBad = 0;
+
+function renderPerfektQ() {
+  const q = perfektQuestions[pIndex];
+  document.getElementById('pCounter').textContent = `${pIndex+1} / ${perfektQuestions.length}`;
+  document.getElementById('pProgress').style.width = `${(pIndex/perfektQuestions.length)*100}%`;
+  document.getElementById('pQuestion').innerHTML = q.q;
+  document.getElementById('pFeedback').className = 'feedback-box';
+  document.getElementById('pNext').className = 'next-btn';
+  const opts = document.getElementById('pOptions');
+  const shuffled = [...q.options].sort(() => Math.random() - 0.5);
+  opts.innerHTML = shuffled.map(o => `
+    <button class="opt-btn" onclick="selectPerfektOpt(this,'${o.replace(/'/g,"\\'")}','${q.correct.replace(/'/g,"\\'")}','${q.explanation.replace(/'/g,"\\'")}')">${o}</button>
+  `).join('');
+}
+
+function selectPerfektOpt(btn, chosen, correct, expl) {
+  document.querySelectorAll('#pOptions .opt-btn').forEach(b => {
+    b.disabled = true;
+    if (b.textContent.trim() === correct) b.classList.add('correct');
+  });
+  const fb = document.getElementById('pFeedback');
+  if (chosen === correct) {
+    btn.classList.add('correct');
+    pOk++; document.getElementById('pOk').textContent = pOk;
+    fb.className = 'feedback-box ok show';
+    fb.innerHTML = `✓ Правильно! <div class="explanation">${expl}</div>`;
+  } else {
+    btn.classList.add('wrong');
+    pBad++; document.getElementById('pBad').textContent = pBad;
+    fb.className = 'feedback-box bad show';
+    fb.innerHTML = `✗ Неправильно. <div class="explanation">${expl}</div>`;
+  }
+  document.getElementById('pNext').className = 'next-btn show';
+}
+
+function nextPerfektQ() {
+  pIndex++;
+  if (pIndex >= perfektQuestions.length) {
+    showResult('perfekt', pOk, perfektQuestions.length);
+  } else {
+    renderPerfektQ();
+  }
+}
+
+// ===================== RESULT =====================
+function showResult(tab, ok, total) {
+  const pct = Math.round((ok/total)*100);
+  const emoji = pct >= 80 ? '🏆' : pct >= 50 ? '💪' : '📚';
+  const msg = pct >= 80 ? 'Відмінно!' : pct >= 50 ? 'Непогано, продовжуй!' : 'Потренуйся ще раз!';
+  const wrap = tab === 'quiz'
+    ? document.querySelector('#tab-quiz .quiz-wrap')
+    : document.querySelector('#tab-perfekt .quiz-wrap');
+  wrap.innerHTML = `
+    <div class="result-screen">
+      <div class="big">${emoji}</div>
+      <h2>${msg}</h2>
+      <p>Результат: ${ok} / ${total} (${pct}%)</p>
+      <button onclick="restartTab('${tab}')">Спробувати знову</button>
+    </div>`;
+}
+
+function restartTab(tab) {
+  if (tab === 'quiz') {
+    qIndex = 0; qOk = 0; qBad = 0;
+    document.querySelector('#tab-quiz .quiz-wrap').innerHTML = quizHTML;
+    document.querySelector('.s-ok').textContent = '0';
+    document.querySelector('.s-bad').textContent = '0';
+    renderQuizQ();
+  } else {
+    pIndex = 0; pOk = 0; pBad = 0;
+    document.querySelector('#tab-perfekt .quiz-wrap').innerHTML = perfektHTML;
+    document.getElementById('pOk').textContent = '0';
+    document.getElementById('pBad').textContent = '0';
+    renderPerfektQ();
+  }
+}
+
+// ===================== TABS =====================
+function showTab(name) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + name).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// Save HTML snapshots for restart
+let quizHTML, perfektHTML;
+
+// ===================== INIT =====================
+renderMeanings();
+renderQuizQ();
+renderSb();
+renderPerfektQ();
+
+// Capture HTML after first render
+setTimeout(() => {
+  quizHTML = document.querySelector('#tab-quiz .quiz-wrap').innerHTML;
+  perfektHTML = document.querySelector('#tab-perfekt .quiz-wrap').innerHTML;
+}, 50);
+</script>
+</body>
+</html>

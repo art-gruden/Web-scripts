@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wichtige Wörter B1+</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500&display=swap');
+:root{--bg:#0f1117;--surface:#1a1d27;--surface2:#22263a;--accent:#4ade80;--accent2:#60a5fa;--accent3:#f59e0b;--text:#e2e8f0;--muted:#64748b;--border:#2d3348;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--text);font-family:"IBM Plex Sans",sans-serif;min-height:100vh;padding:20px 14px 60px;}
+header{text-align:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--border);}
+header h1{font-family:"Playfair Display",serif;font-size:1.8rem;color:var(--accent);margin-bottom:4px;}
+header p{color:var(--muted);font-size:.82rem;font-family:"IBM Plex Mono",monospace;}
+.mode-bar{display:flex;gap:8px;justify-content:center;margin-bottom:22px;flex-wrap:wrap;}
+.mode-btn{padding:7px 16px;border-radius:20px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:.8rem;font-family:"IBM Plex Mono",monospace;transition:all .2s;}
+.mode-btn.active{background:var(--accent);color:#000;border-color:var(--accent);font-weight:500;}
+.tabs{display:flex;gap:6px;margin-bottom:18px;overflow-x:auto;padding-bottom:4px;scrollbar-width:none;}
+.tabs::-webkit-scrollbar{display:none;}
+.tab{white-space:nowrap;padding:6px 14px;border-radius:6px;border:1px solid var(--border);background:var(--surface);color:var(--muted);cursor:pointer;font-size:.75rem;font-family:"IBM Plex Mono",monospace;transition:all .2s;flex-shrink:0;}
+.tab.active{background:var(--surface2);color:var(--accent2);border-color:var(--accent2);}
+.stats{display:flex;gap:14px;margin-bottom:16px;font-size:.76rem;font-family:"IBM Plex Mono",monospace;color:var(--muted);flex-wrap:wrap;}
+.stats span{color:var(--text);font-weight:500;}
+/* Search */
+.search-bar{margin-bottom:16px;}
+.search-bar input{width:100%;padding:9px 14px;background:var(--surface);border:1px solid var(--border);border-radius:8px;color:var(--text);font-family:"IBM Plex Mono",monospace;font-size:.85rem;outline:none;transition:border-color .2s;}
+.search-bar input:focus{border-color:var(--accent2);}
+.search-bar input::placeholder{color:var(--muted);}
+/* Table */
+.section-block{margin-bottom:28px;}
+.section-title{font-family:"Playfair Display",serif;font-size:1.05rem;margin-bottom:10px;padding-bottom:7px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:9px;}
+.section-title .letter{display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:6px;font-size:.8rem;font-weight:700;font-family:"IBM Plex Mono",monospace;flex-shrink:0;color:#000;}
+.word-grid{display:grid;grid-template-columns:1fr 1fr;gap:5px;}
+@media(max-width:480px){.word-grid{grid-template-columns:1fr;}}
+.word-row{display:flex;align-items:flex-start;gap:7px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:9px 11px;cursor:pointer;transition:all .15s;position:relative;}
+.word-row:hover{border-color:var(--accent2);background:var(--surface2);}
+.word-row.known{border-color:var(--accent)!important;}
+.word-row.known::after{content:"✓";position:absolute;top:5px;right:7px;color:var(--accent);font-size:.72rem;}
+.word-row .art{font-family:"IBM Plex Mono",monospace;font-size:.68rem;color:var(--accent3);text-transform:uppercase;flex-shrink:0;padding-top:2px;min-width:20px;}
+.word-row .de{font-weight:500;font-size:.85rem;color:var(--text);flex:1;line-height:1.3;}
+.word-row .pl{font-size:.7rem;color:var(--muted);font-family:"IBM Plex Mono",monospace;}
+.word-row .ru-tr{font-size:.78rem;color:var(--accent);display:none;margin-top:4px;}
+.word-row.show-tr .ru-tr{display:block;}
+/* Flashcard */
+#flashcard-mode{display:none;}
+.flashcard-wrap{display:flex;flex-direction:column;align-items:center;gap:14px;}
+.flashcard{width:100%;max-width:400px;min-height:200px;background:var(--surface);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer;padding:28px 22px;text-align:center;position:relative;transition:transform .15s,box-shadow .15s;user-select:none;}
+.flashcard:hover{transform:translateY(-2px);box-shadow:0 8px 28px rgba(0,0,0,.4);}
+.flashcard .fc-art{font-family:"IBM Plex Mono",monospace;font-size:.75rem;color:var(--accent3);margin-bottom:7px;text-transform:uppercase;letter-spacing:1px;}
+.flashcard .fc-word{font-family:"Playfair Display",serif;font-size:1.6rem;color:var(--text);margin-bottom:7px;}
+.flashcard .fc-pl{font-size:.8rem;color:var(--muted);font-family:"IBM Plex Mono",monospace;}
+.flashcard .fc-tag{position:absolute;top:11px;right:12px;font-size:.65rem;padding:2px 7px;border-radius:10px;font-family:"IBM Plex Mono",monospace;}
+.flashcard .fc-hint{font-size:.73rem;color:var(--muted);margin-top:14px;font-family:"IBM Plex Mono",monospace;}
+.flashcard .fc-translation{display:none;margin-top:14px;padding-top:14px;border-top:1px solid var(--border);width:100%;}
+.flashcard.revealed .fc-translation{display:block;}
+.flashcard.revealed .fc-hint{display:none;}
+.fc-ru{font-size:1.15rem;color:var(--accent);font-weight:500;}
+.card-nav{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center;}
+.nav-btn{padding:9px 20px;border-radius:8px;border:1px solid var(--border);background:var(--surface);color:var(--text);cursor:pointer;font-size:.82rem;font-family:"IBM Plex Mono",monospace;transition:all .15s;}
+.nav-btn:hover{background:var(--surface2);}
+.nav-btn.know{border-color:var(--accent);color:var(--accent);}
+.nav-btn.know:hover{background:var(--accent);color:#000;}
+.nav-btn.skip{border-color:#ef4444;color:#ef4444;}
+.card-counter{font-family:"IBM Plex Mono",monospace;font-size:.82rem;color:var(--muted);min-width:70px;text-align:center;}
+.progress-bar{width:100%;max-width:400px;height:4px;background:var(--border);border-radius:2px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .3s;}
+.done-msg{text-align:center;padding:36px 20px;display:none;}
+.done-msg h2{font-family:"Playfair Display",serif;color:var(--accent);font-size:1.7rem;margin-bottom:7px;}
+.done-msg p{color:var(--muted);font-size:.85rem;}
+.reset-btn{margin-top:14px;padding:9px 22px;background:var(--surface);border:1px solid var(--accent);color:var(--accent);border-radius:8px;cursor:pointer;font-family:"IBM Plex Mono",monospace;font-size:.82rem;}
+</style>
+</head>
+<body>
+<header>
+  <h1>Wichtige Wörter B1+</h1>
+  <p id="header-sub">B1+ · Загрузка...</p>
+</header>
+<div class="mode-bar">
+  <button class="mode-btn active" onclick="setMode('table')">📋 Таблица</button>
+  <button class="mode-btn" onclick="setMode('flashcard')">🃏 Карточки</button>
+</div>
+<div class="tabs" id="chapter-tabs"></div>
+
+<!-- TABLE -->
+<div id="table-mode">
+  <div class="search-bar"><input type="text" id="searchInput" placeholder="Поиск слова..." oninput="filterWords()"></div>
+  <div class="stats"><div>Изучено: <span id="knownCount">0</span> / <span id="totalCount">0</span></div><div>Нажмите на слово → перевод</div></div>
+  <div id="tableContent"></div>
+</div>
+
+<!-- FLASHCARD -->
+<div id="flashcard-mode">
+  <div class="flashcard-wrap">
+    <div class="stats" style="justify-content:center">
+      <div>Осталось: <span id="fc-left">0</span></div>
+      <div>Знаю: <span id="fc-known">0</span></div>
+    </div>
+    <div class="progress-bar"><div class="progress-fill" id="fc-progress" style="width:0%"></div></div>
+    <div class="flashcard" id="flashcard" onclick="revealCard()">
+      <div class="fc-tag" id="fc-tag"></div>
+      <div class="fc-art" id="fc-article"></div>
+      <div class="fc-word" id="fc-word"></div>
+      <div class="fc-pl" id="fc-plural"></div>
+      <div class="fc-hint">👆 Нажмите, чтобы увидеть перевод</div>
+      <div class="fc-translation"><div class="fc-ru" id="fc-ru"></div></div>
+    </div>
+    <div class="card-nav">
+      <button class="nav-btn skip" onclick="nextCard(false)">✗ Не знаю</button>
+      <div class="card-counter"><span id="fc-idx">1</span> / <span id="fc-total">0</span></div>
+      <button class="nav-btn know" onclick="nextCard(true)">✓ Знаю</button>
+    </div>
+    <div class="done-msg" id="done-msg">
+      <h2>Готово! 🎉</h2><p>Вы прошли все карточки</p>
+      <button class="reset-btn" onclick="resetFlashcards()">Начать заново</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const CHAPTERS = [
+  {
+    id: 'k1', title: 'Kapitel 1 – Schule & Ausbildung (S.23)',
+    sections: [
+  { id:'A', title:'Schule, Ausbildung, Weiterbildung', color:'#60a5fa', words:[
+    {art:'die',de:'Abteilung',pl:'-en',ru:'отдел, подразделение'},
+    {art:'der',de:'Arbeitgeber',pl:'–',ru:'работодатель (м.)'},
+    {art:'die',de:'Arbeitgeberin',pl:'-nen',ru:'работодатель (ж.)'},
+    {art:'das',de:'Asylverfahren',pl:'–',ru:'процедура предоставления убежища'},
+    {art:'die',de:'Ausbildung',pl:'-en',ru:'обучение, профессиональная подготовка'},
+    {art:'',de:'auffallen',pl:'',ru:'бросаться в глаза, выделяться'},
+    {art:'',de:'(eine Prüfung) bestehen',pl:'',ru:'сдать (экзамен)'},
+    {art:'das',de:'Berufsinformationszentrum (BIZ)',pl:'',ru:'информационный центр по профессиям'},
+    {art:'der',de:'Betrieb',pl:'-e',ru:'предприятие, производство'},
+    {art:'',de:'sich bewerben',pl:'',ru:'подавать заявку, претендовать'},
+    {art:'',de:'jdn. einstellen',pl:'',ru:'нанимать кого-л. на работу'},
+    {art:'das',de:'E-Learning',pl:'(Sg.)',ru:'электронное обучение'},
+    {art:'der',de:'E-Learning-Kurs',pl:'-e',ru:'онлайн-курс'},
+    {art:'der',de:'Facharbeiter',pl:'–',ru:'квалифицированный рабочий (м.)'},
+    {art:'die',de:'Facharbeiterin',pl:'-nen',ru:'квалифицированный рабочий (ж.)'},
+    {art:'der',de:'Gabelstapler',pl:'–',ru:'вилочный погрузчик'},
+    {art:'die',de:'Geschäftsführung',pl:'-en',ru:'руководство компании'},
+    {art:'',de:'sich informieren',pl:'',ru:'узнавать, информироваться'},
+    {art:'das',de:'Lager',pl:'–',ru:'склад'},
+    {art:'die',de:'Lagerlogistik',pl:'(Sg.)',ru:'складская логистика'},
+    {art:'der',de:'Mitarbeiter',pl:'–',ru:'сотрудник (м.)'},
+    {art:'die',de:'Mitarbeiterin',pl:'-nen',ru:'сотрудница (ж.)'},
+    {art:'',de:'jdm. etw. raten',pl:'',ru:'советовать кому-л. что-л.'},
+    {art:'der',de:'Schulabschluss',pl:'\"-e',ru:'школьный аттестат'},
+    {art:'',de:'steigen',pl:'',ru:'подниматься, расти'},
+    {art:'',de:'teilnehmen an (+ Dat.)',pl:'',ru:'участвовать в чём-л.'},
+    {art:'der',de:'Umsatz',pl:'\"-e',ru:'оборот, выручка'},
+    {art:'die',de:'Umschulung',pl:'-en',ru:'переквалификация'},
+    {art:'',de:'wahrscheinlich',pl:'',ru:'вероятно, скорее всего'},
+    {art:'die',de:'Weiterbildung',pl:'-en',ru:'повышение квалификации'},
+    {art:'das',de:'Einkommen',pl:'–',ru:'доход'},
+    {art:'die',de:'Entscheidung',pl:'-en',ru:'решение'},
+    {art:'',de:'eine Entscheidung treffen',pl:'',ru:'принять решение'},
+    {art:'die',de:'Existenzgründung',pl:'-en',ru:'открытие собственного дела'},
+    {art:'die',de:'Fortbildung',pl:'-en',ru:'профессиональная переподготовка'},
+    {art:'',de:'eine Fortbildung machen',pl:'',ru:'пройти курсы повышения квалификации'},
+    {art:'',de:'(ein Unternehmen) gründen',pl:'',ru:'основывать (компанию)'},
+    {art:'',de:'einen Kredit bewilligen',pl:'',ru:'одобрить кредит'},
+    {art:'der',de:'Küchenhelfer',pl:'–',ru:'помощник повара (м.)'},
+    {art:'die',de:'Küchenhelferin',pl:'-nen',ru:'помощник повара (ж.)'},
+    {art:'',de:'sich selbstständig machen',pl:'',ru:'стать самозанятым / открыть своё дело'},
+    {art:'die',de:'Selbstständigkeit',pl:'(Sg.)',ru:'самозанятость, предпринимательство'},
+    {art:'',de:'überlegen',pl:'',ru:'обдумывать, размышлять'},
+    {art:'',de:'Verantwortung tragen für (+ Akk.)',pl:'',ru:'нести ответственность за что-л.'},
+  ]},
+  { id:'B', title:'Lebenswege', color:'#f59e0b', words:[
+    {art:'der',de:'Antrag',pl:'\"-e',ru:'заявление, заявка'},
+    {art:'',de:'einen Antrag stellen',pl:'',ru:'подать заявление'},
+    {art:'die',de:'Aufenthaltsgenehmigung',pl:'-en',ru:'вид на жительство, разрешение на пребывание'},
+    {art:'',de:'aufwachsen',pl:'',ru:'вырастать, взрослеть'},
+    {art:'der',de:'Berater',pl:'–',ru:'консультант (м.)'},
+    {art:'die',de:'Beraterin',pl:'-nen',ru:'консультант (ж.)'},
+    {art:'',de:'jdn. beschäftigen',pl:'',ru:'занимать кого-л. работой'},
+    {art:'der',de:'Businessplan',pl:'\"-e',ru:'бизнес-план'},
+  ]},
+  { id:'C', title:'Fit für den Arbeitsmarkt', color:'#a78bfa', words:[
+    {art:'',de:'etw. anerkennen lassen',pl:'',ru:'добиваться признания чего-л.'},
+    {art:'der',de:'Berufsabschluss',pl:'\"-e',ru:'профессиональный диплом / квалификация'},
+    {art:'die',de:'Berufsausbildung',pl:'-en',ru:'профессиональное образование'},
+    {art:'',de:'etw. beschließen',pl:'',ru:'решать, принимать решение'},
+    {art:'das',de:'Zeugnis',pl:'-se',ru:'свидетельство, аттестат, справка'},
+  ]},
+  { id:'D', title:'Bald am Ziel!?', color:'#4ade80', words:[
+    {art:'die',de:'Anerkennung',pl:'-en',ru:'признание'},
+    {art:'das',de:'Anerkennungsverfahren',pl:'–',ru:'процедура признания'},
+    {art:'die',de:'Arbeitserlaubnis',pl:'-se',ru:'разрешение на работу'},
+    {art:'die',de:'Fachkraft',pl:'\"-e',ru:'квалифицированный специалист'},
+    {art:'die',de:'Kompetenz',pl:'-en',ru:'компетентность, навык'},
+    {art:'',de:'Kosten übernehmen',pl:'',ru:'брать на себя расходы'},
+    {art:'der',de:'Nachweis',pl:'-e',ru:'доказательство, подтверждение'},
+    {art:'das',de:'Praktikum',pl:'Praktika',ru:'практика, стажировка'},
+    {art:'die',de:'Qualifikation',pl:'-en',ru:'квалификация'},
+    {art:'',de:'reglementiert',pl:'',ru:'регулируемый (о профессии)'},
+    {art:'die',de:'Unterlage',pl:'-n',ru:'документ, основание'},
+    {art:'',de:'etw. vergleichen mit (+ Dat.)',pl:'',ru:'сравнивать что-л. с чем-л.'},
+  ]},
+  ]},
+  {
+    id: 'k2', title: 'Kapitel 2 – Wie finde ich Arbeit? (S.41)',
+    sections: [
+  { id:'A', title:'Wie finde ich Arbeit?', color:'#60a5fa', words:[
+    {art:'der',de:'Ansprechpartner',pl:'–',ru:'контактное лицо (м.)'},
+    {art:'die',de:'Ansprechpartnerin',pl:'-nen',ru:'контактное лицо (ж.)'},
+    {art:'der',de:'Aushang',pl:'\"-e',ru:'объявление на доске'},
+    {art:'das',de:'Bewerbungsschreiben',pl:'–',ru:'сопроводительное письмо'},
+    {art:'das',de:'Bewerbungsverfahren',pl:'–',ru:'процедура трудоустройства'},
+    {art:'der',de:'Eindruck',pl:'\"-e',ru:'впечатление'},
+    {art:'die',de:'Elektrofirma',pl:'-firmen',ru:'электротехническая компания'},
+    {art:'',de:'erwarten',pl:'',ru:'ожидать'},
+    {art:'das',de:'Fachpersonal',pl:'(Sg.)',ru:'квалифицированный персонал'},
+    {art:'',de:'fehlerfrei',pl:'',ru:'без ошибок, безупречный'},
+    {art:'die',de:'Initiativbewerbung',pl:'-en',ru:'инициативная заявка (без объявления)'},
+    {art:'die',de:'Installateursfirma',pl:'-firmen',ru:'монтажная / сантехническая компания'},
+    {art:'die',de:'Konkurrenz',pl:'(Sg.)',ru:'конкуренция'},
+    {art:'der',de:'Leiharbeiter',pl:'–',ru:'временный рабочий (м.)'},
+    {art:'die',de:'Leiharbeiterin',pl:'-nen',ru:'временный рабочий (ж.)'},
+    {art:'das',de:'Leitbild',pl:'-er',ru:'руководящий принцип, миссия компании'},
+    {art:'der',de:'Stand der Dinge',pl:'',ru:'положение дел'},
+    {art:'',de:'einen Termin bestätigen',pl:'',ru:'подтверждать встречу'},
+    {art:'die',de:'Unterlage',pl:'-n',ru:'документ'},
+    {art:'die',de:'Wartezeit',pl:'-en',ru:'время ожидания'},
+    {art:'die',de:'Zeitarbeitsfirma',pl:'-firmen',ru:'агентство временного труда'},
+    {art:'',de:'zukünftig',pl:'',ru:'будущий, в будущем'},
+  ]},
+  { id:'B', title:'Arbeitsvermittlung in Deutschland', color:'#f59e0b', words:[
+    {art:'die',de:'Arbeitskraft',pl:'\"-e',ru:'рабочая сила'},
+    {art:'das',de:'Arbeitsverhältnis',pl:'-se',ru:'трудовые отношения'},
+    {art:'',de:'ausleihen',pl:'',ru:'одалживать, сдавать в аренду (рабочую силу)'},
+    {art:'die',de:'Berufsberatung',pl:'-en',ru:'профессиональная консультация'},
+    {art:'die',de:'Berufserfahrung',pl:'-en',ru:'профессиональный опыт'},
+    {art:'',de:'beschäftigen',pl:'',ru:'занимать (на работе)'},
+    {art:'die',de:'Beschäftigung',pl:'(Sg.)',ru:'занятость, трудоустройство'},
+    {art:'der',de:'Betrieb',pl:'-e',ru:'предприятие'},
+    {art:'die',de:'Genehmigung',pl:'-en',ru:'разрешение, одобрение'},
+    {art:'die',de:'Leiharbeit',pl:'(Sg.)',ru:'временная / заёмная работа'},
+    {art:'der',de:'Leiharbeiter',pl:'–',ru:'временный рабочий (м.)'},
+    {art:'die',de:'Leiharbeiterin',pl:'-nen',ru:'временный рабочий (ж.)'},
+    {art:'',de:'staatlich',pl:'',ru:'государственный'},
+    {art:'die',de:'Tätigkeit',pl:'-en',ru:'деятельность, занятие'},
+    {art:'',de:'einen Termin vereinbaren',pl:'',ru:'договариваться о встрече'},
+    {art:'',de:'verleihen',pl:'',ru:'сдавать в аренду, предоставлять'},
+    {art:'die',de:'Vermittlung',pl:'-en',ru:'посредничество, трудоустройство'},
+    {art:'die',de:'Vermittlungsgebühr',pl:'-en',ru:'комиссия за трудоустройство'},
+  ]},
+  { id:'C', title:'Stellenanzeigen verstehen', color:'#a78bfa', words:[
+    {art:'der',de:'Agraringenieur',pl:'-e',ru:'агроинженер (м.)'},
+    {art:'die',de:'Agraringenieurin',pl:'-nen',ru:'агроинженер (ж.)'},
+    {art:'der',de:'Arbeitseinsatz',pl:'\"-e',ru:'трудовой вклад'},
+    {art:'der',de:'Bereich',pl:'-e',ru:'область, сфера'},
+    {art:'die',de:'Bereitschaft',pl:'(Sg.)',ru:'готовность, расположенность'},
+    {art:'der',de:'Einsatzort',pl:'-e',ru:'место работы / применения'},
+    {art:'',de:'examiniert',pl:'',ru:'сертифицированный, с дипломом'},
+    {art:'das',de:'Familienunternehmen',pl:'–',ru:'семейное предприятие'},
+    {art:'der',de:'Informatiker',pl:'–',ru:'IT-специалист (м.)'},
+    {art:'die',de:'Informatikerin',pl:'-nen',ru:'IT-специалист (ж.)'},
+    {art:'der',de:'Ingenieur',pl:'-e',ru:'инженер (м.)'},
+    {art:'die',de:'Ingenieurin',pl:'-nen',ru:'инженер (ж.)'},
+    {art:'',de:'innovativ',pl:'',ru:'инновационный'},
+    {art:'die',de:'Karrierechance',pl:'-n',ru:'карьерная возможность'},
+    {art:'die',de:'Kommunikationsfähigkeit',pl:'-en',ru:'коммуникативные способности'},
+    {art:'der',de:'Kundenservice',pl:'(Sg.)',ru:'обслуживание клиентов'},
+    {art:'die',de:'Pflegekraft',pl:'\"-e',ru:'медицинский работник / сиделка'},
+    {art:'der',de:'Pflegeservice',pl:'(Sg.)',ru:'служба по уходу'},
+    {art:'der',de:'Sicherheitsmitarbeiter',pl:'–',ru:'сотрудник безопасности (м.)'},
+    {art:'die',de:'Sicherheitsmitarbeiterin',pl:'-nen',ru:'сотрудник безопасности (ж.)'},
+    {art:'der',de:'Teamgeist',pl:'(Sg.)',ru:'командный дух'},
+    {art:'die',de:'Verantwortung',pl:'(Sg.)',ru:'ответственность'},
+    {art:'der',de:'Verkäufer',pl:'–',ru:'продавец (м.)'},
+    {art:'die',de:'Verkäuferin',pl:'-nen',ru:'продавец (ж.)'},
+    {art:'die',de:'Verstärkung',pl:'-en',ru:'подкрепление, усиление'},
+    {art:'die',de:'Zukunftsperspektive',pl:'-n',ru:'перспектива на будущее'},
+    {art:'die',de:'Zusammenarbeit',pl:'(Sg.)',ru:'совместная работа, сотрудничество'},
+    {art:'',de:'zuständig',pl:'',ru:'ответственный, компетентный'},
+  ]},
+  { id:'D', title:'Informationsbogen bei Zeitarbeit', color:'#4ade80', words:[
+    {art:'das',de:'Bauvorhaben',pl:'–',ru:'строительный проект'},
+    {art:'die',de:'Berufsausbildung',pl:'-en',ru:'профессиональное образование'},
+    {art:'der',de:'Einsatz',pl:'\"-e',ru:'использование, применение'},
+    {art:'das',de:'Einverständnis',pl:'-se',ru:'согласие'},
+    {art:'der',de:'Fachinformatiker',pl:'–',ru:'специалист в области IT (м.)'},
+    {art:'die',de:'Fachinformatikerin',pl:'-nen',ru:'специалист в области IT (ж.)'},
+    {art:'die',de:'Krankheitsvertretung',pl:'-en',ru:'замена по болезни'},
+    {art:'der',de:'Realschulabschluss',pl:'\"-e',ru:'аттестат реальной школы'},
+    {art:'die',de:'Urlaubsvertretung',pl:'-en',ru:'замена на время отпуска'},
+    {art:'der',de:'Zeitraum',pl:'\"-e',ru:'период времени'},
+  ]},
+  ]},
+  {
+    id: 'k3', title: 'Kapitel 3 – Erster Arbeitstag (S.~)',
+    sections: [
+  { id:'A', title:'Der erste Arbeitstag', color:'#60a5fa', words:[
+    {art:'der',de:'Empfang',pl:'\"-e',ru:'приём, рецепция'},
+    {art:'die',de:'Personalabteilung',pl:'-en',ru:'отдел кадров'},
+    {art:'die',de:'Kantine',pl:'-n',ru:'столовая'},
+    {art:'das',de:'Lager',pl:'–',ru:'склад'},
+    {art:'die',de:'Produktion',pl:'(Sg.)',ru:'производство'},
+    {art:'die',de:'Forschung',pl:'-en',ru:'исследование, НИР'},
+    {art:'die',de:'Entwicklung',pl:'-en',ru:'разработка, развитие'},
+    {art:'der',de:'Betriebsrat',pl:'\"-e',ru:'производственный совет (м.)'},
+    {art:'die',de:'Betriebsrätin',pl:'-nen',ru:'член производственного совета (ж.)'},
+    {art:'die',de:'Geschäftsführung',pl:'-en',ru:'руководство компании'},
+    {art:'die',de:'Finanzbuchhaltung',pl:'-en',ru:'бухгалтерия'},
+    {art:'die',de:'Einarbeitung',pl:'-en',ru:'введение в должность'},
+    {art:'der',de:'Ansprechpartner',pl:'–',ru:'контактное лицо (м.)'},
+    {art:'die',de:'Ansprechpartnerin',pl:'-nen',ru:'контактное лицо (ж.)'},
+    {art:'die',de:'Pausenregelung',pl:'-en',ru:'порядок перерывов'},
+    {art:'der',de:'Rundgang',pl:'\"-e',ru:'экскурсия по предприятию'},
+  ]},
+  { id:'B', title:'Sich in der Freizeit weiterbilden', color:'#f59e0b', words:[
+    {art:'',de:'sich weiterbilden',pl:'',ru:'повышать квалификацию'},
+    {art:'',de:'sich ärgern über (+ Akk.)',pl:'',ru:'злиться на что-л./кого-л.'},
+    {art:'der',de:'Berufsalltag',pl:'(Sg.)',ru:'рабочие будни'},
+    {art:'die',de:'Erfahrung',pl:'-en',ru:'опыт'},
+    {art:'',de:'Erfahrung haben mit (+ Dat.)',pl:'',ru:'иметь опыт в чём-л.'},
+    {art:'',de:'sich freuen auf (+ Akk.)',pl:'',ru:'радоваться предстоящему чему-л.'},
+    {art:'',de:'sich freuen über (+ Akk.)',pl:'',ru:'радоваться чему-л.'},
+    {art:'',de:'gehören zu (+ Dat.)',pl:'',ru:'принадлежать к чему-л.'},
+    {art:'',de:'es geht um (+ Akk.)',pl:'',ru:'речь идёт о чём-л.'},
+    {art:'',de:'ein Gespräch führen',pl:'',ru:'вести разговор'},
+    {art:'',de:'sich interessieren für (+ Akk.)',pl:'',ru:'интересоваться чем-л.'},
+    {art:'',de:'investieren in (+ Akk.)',pl:'',ru:'инвестировать во что-л.'},
+    {art:'',de:'stattfinden',pl:'',ru:'происходить, состояться'},
+    {art:'',de:'etw. vermitteln',pl:'',ru:'передавать, посредничать'},
+    {art:'die',de:'Voraussetzung',pl:'-en',ru:'предпосылка, условие'},
+    {art:'die',de:'Webseite',pl:'-n',ru:'веб-сайт'},
+  ]},
+  { id:'C', title:'Eine Teambesprechung', color:'#a78bfa', words:[
+    {art:'das',de:'Ergebnisprotokoll',pl:'-e',ru:'протокол результатов'},
+    {art:'die',de:'Besprechung',pl:'-en',ru:'совещание, обсуждение'},
+    {art:'die',de:'Teamsitzung',pl:'-en',ru:'заседание команды'},
+    {art:'',de:'etw. zusammenfassen',pl:'',ru:'резюмировать, подводить итог'},
+    {art:'der',de:'Beschluss',pl:'\"-e',ru:'решение, постановление'},
+    {art:'die',de:'Entscheidung',pl:'-en',ru:'решение'},
+    {art:'die',de:'Vereinbarung',pl:'-en',ru:'договорённость'},
+    {art:'die',de:'Tagesordnung',pl:'-en',ru:'повестка дня'},
+    {art:'das',de:'Stichwort',pl:'-e',ru:'ключевое слово, тезис'},
+    {art:'',de:'etw. dokumentieren',pl:'',ru:'документировать что-л.'},
+    {art:'',de:'etw. protokollieren',pl:'',ru:'протоколировать что-л.'},
+    {art:'die',de:'Regel',pl:'-n',ru:'правило'},
+    {art:'',de:'in der Regel',pl:'',ru:'как правило'},
+    {art:'der',de:'Teilnehmer',pl:'–',ru:'участник (м.)'},
+    {art:'die',de:'Teilnehmerin',pl:'-nen',ru:'участница (ж.)'},
+    {art:'',de:'etw. vorschlagen',pl:'',ru:'предлагать что-л.'},
+    {art:'der',de:'Zweifel',pl:'–',ru:'сомнение'},
+    {art:'',de:'etw. schaffen',pl:'',ru:'справляться, создавать что-л.'},
+  ]},
+  { id:'D', title:'Ein neuer Kollege kommt', color:'#4ade80', words:[
+    {art:'',de:'sich etw. merken',pl:'',ru:'запомнить что-л.'},
+    {art:'die',de:'Pünktlichkeit',pl:'(Sg.)',ru:'пунктуальность'},
+    {art:'die',de:'Begrüßung',pl:'-en',ru:'приветствие'},
+    {art:'der',de:'Feierabend',pl:'-e',ru:'конец рабочего дня'},
+    {art:'',de:'aufregend',pl:'',ru:'волнующий, захватывающий'},
+    {art:'der',de:'Erfolg',pl:'-e',ru:'успех'},
+    {art:'',de:'nützlich',pl:'',ru:'полезный'},
+    {art:'der',de:'Berufsverkehr',pl:'(Sg.)',ru:'час пик, интенсивный транспортный поток'},
+    {art:'',de:'üblich',pl:'',ru:'обычный, принятый'},
+    {art:'',de:'lächeln',pl:'',ru:'улыбаться'},
+    {art:'',de:'erwünscht',pl:'',ru:'желательный, желанный'},
+    {art:'',de:'beliebt',pl:'',ru:'популярный, любимый'},
+    {art:'',de:'im Allgemeinen',pl:'',ru:'в целом, в общем'},
+    {art:'der',de:'Vorgesetzte',pl:'-n',ru:'начальник, руководитель (м.)'},
+    {art:'die',de:'Vorgesetzte',pl:'-n',ru:'начальница, руководитель (ж.)'},
+    {art:'',de:'sich verabschieden (von) (+ Dat.)',pl:'',ru:'прощаться с кем-л.'},
+  ]},
+  ]},
+  {
+    id: 'k4', title: 'Kapitel 4 – Termine & Pünktlichkeit (S.~)',
+    sections: [
+  { id:'A', title:'Verabredungen und Termine', color:'#60a5fa', words:[
+    {art:'',de:'sich etw. anschauen',pl:'',ru:'смотреть, осматривать что-л.'},
+    {art:'der',de:'Arbeitsalltag',pl:'(Sg.)',ru:'рабочие будни'},
+    {art:'die',de:'Arbeitsdichte',pl:'(Sg.)',ru:'напряжённость / плотность работы'},
+    {art:'das',de:'Arbeitsleben',pl:'(Sg.)',ru:'трудовая жизнь'},
+    {art:'die',de:'Arbeitswelt',pl:'(Sg.)',ru:'мир труда'},
+    {art:'',de:'sich auswirken',pl:'',ru:'сказываться, воздействовать'},
+    {art:'die',de:'Baustelle',pl:'-n',ru:'стройплощадка'},
+    {art:'',de:'sich beeilen',pl:'',ru:'торопиться, спешить'},
+    {art:'die',de:'Berufssparte',pl:'-n',ru:'профессиональная отрасль'},
+    {art:'der',de:'Beschäftigte',pl:'-n',ru:'сотрудник (м.)'},
+    {art:'die',de:'Beschäftigte',pl:'-n',ru:'сотрудница (ж.)'},
+    {art:'die',de:'Beschleunigung',pl:'-en',ru:'ускорение'},
+    {art:'',de:'etw. bewältigen',pl:'',ru:'справляться с чем-л.'},
+    {art:'die',de:'Herausforderung',pl:'-en',ru:'вызов, трудная задача'},
+    {art:'der',de:'Maurer',pl:'–',ru:'каменщик (м.)'},
+    {art:'die',de:'Maurerin',pl:'-nen',ru:'каменщик (ж.)'},
+    {art:'die',de:'Strecke',pl:'-n',ru:'маршрут, дистанция'},
+    {art:'',de:'auf der Strecke bleiben',pl:'',ru:'остаться не у дел, пострадать'},
+    {art:'',de:'einen Termin absagen',pl:'',ru:'отменять встречу'},
+    {art:'das',de:'Treffen',pl:'–',ru:'встреча'},
+    {art:'',de:'sich verspäten',pl:'',ru:'опаздывать'},
+    {art:'das',de:'Wohlbefinden',pl:'(Sg.)',ru:'благополучие, самочувствие'},
+    {art:'der',de:'Zeitdruck',pl:'(Sg.)',ru:'нехватка времени, цейтнот'},
+  ]},
+  { id:'B', title:'Von Freizeit und Arbeitszeit', color:'#f59e0b', words:[
+    {art:'die',de:'Abteilungskonferenz',pl:'-en',ru:'совещание отдела'},
+    {art:'',de:'sich absprechen',pl:'',ru:'договариваться, согласовывать'},
+    {art:'der',de:'Anspruch',pl:'\"-e',ru:'право, претензия'},
+    {art:'',de:'Anspruch haben auf (+ Akk.)',pl:'',ru:'иметь право на что-л.'},
+    {art:'der',de:'Arbeitsweg',pl:'-e',ru:'дорога на работу'},
+    {art:'die',de:'Arbeitszeit',pl:'-en',ru:'рабочее время'},
+    {art:'das',de:'Arbeitszeitgesetz',pl:'-e',ru:'закон о рабочем времени'},
+    {art:'die',de:'Betriebsruhe',pl:'(Sg.)',ru:'производственный простой / каникулы'},
+    {art:'das',de:'EDV-System',pl:'-e',ru:'система обработки данных'},
+    {art:'',de:'einweisen in (+ Akk.)',pl:'',ru:'вводить в курс дела, инструктировать'},
+    {art:'der',de:'Ersatzruhetag',pl:'-e',ru:'выходной день вместо отработанного'},
+    {art:'',de:'etw. vorschreiben',pl:'',ru:'предписывать что-л.'},
+    {art:'der',de:'Fall',pl:'\"-e',ru:'случай'},
+    {art:'',de:'auf keinen Fall',pl:'',ru:'ни в коем случае'},
+    {art:'der',de:'Freizeitausgleich',pl:'(Sg.)',ru:'компенсация переработки отгулом'},
+    {art:'der',de:'Mindesturlaub',pl:'(Sg.)',ru:'минимальный отпуск'},
+    {art:'die',de:'Pflicht',pl:'-en',ru:'обязанность, долг'},
+    {art:'das',de:'Recht',pl:'-e',ru:'право'},
+    {art:'',de:'das Recht haben',pl:'',ru:'иметь право'},
+    {art:'die',de:'(gesetzliche) Regel',pl:'-n',ru:'(законодательное) правило'},
+    {art:'die',de:'Schichtarbeit',pl:'(Sg.)',ru:'сменная работа'},
+    {art:'die',de:'Teilzeitarbeit',pl:'(Sg.)',ru:'неполная занятость'},
+    {art:'die',de:'Überstunde',pl:'-n',ru:'сверхурочный час'},
+    {art:'der',de:'Urlaubstag',pl:'-e',ru:'день отпуска'},
+    {art:'die',de:'Urlaubszeit',pl:'-en',ru:'отпускной период'},
+    {art:'die',de:'Vollzeitarbeit',pl:'(Sg.)',ru:'полная занятость'},
+    {art:'die',de:'Wochenendarbeit',pl:'-en',ru:'работа в выходные дни'},
+  ]},
+  { id:'C', title:'Die Deadline', color:'#a78bfa', words:[
+    {art:'die',de:'Deadline',pl:'(Sg.)',ru:'крайний срок, дедлайн'},
+    {art:'das',de:'Drehbuch',pl:'\"-er',ru:'сценарий'},
+    {art:'der',de:'Entwurf',pl:'\"-e',ru:'набросок, эскиз, проект'},
+    {art:'die',de:'Kampagne',pl:'-n',ru:'кампания'},
+    {art:'die',de:'Kosmetikserie',pl:'-n',ru:'линейка косметики'},
+    {art:'das',de:'Printmedium',pl:'-medien',ru:'печатное СМИ'},
+    {art:'',de:'relevant',pl:'',ru:'актуальный, важный'},
+    {art:'der',de:'Senior Manager',pl:'–',ru:'старший менеджер (м.)'},
+    {art:'die',de:'Senior Managerin',pl:'-nen',ru:'старший менеджер (ж.)'},
+    {art:'der',de:'Werbefilm',pl:'-e',ru:'рекламный ролик'},
+    {art:'die',de:'Werbekampagne',pl:'-n',ru:'рекламная кампания'},
+  ]},
+  { id:'D', title:'Pünktlichkeit', color:'#4ade80', words:[
+    {art:'die',de:'Abmahnung',pl:'-en',ru:'официальное предупреждение'},
+    {art:'das',de:'Arbeitsgericht',pl:'-e',ru:'трудовой суд'},
+    {art:'der',de:'Betriebsrat',pl:'\"-e',ru:'производственный совет'},
+    {art:'die',de:'Betriebsfeier',pl:'-n',ru:'корпоративная вечеринка'},
+    {art:'',de:'dokumentieren',pl:'',ru:'документировать'},
+    {art:'der',de:'Heizungstechniker',pl:'–',ru:'специалист по отоплению (м.)'},
+    {art:'die',de:'Heizungstechnikerin',pl:'-nen',ru:'специалист по отоплению (ж.)'},
+    {art:'die',de:'Hilfe',pl:'-n',ru:'помощь'},
+    {art:'',de:'um Hilfe bitten',pl:'',ru:'просить о помощи'},
+    {art:'das',de:'Zuspätkommen',pl:'(Sg.)',ru:'опоздание'},
+    {art:'das',de:'Verständnis',pl:'(Sg.)',ru:'понимание'},
+    {art:'',de:'verärgert sein über (+ Akk.)',pl:'',ru:'быть раздражённым чем-л.'},
+  ]},
+  ]},
+  {
+    id: 'k6', title: 'Kapitel 6 – Bestellungen & Beschwerden (S.113)',
+    sections: [
+  { id:'A', title:'Bestellungen und Einkäufe', color:'#60a5fa', words:[
+    {art:'',de:'etw. aktivieren',pl:'',ru:'активировать что-л.'},
+    {art:'der',de:'Anbieter',pl:'–',ru:'поставщик, провайдер (м.)'},
+    {art:'die',de:'Anbieterin',pl:'-nen',ru:'поставщик, провайдер (ж.)'},
+    {art:'',de:'etw. aufladen',pl:'',ru:'заряжать, пополнять счёт'},
+    {art:'',de:'sich beraten lassen',pl:'',ru:'получать консультацию'},
+    {art:'',de:'sich beschweren',pl:'',ru:'жаловаться'},
+    {art:'die',de:'Bestellung',pl:'-en',ru:'заказ'},
+    {art:'das',de:'Datenvolumen',pl:'–',ru:'объём данных'},
+    {art:'',de:'etw. eingeben',pl:'',ru:'вводить что-л.'},
+    {art:'',de:'etw. einlegen',pl:'',ru:'вставлять, вкладывать что-л.'},
+    {art:'',de:'einmalig',pl:'',ru:'единоразовый, уникальный'},
+    {art:'der',de:'Einsteiger',pl:'–',ru:'начинающий (м.)'},
+    {art:'die',de:'Einsteigerin',pl:'-nen',ru:'начинающая (ж.)'},
+    {art:'',de:'etw. entgegennehmen',pl:'',ru:'принимать что-л.'},
+    {art:'das',de:'Festnetz',pl:'(Sg.)',ru:'фиксированная телефонная сеть'},
+    {art:'',de:'etw. freischalten',pl:'',ru:'разблокировать, активировать что-л.'},
+    {art:'die',de:'Grundgebühr',pl:'-en',ru:'базовая плата, абонентская плата'},
+    {art:'',de:'gültig',pl:'',ru:'действительный, в силе'},
+    {art:'',de:'günstig',pl:'',ru:'выгодный, недорогой'},
+    {art:'das',de:'Guthaben',pl:'–',ru:'баланс, остаток на счёте'},
+    {art:'der',de:'Handwerker',pl:'–',ru:'мастер, ремесленник (м.)'},
+    {art:'die',de:'Handwerkerin',pl:'-nen',ru:'мастер, ремесленник (ж.)'},
+    {art:'',de:'inklusive',pl:'',ru:'включительно, в том числе'},
+    {art:'die',de:'Kontrolle',pl:'-n',ru:'контроль, проверка'},
+    {art:'der',de:'Lieferservice',pl:'-s',ru:'служба доставки'},
+    {art:'das',de:'Netz',pl:'-e',ru:'сеть'},
+    {art:'',de:'optimal',pl:'',ru:'оптимальный'},
+    {art:'',de:'profitieren von (+ Dat.)',pl:'',ru:'извлекать выгоду из чего-л.'},
+    {art:'',de:'etw. sperren',pl:'',ru:'блокировать, перекрывать что-л.'},
+    {art:'der',de:'Tarif',pl:'-e',ru:'тариф'},
+    {art:'',de:'etw. verschicken',pl:'',ru:'отправлять что-л.'},
+    {art:'der',de:'Vertrag',pl:'\"-e',ru:'договор'},
+    {art:'die',de:'Vertragslaufzeit',pl:'-en',ru:'срок действия договора'},
+    {art:'',de:'etw. zustellen',pl:'',ru:'доставлять что-л. (почту)'},
+  ]},
+  { id:'B', title:'Ein Angebot und ein Auftrag', color:'#f59e0b', words:[
+    {art:'das',de:'Angebot',pl:'-e',ru:'предложение, оферта'},
+    {art:'der',de:'Auftrag',pl:'\"-e',ru:'заказ, поручение'},
+    {art:'der',de:'Ausdruck',pl:'\"-e',ru:'выражение; распечатка'},
+    {art:'',de:'sich binden an (+ Akk.)',pl:'',ru:'быть связанным с чем-л.'},
+    {art:'',de:'brutto',pl:'',ru:'брутто (до вычетов)'},
+    {art:'',de:'einverstanden',pl:'',ru:'согласный'},
+    {art:'',de:'etw. empfehlen',pl:'',ru:'рекомендовать что-л.'},
+    {art:'die',de:'Erledigung',pl:'-en',ru:'выполнение, решение'},
+    {art:'',de:'etw. erteilen',pl:'',ru:'давать, выдавать что-л.'},
+    {art:'der',de:'Grund',pl:'\"-e',ru:'причина, основание'},
+    {art:'die',de:'Mehrwertsteuer',pl:'(Sg.)',ru:'налог на добавленную стоимость (НДС)'},
+    {art:'',de:'netto',pl:'',ru:'нетто (после вычетов)'},
+    {art:'',de:'sorgfältig',pl:'',ru:'тщательный, аккуратный'},
+    {art:'die',de:'Summe',pl:'-n',ru:'сумма'},
+    {art:'die',de:'Unterschrift',pl:'-en',ru:'подпись'},
+    {art:'',de:'zahlbar',pl:'',ru:'подлежащий оплате'},
+    {art:'',de:'zuverlässig',pl:'',ru:'надёжный'},
+  ]},
+  { id:'C', title:'Beschwerden und Reklamationen', color:'#a78bfa', words:[
+    {art:'der',de:'Ärger',pl:'(Sg.)',ru:'досада, неприятность'},
+    {art:'der',de:'Artikel',pl:'–',ru:'артикул, товар'},
+    {art:'',de:'beschädigt',pl:'',ru:'повреждённый'},
+    {art:'die',de:'Beschwerde',pl:'-n',ru:'жалоба'},
+    {art:'',de:'defekt',pl:'',ru:'неисправный, дефектный'},
+    {art:'',de:'dreckig',pl:'',ru:'грязный'},
+    {art:'der',de:'Fleck',pl:'-en',ru:'пятно'},
+    {art:'der',de:'Mangel',pl:'–',ru:'недостаток, дефект'},
+    {art:'',de:'peinlich',pl:'',ru:'неловкий, неудобный'},
+    {art:'die',de:'Reklamation',pl:'-en',ru:'рекламация, претензия'},
+    {art:'',de:'unvollständig',pl:'',ru:'неполный, незавершённый'},
+    {art:'der',de:'Vorschlag',pl:'\"-e',ru:'предложение'},
+    {art:'',de:'etw. zerbrechen',pl:'',ru:'разбивать что-л.'},
+    {art:'',de:'etw. zerkratzen',pl:'',ru:'царапать что-л.'},
+    {art:'',de:'etw. zerreißen',pl:'',ru:'разрывать что-л.'},
+  ]},
+  { id:'D', title:'Beschwerdemanagement', color:'#4ade80', words:[
+    {art:'',de:'jdn. ausreden lassen',pl:'',ru:'дать кому-л. договорить'},
+    {art:'die',de:'Bedeutung',pl:'-en',ru:'значение, смысл'},
+    {art:'die',de:'Erwartung',pl:'-en',ru:'ожидание'},
+    {art:'',de:'etw. klären',pl:'',ru:'выяснять, разрешать что-л.'},
+    {art:'',de:'konkurrenzfähig',pl:'',ru:'конкурентоспособный'},
+    {art:'',de:'sich etw. leisten können',pl:'',ru:'позволять себе что-л.'},
+    {art:'',de:'einen Preisnachlass gewähren',pl:'',ru:'предоставлять скидку'},
+    {art:'',de:'treu bleiben',pl:'',ru:'оставаться верным, лояльным'},
+    {art:'',de:'unzufrieden',pl:'',ru:'неудовлетворённый'},
+    {art:'',de:'vereinbart',pl:'',ru:'согласованный, договорной'},
+    {art:'',de:'sich etw. vorstellen',pl:'',ru:'представлять себе что-л.'},
+  ]},
+  ]},
+  {
+    id: 'k7', title: 'Kapitel 7 – Technischer Wandel (S.131)',
+    sections: [
+  { id:'A', title:'Der technische Wandel', color:'#60a5fa', words:[
+    {art:'der',de:'Alltag',pl:'(Sg.)',ru:'повседневность, будни'},
+    {art:'der',de:'Anschluss',pl:'\"-e',ru:'подключение, соединение'},
+    {art:'die',de:'Anwendungsmöglichkeit',pl:'-en',ru:'возможность применения'},
+    {art:'das',de:'Display',pl:'-s',ru:'дисплей, экран'},
+    {art:'',de:'einsatzbereit',pl:'',ru:'готовый к использованию'},
+    {art:'das',de:'Festnetz',pl:'(Sg.)',ru:'фиксированная телефонная сеть'},
+    {art:'das',de:'Gerät',pl:'-e',ru:'устройство, прибор'},
+    {art:'',de:'herunterladen',pl:'',ru:'скачивать'},
+    {art:'',de:'etw. installieren',pl:'',ru:'устанавливать что-л.'},
+    {art:'das',de:'Kommunikationsmittel',pl:'–',ru:'средство связи'},
+    {art:'',de:'leistungsfähig',pl:'',ru:'мощный, производительный'},
+    {art:'der',de:'Mobilfunk',pl:'(Sg.)',ru:'мобильная связь'},
+    {art:'',de:'multifunktional',pl:'',ru:'многофункциональный'},
+    {art:'das',de:'Navi',pl:'-s',ru:'навигатор'},
+    {art:'das',de:'Navigationsgerät',pl:'-e',ru:'навигационное устройство'},
+    {art:'',de:'problemlos',pl:'',ru:'без проблем, беспроблемный'},
+    {art:'das',de:'Risiko',pl:'Risiken',ru:'риск'},
+    {art:'',de:'sinken',pl:'',ru:'снижаться, падать'},
+    {art:'die',de:'Tastatur',pl:'-en',ru:'клавиатура'},
+    {art:'',de:'verfügbar',pl:'',ru:'доступный, в наличии'},
+    {art:'',de:'etw. weiterentwickeln',pl:'',ru:'развивать, совершенствовать что-л.'},
+    {art:'die',de:'Zukunft',pl:'(Sg.)',ru:'будущее'},
+    {art:'',de:'in Zukunft',pl:'',ru:'в будущем'},
+  ]},
+  { id:'B', title:'Möglichkeiten des Internets', color:'#f59e0b', words:[
+    {art:'',de:'die Arbeit erleichtern',pl:'',ru:'облегчать работу'},
+    {art:'die',de:'Daten',pl:'(Pl.)',ru:'данные'},
+    {art:'',de:'Daten missbrauchen',pl:'',ru:'злоупотреблять данными'},
+    {art:'',de:'nachteilig',pl:'',ru:'невыгодный, отрицательный'},
+    {art:'',de:'papierlos',pl:'',ru:'безбумажный'},
+    {art:'die',de:'sozialen Netzwerke',pl:'',ru:'социальные сети'},
+    {art:'',de:'speichern',pl:'',ru:'сохранять, хранить'},
+    {art:'',de:'verzichten auf (+ Akk.)',pl:'',ru:'отказываться от чего-л.'},
+  ]},
+  { id:'C', title:'Veränderungen im Berufsleben', color:'#a78bfa', words:[
+    {art:'die',de:'Anforderung',pl:'-en',ru:'требование, условие'},
+    {art:'der',de:'Ausbildungsberuf',pl:'-e',ru:'профессия для профессионального обучения'},
+    {art:'',de:'beeinflussen',pl:'',ru:'влиять, оказывать влияние'},
+    {art:'die',de:'Berufsaussicht',pl:'-en',ru:'карьерная перспектива'},
+    {art:'die',de:'Digitalisierung',pl:'(Sg.)',ru:'цифровизация'},
+    {art:'die',de:'Eigenschaft',pl:'-en',ru:'свойство, качество, характеристика'},
+    {art:'der',de:'Erfolg',pl:'-e',ru:'успех'},
+    {art:'',de:'Erfolg haben',pl:'',ru:'иметь успех'},
+    {art:'',de:'fächerübergreifend',pl:'',ru:'межпредметный, многодисциплинарный'},
+    {art:'die',de:'Gesprächs- und Verhandlungsführung',pl:'(Sg.)',ru:'ведение переговоров'},
+    {art:'',de:'interkulturell',pl:'',ru:'межкультурный'},
+    {art:'die',de:'IT-Systemkauffrau',pl:'Pl. IT-Kaufleute',ru:'специалист по IT-системам (ж.)'},
+    {art:'der',de:'IT-Systemkaufmann',pl:'Pl. IT-Kaufleute',ru:'специалист по IT-системам (м.)'},
+    {art:'die',de:'Soft Skills',pl:'(Pl.)',ru:'мягкие навыки'},
+    {art:'',de:'teamfähig',pl:'',ru:'умеющий работать в команде'},
+    {art:'die',de:'Teamfähigkeit',pl:'(Sg.)',ru:'способность работать в команде'},
+    {art:'die',de:'Umfrage',pl:'-n',ru:'опрос, анкетирование'},
+    {art:'',de:'wahrscheinlich',pl:'',ru:'вероятно'},
+    {art:'',de:'Wert legen auf (+ Akk.)',pl:'',ru:'придавать значение чему-л.'},
+    {art:'das',de:'Wissensmanagement',pl:'(Sg.)',ru:'управление знаниями'},
+    {art:'',de:'zuverlässig',pl:'',ru:'надёжный'},
+    {art:'die',de:'Zuverlässigkeit',pl:'(Pl.)',ru:'надёжность'},
+  ]},
+  { id:'D', title:'Industrielle Revolutionen', color:'#4ade80', words:[
+    {art:'der',de:'Arbeitsablauf',pl:'\"-e',ru:'рабочий процесс, порядок действий'},
+    {art:'die',de:'Automatisierung',pl:'(Sg.)',ru:'автоматизация'},
+    {art:'',de:'etw. einführen',pl:'',ru:'вводить, внедрять что-л.'},
+    {art:'die',de:'Einführung',pl:'-en',ru:'введение, внедрение'},
+    {art:'',de:'etw. fernsteuern',pl:'',ru:'управлять дистанционно'},
+    {art:'das',de:'Fließband',pl:'\"-er',ru:'конвейер'},
+    {art:'die',de:'Informationstechnologie',pl:'-n',ru:'информационные технологии'},
+    {art:'das',de:'Internet der Dinge',pl:'(Sg.)',ru:'Интернет вещей'},
+    {art:'der',de:'Sprachassistent',pl:'-en',ru:'голосовой помощник'},
+    {art:'die',de:'Vernetzung',pl:'-en',ru:'объединение в сеть, интеграция'},
+    {art:'',de:'vielfältig',pl:'',ru:'разнообразный'},
+  ]},
+  ]}
+];
+// end CHAPTERS
+
+// ── State ────────────────────────────────────────────────────────────────────
+let currentChapter = CHAPTERS[0];
+let knownSet = new Set(JSON.parse(localStorage.getItem('b1_known') || '[]'));
+let currentMode = 'table';
+let fcQueue = [], fcIndex = 0, fcKnown = 0, showTranslation = false, searchQuery = '';
+
+function saveKnown(){ try{localStorage.setItem('b1_known',JSON.stringify([...knownSet]));}catch(e){} }
+function totalWords(){ return CHAPTERS.flatMap(ch=>ch.sections.flatMap(s=>s.words)).length; }
+function chapterWords(ch){ return ch.sections.flatMap(s=>s.words.map(w=>({...w,section:s.id,sectionTitle:s.title,sectionColor:s.color}))); }
+
+function renderChapterTabs(){
+  document.getElementById('chapter-tabs').innerHTML = CHAPTERS.map(ch=>
+    `<button class="tab ${ch.id===currentChapter.id?'active':''}" onclick="switchChapter('${ch.id}')">${ch.title}</button>`
+  ).join('');
+  document.getElementById('header-sub').textContent = `B1+ · ${totalWords()} слов · изучено ${knownSet.size}`;
+}
+function switchChapter(id){
+  currentChapter = CHAPTERS.find(c=>c.id===id);
+  searchQuery='';
+  const inp=document.getElementById('searchInput');
+  if(inp) inp.value='';
+  renderChapterTabs();
+  if(currentMode==='table') renderTable(); else initFlashcards();
+}
+
+function renderTable(){
+  const q=searchQuery.toLowerCase();
+  let html='';
+  for(const sec of currentChapter.sections){
+    const filtered=sec.words.filter(w=>!q||w.de.toLowerCase().includes(q)||w.ru.toLowerCase().includes(q));
+    if(!filtered.length) continue;
+    html+=`<div class="section-block">
+      <div class="section-title" style="color:${sec.color}">
+        <span class="letter" style="background:${sec.color}">${sec.id}</span>${sec.title}
+      </div><div class="word-grid">`;
+    for(const w of filtered){
+      const key=currentChapter.id+':'+sec.id+':'+w.de;
+      const known=knownSet.has(key);
+      html+=`<div class="word-row ${known?'known':''}" onclick="toggleWord('${currentChapter.id}','${sec.id}','${w.de.replace(/'/g,"\'")}',this)">
+        <div class="art">${w.art}</div>
+        <div style="flex:1"><div class="de">${w.de}${w.pl?` <span class="pl">${w.pl}</span>`:''}</div>
+        <div class="ru-tr">${w.ru}</div></div></div>`;
+    }
+    html+='</div></div>';
+  }
+  document.getElementById('tableContent').innerHTML=html;
+  document.getElementById('knownCount').textContent=knownSet.size;
+  document.getElementById('totalCount').textContent=totalWords();
+}
+
+function toggleWord(chId,secId,de,el){
+  el.classList.toggle('show-tr');
+  const key=chId+':'+secId+':'+de;
+  if(el.classList.contains('show-tr')){
+    knownSet.add(key); el.classList.add('known'); saveKnown();
+    document.getElementById('knownCount').textContent=knownSet.size;
+    document.getElementById('header-sub').textContent=`B1+ · ${totalWords()} слов · изучено ${knownSet.size}`;
+  }
+}
+function filterWords(){ searchQuery=document.getElementById('searchInput').value; renderTable(); }
+
+function initFlashcards(){
+  fcQueue=[...chapterWords(currentChapter)].sort(()=>Math.random()-.5);
+  fcIndex=0; fcKnown=0; showTranslation=false;
+  document.getElementById('done-msg').style.display='none';
+  document.getElementById('flashcard').style.display='flex';
+  document.querySelectorAll('.card-nav .nav-btn').forEach(b=>b.style.display='');
+  document.getElementById('fc-total').textContent=fcQueue.length;
+  showCard();
+}
+function showCard(){
+  if(fcIndex>=fcQueue.length){
+    document.getElementById('done-msg').style.display='block';
+    document.getElementById('flashcard').style.display='none';
+    document.querySelectorAll('.card-nav .nav-btn').forEach(b=>b.style.display='none');
+    return;
+  }
+  const w=fcQueue[fcIndex];
+  document.getElementById('fc-article').textContent=w.art;
+  document.getElementById('fc-word').textContent=w.de;
+  document.getElementById('fc-plural').textContent=w.pl||'';;
+  document.getElementById('fc-ru').textContent=w.ru;
+  document.getElementById('fc-tag').textContent=w.section;
+  document.getElementById('fc-tag').style.background=w.sectionColor+'22';
+  document.getElementById('fc-tag').style.color=w.sectionColor;
+  document.getElementById('fc-idx').textContent=fcIndex+1;
+  document.getElementById('fc-left').textContent=fcQueue.length-fcIndex;
+  document.getElementById('fc-known').textContent=fcKnown;
+  document.getElementById('fc-progress').style.width=(fcIndex/fcQueue.length*100).toFixed(0)+'%';
+  document.getElementById('flashcard').classList.remove('revealed');
+  showTranslation=false;
+}
+function revealCard(){ if(showTranslation)return; showTranslation=true; document.getElementById('flashcard').classList.add('revealed'); }
+function nextCard(known){
+  if(!showTranslation){revealCard();return;}
+  if(known){ fcKnown++; knownSet.add(currentChapter.id+':'+fcQueue[fcIndex].section+':'+fcQueue[fcIndex].de); saveKnown(); }
+  fcIndex++; showCard();
+}
+function resetFlashcards(){ initFlashcards(); }
+
+function setMode(mode){
+  currentMode=mode;
+  document.getElementById('table-mode').style.display=mode==='table'?'block':'none';
+  document.getElementById('flashcard-mode').style.display=mode==='flashcard'?'block':'none';
+  document.querySelectorAll('.mode-btn').forEach((b,i)=>{ b.classList.toggle('active',(i===0&&mode==='table')||(i===1&&mode==='flashcard')); });
+  if(mode==='flashcard') initFlashcards();
+}
+
+renderChapterTabs();
+setMode('table');
+renderTable();
+</script>
+</body>
+</html>
