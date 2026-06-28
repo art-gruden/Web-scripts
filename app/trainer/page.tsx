@@ -6,6 +6,40 @@ type TabName = "meanings" | "quiz" | "builder" | "perfekt" | "leaderboard";
 type QuizMode = "quiz" | "perfekt";
 type Lang = "ua" | "de";
 
+interface UIStrings {
+  tabs: string[];
+  tabIds: TabName[];
+  subtitle: string;
+  loading: string;
+  next: string;
+  correct: string;
+  wrong: string;
+  hint: string;
+  check: string;
+  skip: string;
+  taskLabel: string;
+  taskCounter: (i: number, t: number) => string;
+  inputPlaceholder: string;
+  greatAnswer: string;
+  wrongAnswer: string;
+  restart: string;
+  allDone: string;
+  allDoneMsg: (n: number) => string;
+  saveName: string;
+  namePlaceholder: string;
+  save: string;
+  saveErr: string;
+  saved: (rank: number | null) => string;
+  leaderTitle: string;
+  leaderRefresh: string;
+  leaderEmpty: string;
+  leaderErr: string;
+  perfekt: string;
+  resultMsg: (pct: number) => string;
+  resultScore: (ok: number, total: number, pct: number) => string;
+  quizCounter: (i: number, t: number) => string;
+}
+
 interface LeaderboardEntry {
   name: string;
   score: number;
@@ -15,7 +49,7 @@ interface LeaderboardEntry {
 // ============================================================
 // ПЕРЕКЛАДИ UI
 // ============================================================
-const UI = {
+const UI: Record<Lang, UIStrings> = {
   ua: {
     tabs: ["📚 Значення", "🎯 Тест", "✍️ Речення", "⏱ Перфект", "🏆 Лідери"],
     tabIds: ["meanings", "quiz", "builder", "perfekt", "leaderboard"] as TabName[],
@@ -356,7 +390,7 @@ function MeaningCard({ m, lang }: { m: typeof meanings[0]; lang: Lang }) {
   );
 }
 
-function QuizSection({ questions, mode, lang, t }: { questions: typeof quizQuestions; mode: QuizMode; lang: Lang; t: typeof UI["ua"] }) {
+function QuizSection({ questions, mode, lang, t }: { questions: typeof quizQuestions; mode: QuizMode; lang: Lang; t: UIStrings }) {
   const [shuffled, setShuffled] = useState<typeof questions>([]);
   const [opts, setOpts] = useState<string[][]>([]);
   const [idx, setIdx] = useState(0);
@@ -489,7 +523,7 @@ function QuizSection({ questions, mode, lang, t }: { questions: typeof quizQuest
   );
 }
 
-function BuilderSection({ lang, t }: { lang: Lang; t: typeof UI["ua"] }) {
+function BuilderSection({ lang, t }: { lang: Lang; t: UIStrings }) {
   const [idx, setIdx] = useState(0);
   const [val, setVal] = useState("");
   const [status, setStatus] = useState<"idle" | "ok" | "bad" | "skip">("idle");
@@ -559,7 +593,7 @@ function BuilderSection({ lang, t }: { lang: Lang; t: typeof UI["ua"] }) {
   );
 }
 
-function LeaderboardSection({ t }: { t: typeof UI["ua"] }) {
+function LeaderboardSection({ t }: { t: UIStrings }) {
   const [data, setData] = useState<LeaderboardEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(false);
