@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>B2 Redemittel für Sprechen — Tренажер</title>
+<style>
+  :root{
+    --bg:#0f1115;
+    --card:#181b22;
+    --card-hover:#1f232c;
+    --border:#2a2e38;
+    --text:#e8e9ec;
+    --muted:#9aa0ab;
+    --accent:#7c9eff;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--bg);
+    color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    padding-bottom:60px;
+  }
+  header{
+    position:sticky; top:0; z-index:10;
+    background:linear-gradient(180deg,#0f1115 85%,transparent);
+    padding:18px 16px 10px;
+    backdrop-filter:blur(6px);
+  }
+  h1{
+    font-size:1.35rem;
+    margin:0 0 4px;
+    background:linear-gradient(90deg,#7c9eff,#c07cff);
+    -webkit-background-clip:text;
+    background-clip:text;
+    color:transparent;
+  }
+  .sub{ color:var(--muted); font-size:.85rem; margin-bottom:12px;}
+  .controls{
+    display:flex; gap:8px; flex-wrap:wrap; margin-top:10px;
+  }
+  input[type=text]{
+    flex:1; min-width:150px;
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:10px 12px;
+    border-radius:10px;
+    font-size:.95rem;
+  }
+  input[type=text]:focus{outline:none; border-color:var(--accent);}
+  button.mode-btn{
+    background:var(--card);
+    border:1px solid var(--border);
+    color:var(--text);
+    padding:10px 14px;
+    border-radius:10px;
+    font-size:.85rem;
+    cursor:pointer;
+  }
+  button.mode-btn.active{
+    background:var(--accent);
+    color:#0f1115;
+    border-color:var(--accent);
+    font-weight:600;
+  }
+  main{ padding:6px 16px 20px; }
+  .count{ color:var(--muted); font-size:.8rem; margin:6px 0 14px; }
+
+  .card{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-left:4px solid var(--accent-color,#7c9eff);
+    border-radius:12px;
+    margin-bottom:10px;
+    overflow:hidden;
+    transition:background .15s;
+  }
+  .card-head{
+    display:flex; align-items:center; gap:10px;
+    padding:14px 14px;
+    cursor:pointer;
+  }
+  .card-head:active{ background:var(--card-hover); }
+  .num{
+    flex:0 0 auto;
+    width:28px; height:28px;
+    border-radius:8px;
+    background:var(--accent-color,#7c9eff);
+    color:#0f1115;
+    font-weight:700;
+    font-size:.8rem;
+    display:flex; align-items:center; justify-content:center;
+  }
+  .titles{ flex:1; min-width:0; }
+  .de-title{ font-weight:600; font-size:.95rem; }
+  .ua-title{ color:var(--muted); font-size:.78rem; margin-top:1px; }
+  .chevron{
+    color:var(--muted);
+    transition:transform .2s;
+    flex:0 0 auto;
+    font-size:.8rem;
+  }
+  .card.open .chevron{ transform:rotate(90deg); }
+  .card-body{
+    max-height:0;
+    overflow:hidden;
+    transition:max-height .25s ease;
+    padding:0 14px;
+  }
+  .card.open .card-body{
+    max-height:900px;
+    padding:0 14px 16px;
+  }
+  ul.phrases{ margin:4px 0 10px; padding-left:18px; }
+  ul.phrases li{ margin-bottom:6px; font-size:.92rem; line-height:1.4; }
+  .beispiel{
+    background:#11141a;
+    border:1px solid var(--border);
+    border-radius:8px;
+    padding:8px 10px;
+    font-size:.86rem;
+    color:#c9cdd6;
+  }
+  .beispiel b{ color:var(--accent); font-weight:600; }
+
+  /* practice mode */
+  .practice-box{
+    background:var(--card);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:22px 18px;
+    text-align:center;
+    margin-top:8px;
+  }
+  .practice-num{
+    display:inline-block;
+    background:var(--accent-color,#7c9eff);
+    color:#0f1115;
+    font-weight:700;
+    font-size:.8rem;
+    padding:2px 10px;
+    border-radius:20px;
+    margin-bottom:10px;
+  }
+  .practice-title{ font-size:1.15rem; font-weight:700; }
+  .practice-ua{ color:var(--muted); font-size:.85rem; margin-top:4px; margin-bottom:18px;}
+  .practice-answer{ text-align:left; display:none; }
+  .practice-answer.show{ display:block; }
+  .practice-actions{
+    display:flex; gap:10px; justify-content:center; margin-top:18px; flex-wrap:wrap;
+  }
+  .practice-actions button{
+    background:var(--accent);
+    color:#0f1115;
+    border:none;
+    padding:10px 18px;
+    border-radius:10px;
+    font-weight:600;
+    font-size:.9rem;
+    cursor:pointer;
+  }
+  .practice-actions button.secondary{
+    background:transparent;
+    border:1px solid var(--border);
+    color:var(--text);
+  }
+  .progress{ color:var(--muted); font-size:.8rem; margin-top:14px; }
+  .hidden{ display:none !important; }
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🇩🇪 B2 Redemittel für Sprechen</h1>
+  <div class="sub">40 категорій · довідник + тренажер для усного іспиту</div>
+  <div class="controls">
+    <input type="text" id="search" placeholder="Пошук: категорія або фраза...">
+    <button class="mode-btn active" id="btnList">Список</button>
+    <button class="mode-btn" id="btnPractice">Тренування</button>
+  </div>
+</header>
+
+<main>
+  <div class="count" id="count"></div>
+  <div id="listView"></div>
+
+  <div id="practiceView" class="hidden">
+    <div class="practice-box">
+      <div class="practice-num" id="pNum">1</div>
+      <div class="practice-title" id="pTitleDe">...</div>
+      <div class="practice-ua" id="pTitleUa">...</div>
+
+      <div class="practice-answer" id="pAnswer">
+        <ul class="phrases" id="pPhrases"></ul>
+        <div class="beispiel" id="pBeispiel"></div>
+      </div>
+
+      <div class="practice-actions">
+        <button id="showAnswerBtn">Показати відповідь</button>
+        <button class="secondary" id="nextBtn">Наступна ➜</button>
+      </div>
+      <div class="progress" id="pProgress"></div>
+    </div>
+  </div>
+</main>
+
+<script>
+const palette = ["#7c9eff","#ff8fa3","#7fe0c0","#ffcf7f","#c07cff","#7fd0ff","#ff9f6b","#a3e07f"];
+
+const data = [
+{n:1, de:"Meinung ausdrücken", en:"Expressing Opinions", ua:"Висловлення думки",
+ phrases:["Meiner Meinung nach ...","Ich bin der Meinung, dass ...","Ich denke/glaube/finde, dass ...","Aus meiner Sicht ...","Soweit ich weiß ...","Meines Erachtens ...","Ich bin fest davon überzeugt, dass ...","Ich vertrete die Ansicht, dass ...","Es steht außer Frage, dass ..."],
+ beispiel:"Meiner Meinung nach sollte man mehr öffentliche Verkehrsmittel benutzen. Ich bin fest davon überzeugt, dass Fremdsprachen wichtig sind."},
+
+{n:2, de:"Zustimmung ausdrücken", en:"Agreeing", ua:"Вираження згоди",
+ phrases:["Da stimme ich dir/Ihnen zu.","Genau!","Das sehe ich genauso.","Du hast/Sie haben völlig recht.","Ich teile diese Meinung.","Da hast du/haben Sie teilweise recht.","Ich stimme dir/Ihnen bis zu einem gewissen Grad zu."],
+ beispiel:"Das sehe ich genauso, weil soziale Medien viele Vorteile haben."},
+
+{n:3, de:"Widerspruch ausdrücken", en:"Disagreeing", ua:"Вираження незгоди",
+ phrases:["Da bin ich anderer Meinung.","Ich sehe das anders.","Ich kann dir/Ihnen nicht ganz zustimmen.","Ich bezweifle, dass ...","Das stimmt meiner Meinung nach nicht.","Ganz im Gegenteil!"],
+ beispiel:"Ich sehe das anders, weil viele Menschen von zu Hause aus produktiver arbeiten."},
+
+{n:4, de:"Vor- und Nachteile nennen", en:"Advantages & Disadvantages", ua:"Переваги та недоліки",
+ phrases:["Vorteile: Ein Vorteil davon ist, dass ...","Das hat den Vorteil, dass ...","Positiv daran ist ...","Nachteile: Ein Nachteil davon ist, dass ...","Problematisch finde ich, dass ...","Das könnte dazu führen, dass ..."],
+ beispiel:"Ein Vorteil von Onlinekursen ist, dass man flexibel lernen kann. Ein Nachteil ist, dass der direkte Kontakt fehlt."},
+
+{n:5, de:"Beispiele geben", en:"Giving Examples", ua:"Наведення прикладів",
+ phrases:["Zum Beispiel ...","Beispielsweise ...","Ein gutes Beispiel dafür ist ...","Das kann man an folgendem Beispiel sehen:"],
+ beispiel:"Viele Menschen lernen online, zum Beispiel über Apps oder Videos."},
+
+{n:6, de:"Gründe nennen", en:"Giving Reasons", ua:"Наведення причин",
+ phrases:["Der Grund dafür ist, dass ...","Das liegt daran, dass ...","Wegen ...","Aufgrund von ..."],
+ beispiel:"Viele Menschen treiben Sport, weil sie gesund bleiben möchten."},
+
+{n:7, de:"Folgen beschreiben", en:"Describing Consequences", ua:"Опис наслідків",
+ phrases:["Deshalb ...","Aus diesem Grund ...","Folglich ...","Das führt dazu, dass ..."],
+ beispiel:"Viele Menschen arbeiten online. Deshalb verbringen sie mehr Zeit zu Hause."},
+
+{n:8, de:"Etwas vergleichen", en:"Comparing", ua:"Порівняння",
+ phrases:["Im Vergleich zu ...","Ebenso wie ...","Anders als ...","Während ..."],
+ beispiel:"Anders als früher arbeiten heute viele Menschen digital."},
+
+{n:9, de:"Vermutungen äußern", en:"Making Assumptions", ua:"Висловлення припущень",
+ phrases:["Wahrscheinlich ...","Vermutlich ...","Es könnte sein, dass ...","Ich nehme an, dass ..."],
+ beispiel:"Es könnte sein, dass die Preise weiter steigen."},
+
+{n:10, de:"Unsicherheit ausdrücken", en:"Expressing Uncertainty", ua:"Вираження невпевненості",
+ phrases:["Ich bin mir nicht sicher, ob ...","Soweit ich weiß ...","Vielleicht ..."],
+ beispiel:"Ich bin mir nicht sicher, ob das wirklich funktioniert."},
+
+{n:11, de:"Diskussion strukturieren", en:"Structuring a Discussion", ua:"Структурування дискусії",
+ phrases:["Gespräch beginnen: Lass uns über ... sprechen.","Heute möchte ich über ... sprechen.","Thema wechseln: Kommen wir nun zu ...","Ein weiterer Punkt ist ...","Zusammenfassen: Zusammenfassend möchte ich sagen, dass ..."],
+ beispiel:"Zusammenfassend kann man sagen, dass Technologie sowohl Vor- als auch Nachteile hat."},
+
+{n:12, de:"Vorschläge machen", en:"Making Suggestions", ua:"Внесення пропозицій",
+ phrases:["Wir könnten ...","Wie wäre es mit ...?","Ich schlage vor, dass ...","Warum nicht ...?"],
+ beispiel:"Wir könnten gemeinsam Deutsch lernen."},
+
+{n:13, de:"Jemanden überzeugen", en:"Persuading", ua:"Переконання когось",
+ phrases:["Du solltest/Sie sollten ...","Es wäre besser, wenn ...","Ich würde dir/Ihnen empfehlen, ..."],
+ beispiel:"Ich würde dir empfehlen, jeden Tag Deutsch zu sprechen."},
+
+{n:14, de:"Zeit gewinnen", en:"Buying Time While Speaking", ua:"Виграти час",
+ phrases:["Lass mich kurz überlegen.","Das ist eine interessante Frage.","Darüber habe ich noch nie nachgedacht.","Wie soll ich das erklären?"],
+ beispiel:"Das ist eine interessante Frage. Ich denke, dass ..."},
+
+{n:15, de:"Gefühle ausdrücken", en:"Expressing Feelings", ua:"Вираження почуттів",
+ phrases:["Ich freue mich darüber, dass ...","Es macht mich traurig, dass ...","Ich ärgere mich darüber, dass ...","Ich habe Angst, dass ..."],
+ beispiel:"Ich freue mich darüber, dass immer mehr Menschen Fremdsprachen lernen."},
+
+{n:16, de:"Über Erfahrungen sprechen", en:"Talking About Experiences", ua:"Розповідь про досвід",
+ phrases:["Ich habe die Erfahrung gemacht, dass ...","Früher dachte ich, dass ..., aber heute ...","In meinem Fall ..."],
+ beispiel:"Ich habe die Erfahrung gemacht, dass regelmäßiges Lernen sehr wichtig ist."},
+
+{n:17, de:"Statistik und Zahlen beschreiben", en:"Describing Statistics & Numbers", ua:"Опис статистики й цифр",
+ phrases:["Die Mehrheit der Menschen ...","Ein großer Teil der Bevölkerung ...","Die Zahl der ... steigt/sinkt."],
+ beispiel:"Die Zahl der Onlinekurse steigt jedes Jahr."},
+
+{n:18, de:"Diskussion höflich beenden", en:"Politely Ending a Discussion", ua:"Ввічливе завершення дискусії",
+ phrases:["Danke für das Gespräch.","Das war ein interessantes Gespräch.","Ich hoffe, wir konnten eine Lösung finden."],
+ beispiel:"Das war ein interessantes Gespräch. Danke dafür!"},
+
+{n:19, de:"Wichtige Konnektoren – Überblick", en:"Important Connectors – Overview", ua:"Важливі конектори",
+ phrases:["Kontrast: allerdings, trotzdem, obwohl, hingegen → jedoch, auch wenn, im Gegensatz","Grund/Folge: deshalb, deswegen, somit → daher, aus diesem Grund, folglich","Ergänzung: außerdem, darüber hinaus, zudem → nebenbei, zusätzlich","Bedingung: falls, sofern → im Fall, vorausgesetzt, unter der Bedingung, dass"],
+ beispiel:""},
+
+{n:20, de:"Perfekte B2-Sätze für die Prüfung", en:"Perfect B2 Sentences for the Exam", ua:"Ідеальні речення для іспиту B2",
+ phrases:["Einerseits ... andererseits ...","Je mehr ..., desto ...","Nicht nur ..., sondern auch ...","Sowohl ... als auch ..."],
+ beispiel:"Je mehr man spricht, desto besser wird man. Nicht nur Jugendliche, sondern auch Erwachsene nutzen soziale Medien."},
+
+{n:21, de:"Nach der Meinung fragen", en:"Asking for Opinions", ua:"Запитання про думку",
+ phrases:["Was denkst du darüber?","Wie findest du das?","Was ist deine/Ihre Meinung dazu?","Bist du/Sind Sie damit einverstanden?","Wie stehst du/stehen Sie dazu?"],
+ beispiel:"Wie stehst du zur Nutzung von künstlicher Intelligenz?"},
+
+{n:22, de:"Nachfragen und Klarstellung", en:"Asking for Clarification", ua:"Уточнення",
+ phrases:["Was meinst du/meinen Sie genau?","Kannst du/Können Sie das genauer erklären?","Wie darf ich das verstehen?","Könntest du/Könnten Sie ein Beispiel geben?"],
+ beispiel:"Kannst du das genauer erklären?"},
+
+{n:23, de:"Gespräch unterbrechen", en:"Interrupting Politely", ua:"Ввічливе переривання розмови",
+ phrases:["Darf ich kurz etwas sagen?","Entschuldigung, darf ich etwas hinzufügen?","Einen Moment bitte.","Ich möchte kurz darauf reagieren."],
+ beispiel:"Entschuldigung, ich möchte kurz etwas hinzufügen."},
+
+{n:24, de:"Gespräch am Laufen halten", en:"Keeping the Conversation Going", ua:"Підтримання розмови",
+ phrases:["Wirklich?","Das ist interessant.","Erzähl mal mehr darüber.","Und was passierte dann?","Ach so!"],
+ beispiel:"Das ist interessant. Kannst du mehr darüber erzählen?"},
+
+{n:25, de:"Überraschung ausdrücken", en:"Expressing Surprise", ua:"Вираження здивування",
+ phrases:["Wirklich?","Das überrascht mich.","Das hätte ich nicht gedacht.","Unglaublich!"],
+ beispiel:"Das hätte ich wirklich nicht gedacht."},
+
+{n:26, de:"Hoffnung und Wünsche ausdrücken", en:"Expressing Hope & Wishes", ua:"Надія та побажання",
+ phrases:["Ich hoffe, dass ...","Hoffentlich ...","Ich wünsche mir, dass ...","Es wäre schön, wenn ..."],
+ beispiel:"Ich hoffe, dass sich die Situation verbessert."},
+
+{n:27, de:"Ziele ausdrücken", en:"Expressing Goals", ua:"Вираження цілей",
+ phrases:["Mein Ziel ist es, ...","Ich habe vor, ...","Ich plane, ...","In Zukunft möchte ich ..."],
+ beispiel:"Mein Ziel ist es, fließend Deutsch zu sprechen."},
+
+{n:28, de:"Bedingungen ausdrücken", en:"Expressing Conditions", ua:"Вираження умов",
+ phrases:["Wenn ...","Falls ...","Sofern ...","Unter der Bedingung, dass ..."],
+ beispiel:"Falls ich Zeit habe, komme ich mit."},
+
+{n:29, de:"Konsequenzen und Resultate ausdrücken", en:"Expressing Consequences & Results", ua:"Наслідки та результати",
+ phrases:["Das hat zur Folge, dass ...","Daraus ergibt sich, dass ...","Infolgedessen ..."],
+ beispiel:"Viele Menschen sparen Energie. Infolgedessen sinken die Kosten."},
+
+{n:30, de:"Etwas betonen", en:"Emphasizing", ua:"Наголошення на важливому",
+ phrases:["Besonders wichtig ist, dass ...","Vor allem ...","Man darf nicht vergessen, dass ...","Entscheidend ist, dass ..."],
+ beispiel:"Man darf nicht vergessen, dass Gesundheit sehr wichtig ist."},
+
+{n:31, de:"Reihenfolge ausdrücken", en:"Sequencing Ideas", ua:"Послідовність викладу",
+ phrases:["Zuerst ...","Danach ...","Anschließend ...","Schließlich ..."],
+ beispiel:"Zuerst lerne ich die Wörter, anschließend mache ich Übungen."},
+
+{n:32, de:"Über Probleme sprechen", en:"Talking About Problems", ua:"Розмова про проблеми",
+ phrases:["Das größte Problem ist, dass ...","Schwierigerweise ...","Man hat oft das Problem, dass ...","Das verursacht viele Probleme."],
+ beispiel:"Das größte Problem ist, dass viele Menschen keine Zeit haben."},
+
+{n:33, de:"Lösungen vorschlagen", en:"Suggesting Solutions", ua:"Пропозиція рішень",
+ phrases:["Eine mögliche Lösung wäre ...","Man könnte versuchen, ...","Es wäre sinnvoll, ...","Wir sollten daran arbeiten, dass ..."],
+ beispiel:""},
+
+{n:34, de:"Über Zukunft sprechen", en:"Talking About the Future", ua:"Розмова про майбутнє",
+ phrases:["In Zukunft ...","Früher oder später ...","Es ist wahrscheinlich, dass ...","Ich kann mir vorstellen, dass ..."],
+ beispiel:"In Zukunft werden viele Menschen elektrisch fahren."},
+
+{n:35, de:"Etwas relativieren", en:"Softening Statements", ua:"Пом'якшення тверджень",
+ phrases:["Bis zu einem gewissen Grad ...","Teilweise stimmt das.","Das kommt darauf an.","Nicht unbedingt."],
+ beispiel:"Das kommt darauf an, wie viel Zeit man hat."},
+
+{n:36, de:"Formelle Redemittel für Prüfungen", en:"Formal Phrases for Exams", ua:"Формальні вислови для іспитів",
+ phrases:["Ich möchte zunächst sagen, dass ...","Im Folgenden werde ich ...","Abschließend lässt sich sagen, dass ...","Damit komme ich zum Schluss."],
+ beispiel:"Abschließend lässt sich sagen, dass Bildung sehr wichtig ist."},
+
+{n:37, de:"Spontane Reaktionen", en:"Spontaneous Reactions", ua:"Спонтанні реакції",
+ phrases:["Ach wirklich?","Kein Problem.","Das klingt gut.","Gute Idee!","Warum eigentlich nicht?"],
+ beispiel:"Das klingt nach einer guten Idee."},
+
+{n:38, de:"Typische B2-Prüfungsphrasen", en:"Typical B2 Exam Phrases", ua:"Типові фрази іспиту B2",
+ phrases:["Darüber wird heutzutage viel diskutiert.","Ich habe persönlich die Erfahrung gemacht, dass ...","Ich könnte mir vorstellen, dass ...","Insgesamt bin ich der Ansicht, dass ..."],
+ beispiel:""},
+
+{n:39, de:"Nützliche Satzanfänge für B2", en:"Useful Sentence Starters for B2", ua:"Корисні початки речень B2",
+ phrases:["Einer der wichtigsten Gründe ist, dass ...","Heutzutage spielt ... eine große Rolle.","Es lässt sich nicht leugnen, dass ...","Viele Menschen sind der Meinung, dass ...","Ein weiterer Aspekt ist ..."],
+ beispiel:""},
+
+{n:40, de:"Hochwertige B2-Ausdrücke", en:"High-Level B2 Expressions", ua:"Високоякісні вислови B2",
+ phrases:["im Großen und Ganzen → by and large","meiner Ansicht nach → in my opinion","unter anderem → among other things","in erster Linie → primarily","letzten Endes → ultimately","sowohl kurzfristig als auch langfristig → both short-term and long-term"],
+ beispiel:"Im Großen und Ganzen bin ich zufrieden. Letzten Endes muss jeder selbst entscheiden."},
+];
+
+const listView = document.getElementById('listView');
+const countEl = document.getElementById('count');
+const searchEl = document.getElementById('search');
+
+function renderList(filter=""){
+  const f = filter.trim().toLowerCase();
+  listView.innerHTML = "";
+  let shown = 0;
+  data.forEach((item,i)=>{
+    const haystack = (item.de+" "+item.en+" "+item.ua+" "+item.phrases.join(" ")+" "+item.beispiel).toLowerCase();
+    if(f && !haystack.includes(f)) return;
+    shown++;
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.style.setProperty('--accent-color', palette[i % palette.length]);
+    card.innerHTML = `
+      <div class="card-head">
+        <div class="num">${item.n}</div>
+        <div class="titles">
+          <div class="de-title">${item.de}</div>
+          <div class="ua-title">${item.ua} · ${item.en}</div>
+        </div>
+        <div class="chevron">▸</div>
+      </div>
+      <div class="card-body">
+        <ul class="phrases">${item.phrases.map(p=>`<li>${p}</li>`).join('')}</ul>
+        ${item.beispiel ? `<div class="beispiel"><b>Beispiel:</b> ${item.beispiel}</div>` : ''}
+      </div>
+    `;
+    card.querySelector('.card-head').addEventListener('click', ()=>{
+      card.classList.toggle('open');
+    });
+    listView.appendChild(card);
+  });
+  countEl.textContent = f ? `Знайдено: ${shown} з 40` : `Усього категорій: 40`;
+}
+renderList();
+searchEl.addEventListener('input', e=> renderList(e.target.value));
+
+// ----- practice mode -----
+const btnList = document.getElementById('btnList');
+const btnPractice = document.getElementById('btnPractice');
+const listViewWrap = document.getElementById('listView');
+const practiceView = document.getElementById('practiceView');
+const controlsCount = document.getElementById('count');
+
+let order = [];
+let idx = -1;
+let practicedSet = new Set();
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function startPractice(){
+  order = shuffle(data.map((_,i)=>i));
+  idx = -1;
+  practicedSet.clear();
+  nextCard();
+}
+
+function nextCard(){
+  idx++;
+  if(idx >= order.length){
+    order = shuffle(order);
+    idx = 0;
+  }
+  const item = data[order[idx]];
+  practicedSet.add(item.n);
+  document.getElementById('pNum').textContent = item.n;
+  document.getElementById('pNum').style.background = palette[order[idx]%palette.length];
+  document.getElementById('pTitleDe').textContent = item.de;
+  document.getElementById('pTitleUa').textContent = item.ua + " · " + item.en;
+  document.getElementById('pPhrases').innerHTML = item.phrases.map(p=>`<li>${p}</li>`).join('');
+  document.getElementById('pBeispiel').innerHTML = item.beispiel ? `<b>Beispiel:</b> ${item.beispiel}` : '';
+  document.getElementById('pBeispiel').style.display = item.beispiel ? 'block' : 'none';
+  document.getElementById('pAnswer').classList.remove('show');
+  document.getElementById('pProgress').textContent = `Опрацьовано: ${practicedSet.size} / 40`;
+}
+
+document.getElementById('showAnswerBtn').addEventListener('click', ()=>{
+  document.getElementById('pAnswer').classList.add('show');
+});
+document.getElementById('nextBtn').addEventListener('click', nextCard);
+
+btnList.addEventListener('click', ()=>{
+  btnList.classList.add('active');
+  btnPractice.classList.remove('active');
+  listViewWrap.classList.remove('hidden');
+  practiceView.classList.add('hidden');
+  controlsCount.classList.remove('hidden');
+  searchEl.classList.remove('hidden');
+});
+btnPractice.addEventListener('click', ()=>{
+  btnPractice.classList.add('active');
+  btnList.classList.remove('active');
+  listViewWrap.classList.add('hidden');
+  practiceView.classList.remove('hidden');
+  controlsCount.classList.add('hidden');
+  searchEl.classList.add('hidden');
+  startPractice();
+});
+</script>
+</body>
+</html>
