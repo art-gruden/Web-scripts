@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Kapitel 7 — Голосовий словник</title>
+<style>
+  :root{
+    --bg:#12141a;
+    --panel:#1b1e27;
+    --panel2:#20242f;
+    --accent:#5fb8a8;
+    --accent2:#e0a860;
+    --text:#e8e6e0;
+    --muted:#8890a0;
+    --border:#2c2f3a;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    font-family:'Segoe UI',Roboto,-apple-system,sans-serif;
+    background:var(--bg);
+    color:var(--text);
+    min-height:100vh;
+    padding-bottom:100px;
+  }
+  header{
+    padding:24px 20px 16px;
+    border-bottom:1px solid var(--border);
+    position:sticky;
+    top:0;
+    background:var(--bg);
+    z-index:10;
+  }
+  h1{
+    font-size:1.3rem;
+    margin:0 0 4px;
+    letter-spacing:0.3px;
+  }
+  .sub{
+    color:var(--muted);
+    font-size:0.85rem;
+  }
+  .controls{
+    display:flex;
+    gap:8px;
+    padding:14px 20px;
+    overflow-x:auto;
+    border-bottom:1px solid var(--border);
+  }
+  .catbtn{
+    flex:0 0 auto;
+    padding:8px 14px;
+    border-radius:20px;
+    border:1px solid var(--border);
+    background:var(--panel);
+    color:var(--muted);
+    font-size:0.85rem;
+    cursor:pointer;
+    white-space:nowrap;
+  }
+  .catbtn.active{
+    background:var(--accent);
+    color:#0d0f13;
+    border-color:var(--accent);
+    font-weight:600;
+  }
+  .settings{
+    display:flex;
+    gap:14px;
+    padding:10px 20px;
+    font-size:0.8rem;
+    color:var(--muted);
+    align-items:center;
+    flex-wrap:wrap;
+  }
+  .settings label{display:flex;align-items:center;gap:6px;}
+  .playall{
+    margin:16px 20px;
+    display:flex;
+    gap:10px;
+  }
+  .playall button{
+    flex:1;
+    padding:12px;
+    border-radius:10px;
+    border:none;
+    font-size:0.95rem;
+    font-weight:600;
+    cursor:pointer;
+  }
+  #startAll{background:var(--accent);color:#0d0f13;}
+  #stopAll{background:var(--panel2);color:var(--text);border:1px solid var(--border);}
+  .list{
+    padding:0 20px;
+    display:flex;
+    flex-direction:column;
+    gap:10px;
+  }
+  .card{
+    background:var(--panel);
+    border:1px solid var(--border);
+    border-radius:14px;
+    padding:14px 16px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:12px;
+    transition:background 0.2s, border-color 0.2s;
+  }
+  .card.playing{
+    border-color:var(--accent);
+    background:var(--panel2);
+  }
+  .word-de{
+    font-size:1.05rem;
+    font-weight:600;
+  }
+  .word-uk{
+    font-size:0.85rem;
+    color:var(--muted);
+    margin-top:3px;
+  }
+  .tag{
+    font-size:0.65rem;
+    color:var(--bg);
+    background:var(--accent2);
+    padding:2px 7px;
+    border-radius:8px;
+    font-weight:700;
+    margin-right:6px;
+  }
+  .playbtn{
+    flex:0 0 auto;
+    width:42px;
+    height:42px;
+    border-radius:50%;
+    border:1px solid var(--border);
+    background:var(--panel2);
+    color:var(--accent);
+    font-size:1.1rem;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+  }
+  .playbtn:active{
+    background:var(--accent);
+    color:#0d0f13;
+  }
+  .progress{
+    position:fixed;
+    bottom:0;
+    left:0;
+    right:0;
+    background:var(--panel);
+    border-top:1px solid var(--border);
+    padding:10px 20px;
+    font-size:0.8rem;
+    color:var(--muted);
+    text-align:center;
+    display:none;
+  }
+  .progress.show{display:block;}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>🗣️ Kapitel 7 — Голосовий словник</h1>
+  <div class="sub">Wichtige Wörter · синтез мовлення для тренування вимови</div>
+</header>
+
+<div class="controls" id="catControls"></div>
+
+<div class="settings">
+  <label>Швидкість
+    <input type="range" id="rate" min="0.5" max="1.2" step="0.1" value="0.8">
+  </label>
+  <label><input type="checkbox" id="withUk" checked> озвучувати переклад</label>
+</div>
+
+<div class="playall">
+  <button id="startAll">▶ Слухати всі по черзі</button>
+  <button id="stopAll">■ Стоп</button>
+</div>
+
+<div class="list" id="list"></div>
+
+<div class="progress" id="progress"></div>
+
+<script>
+const data = [{"category": "A", "de": "die Bedienbarkeit", "uk": "зручність керування"}, {"category": "A", "de": "etwas bedienen", "uk": "обслуговувати, керувати чимось"}, {"category": "A", "de": "benutzerfreundlich", "uk": "зручний для користувача"}, {"category": "A", "de": "die Beseitigung", "uk": "усунення"}, {"category": "A", "de": "etwas betreiben", "uk": "здійснювати, вести справу"}, {"category": "A", "de": "die Checkliste", "uk": "контрольний список"}, {"category": "A", "de": "das Design", "uk": "дизайн"}, {"category": "A", "de": "effizient", "uk": "ефективний"}, {"category": "A", "de": "etwas einstellen", "uk": "налаштовувати"}, {"category": "A", "de": "haltbar", "uk": "довговічний, стійкий"}, {"category": "A", "de": "die Haltbarkeit", "uk": "довговічність"}, {"category": "A", "de": "das Image", "uk": "імідж"}, {"category": "A", "de": "die Kundenbewertung", "uk": "відгук клієнта"}, {"category": "A", "de": "langlebig", "uk": "довговічний"}, {"category": "A", "de": "der Mangel", "uk": "недолік, брак"}, {"category": "A", "de": "die Nachhaltigkeit", "uk": "стійкість, екологічність"}, {"category": "A", "de": "das Preis-Leistungs-Verhältnis", "uk": "співвідношення ціни та якості"}, {"category": "A", "de": "das Qualitätsmanagement", "uk": "управління якістю"}, {"category": "A", "de": "das Qualitätsmerkmal", "uk": "ознака якості"}, {"category": "A", "de": "die Qualitätssicherung", "uk": "забезпечення якості"}, {"category": "A", "de": "die Pauschalreise", "uk": "тур все включено"}, {"category": "A", "de": "das Regalbrett", "uk": "полиця"}, {"category": "A", "de": "die Sägemaschine", "uk": "пилковий верстат"}, {"category": "A", "de": "die Umweltfreundlichkeit", "uk": "екологічність"}, {"category": "A", "de": "etwas vermeiden", "uk": "уникати чогось"}, {"category": "A", "de": "wettbewerbsfähig", "uk": "конкурентоспроможний"}, {"category": "A", "de": "der Zusammenbau", "uk": "збірка"}, {"category": "A", "de": "etwas zusammenbauen", "uk": "збирати докупи"}, {"category": "A", "de": "die Zuverlässigkeit", "uk": "надійність"}, {"category": "B", "de": "die Arbeitsfläche", "uk": "робоча поверхня"}, {"category": "B", "de": "etwas auslösen", "uk": "спричиняти, викликати"}, {"category": "B", "de": "die Bakterie", "uk": "бактерія"}, {"category": "B", "de": "das Desinfektionsmittel", "uk": "дезінфекційний засіб"}, {"category": "B", "de": "etwas desinfizieren", "uk": "дезінфікувати"}, {"category": "B", "de": "die Dienstkleidung", "uk": "робочий одяг"}, {"category": "B", "de": "der Einmalhandschuh", "uk": "одноразова рукавичка"}, {"category": "B", "de": "jemanden einseifen", "uk": "намилювати когось"}, {"category": "B", "de": "das Fieberthermometer", "uk": "термометр"}, {"category": "B", "de": "der Fingernagel", "uk": "ніготь"}, {"category": "B", "de": "fließendes Wasser", "uk": "проточна вода"}, {"category": "B", "de": "der Funktionsraum", "uk": "функціональне приміщення"}, {"category": "B", "de": "jemanden gefährden", "uk": "наражати когось на небезпеку"}, {"category": "B", "de": "die Hygiene", "uk": "гігієна"}, {"category": "B", "de": "der Hygienebeauftragte", "uk": "відповідальний за гігієну"}, {"category": "B", "de": "die Hygienebeauftragte", "uk": "відповідальна за гігієну"}, {"category": "B", "de": "der Hygieneplan", "uk": "план гігієни"}, {"category": "B", "de": "die Infektion", "uk": "інфекція"}, {"category": "B", "de": "etwas kontaminieren", "uk": "забруднювати, заражати"}, {"category": "B", "de": "der Krankheitserreger", "uk": "збудник хвороби"}, {"category": "B", "de": "die Pandemie", "uk": "пандемія"}, {"category": "B", "de": "der Pflegebereich", "uk": "сфера догляду"}, {"category": "B", "de": "die Pflegekraft", "uk": "медсестра, доглядальник"}, {"category": "B", "de": "die Sanitäreinrichtung", "uk": "санітарний вузол"}, {"category": "B", "de": "jemanden schützen vor", "uk": "захищати когось від"}, {"category": "B", "de": "der Stuhl", "uk": "стілець, кал"}, {"category": "B", "de": "die Übertragung", "uk": "передача"}, {"category": "B", "de": "der Urin", "uk": "сеча"}, {"category": "B", "de": "die Verbreitung", "uk": "поширення"}, {"category": "B", "de": "etwas verhindern", "uk": "запобігати чомусь"}, {"category": "B", "de": "das Virus", "uk": "вірус"}, {"category": "B", "de": "der Zwischenraum", "uk": "проміжок"}, {"category": "C", "de": "angespannt", "uk": "напружений"}, {"category": "C", "de": "anregend", "uk": "стимулюючий"}, {"category": "C", "de": "das Arbeitsklima", "uk": "робочий клімат"}, {"category": "C", "de": "die Atmosphäre", "uk": "атмосфера"}, {"category": "C", "de": "Aufgaben erfüllen", "uk": "виконувати завдання"}, {"category": "C", "de": "ausführlich", "uk": "докладний"}, {"category": "C", "de": "befreiend", "uk": "звільняючий, полегшуючий"}, {"category": "C", "de": "jemanden beurteilen", "uk": "оцінювати когось"}, {"category": "C", "de": "etwas bewerten", "uk": "оцінювати щось"}, {"category": "C", "de": "ehrlich", "uk": "чесний"}, {"category": "C", "de": "einfühlsam", "uk": "чуйний, тактовний"}, {"category": "C", "de": "emotional", "uk": "емоційний"}, {"category": "C", "de": "ernst", "uk": "серйозний"}, {"category": "C", "de": "etwas erreichen", "uk": "досягати чогось"}, {"category": "C", "de": "etwas zur Diskussion stellen", "uk": "виносити щось на обговорення"}, {"category": "C", "de": "das Feedback", "uk": "зворотний зв'язок"}, {"category": "C", "de": "Feedback geben", "uk": "давати зворотний зв'язок"}, {"category": "C", "de": "Fragen stellen", "uk": "ставити питання"}, {"category": "C", "de": "die Führungskraft", "uk": "керівник"}, {"category": "C", "de": "die Gelegenheit ergreifen", "uk": "скористатися нагодою"}, {"category": "C", "de": "harmonisch", "uk": "гармонійний"}, {"category": "C", "de": "hitzig", "uk": "гарячий, запальний"}, {"category": "C", "de": "in Wut geraten", "uk": "впадати в лють"}, {"category": "C", "de": "klärend", "uk": "той, що прояснює"}, {"category": "C", "de": "kollegial", "uk": "колегіальний"}, {"category": "C", "de": "die Kooperationsfähigkeit", "uk": "здатність до співпраці"}, {"category": "C", "de": "Kritik üben", "uk": "критикувати"}, {"category": "C", "de": "die Kundenorientierung", "uk": "орієнтація на клієнта"}, {"category": "C", "de": "locker", "uk": "невимушений"}, {"category": "C", "de": "offen", "uk": "відкритий"}, {"category": "C", "de": "Protokoll führen", "uk": "вести протокол"}, {"category": "C", "de": "die Rückmeldung", "uk": "зворотний зв'язок"}, {"category": "C", "de": "Vereinbarungen treffen", "uk": "досягати домовленостей"}, {"category": "C", "de": "das Verhalten", "uk": "поведінка"}, {"category": "C", "de": "vertraulich", "uk": "конфіденційний"}, {"category": "C", "de": "das Zielvereinbarungsgespräch", "uk": "розмова про постановку цілей"}, {"category": "C", "de": "zur Sprache kommen", "uk": "бути порушеним, обговорюваним"}, {"category": "D", "de": "die stationäre Altenpflege", "uk": "стаціонарний догляд за літніми"}, {"category": "D", "de": "die Arbeitsbelastung", "uk": "робоче навантаження"}, {"category": "D", "de": "etwas ausgleichen", "uk": "компенсувати, вирівнювати"}, {"category": "D", "de": "etwas aushandeln", "uk": "узгоджувати шляхом переговорів"}, {"category": "D", "de": "belastend", "uk": "обтяжливий"}, {"category": "D", "de": "berechtigt", "uk": "обґрунтований, правомірний"}, {"category": "D", "de": "die Betriebsvereinbarung", "uk": "виробнича угода"}, {"category": "D", "de": "etwas bewilligen", "uk": "схвалювати, дозволяти"}, {"category": "D", "de": "destruktiv", "uk": "деструктивний"}, {"category": "D", "de": "die Einschätzung", "uk": "оцінка"}, {"category": "D", "de": "sich einschleichen", "uk": "прокрадатися, про помилку"}, {"category": "D", "de": "die Entlastung", "uk": "розвантаження"}, {"category": "D", "de": "die Fachkraft", "uk": "фахівець"}, {"category": "D", "de": "jemandem sind die Hände gebunden", "uk": "у когось зв'язані руки"}, {"category": "D", "de": "gehetzt", "uk": "заквапленний, під тиском"}, {"category": "D", "de": "der Gesundheitsschutz", "uk": "охорона здоров'я"}, {"category": "D", "de": "der Heimleiter", "uk": "керівник закладу"}, {"category": "D", "de": "die Heimleiterin", "uk": "керівниця закладу"}, {"category": "D", "de": "die Leistungsgrenze", "uk": "межа можливостей"}, {"category": "D", "de": "machtlos", "uk": "безсилий"}, {"category": "D", "de": "die Mehrarbeit", "uk": "понаднормова робота"}, {"category": "D", "de": "peinlich", "uk": "незручний, соромний"}, {"category": "D", "de": "der Personalmangel", "uk": "брак персоналу"}, {"category": "D", "de": "sachlich", "uk": "об'єктивний, по суті"}, {"category": "D", "de": "der Tadel", "uk": "доган, зауваження"}, {"category": "D", "de": "jemandem etwas übel nehmen", "uk": "ображатися на когось за щось"}, {"category": "D", "de": "unangenehm", "uk": "неприємний"}, {"category": "D", "de": "etwas verbergen", "uk": "приховувати"}, {"category": "D", "de": "versehentlich", "uk": "ненавмисно"}, {"category": "D", "de": "jemanden zurückweisen", "uk": "відхиляти, відмовляти комусь"}, {"category": "E", "de": "sich etwas abgewöhnen", "uk": "відучитися від чогось"}, {"category": "E", "de": "sich bemühen um", "uk": "старатися заради чогось"}, {"category": "E", "de": "die Beziehung", "uk": "стосунки"}, {"category": "E", "de": "etwas erforschen", "uk": "досліджувати"}, {"category": "E", "de": "halten von", "uk": "мати думку про"}, {"category": "E", "de": "die Ich-Botschaft", "uk": "я-повідомлення"}, {"category": "E", "de": "klingen", "uk": "звучати"}, {"category": "E", "de": "nachgiebig", "uk": "поступливий"}, {"category": "E", "de": "rotsehen", "uk": "розлютитися"}, {"category": "E", "de": "sanft", "uk": "м'який, ніжний"}, {"category": "E", "de": "schädlich für", "uk": "шкідливий для"}, {"category": "E", "de": "das Tabu", "uk": "табу"}, {"category": "E", "de": "ungewohnt", "uk": "незвичний"}, {"category": "E", "de": "verständnisvoll", "uk": "розуміючий"}, {"category": "E", "de": "wahnsinnig", "uk": "шалено, божевільно"}, {"category": "E", "de": "sich zurückziehen von", "uk": "усамітнюватися, відсторонюватися від"}];
+
+const categoryNames = {
+  A: "A · Проблеми",
+  B: "B · Гігієна",
+  C: "C · Розмови",
+  D: "D · Критика",
+  E: "E · Конфлікти"
+};
+
+let currentFilter = "ALL";
+let playQueue = [];
+let playIndex = 0;
+let isPlayingAll = false;
+
+const catControls = document.getElementById('catControls');
+const listEl = document.getElementById('list');
+const progressEl = document.getElementById('progress');
+const rateInput = document.getElementById('rate');
+const withUkInput = document.getElementById('withUk');
+
+function buildCategoryButtons(){
+  const cats = ["ALL", ...Object.keys(categoryNames)];
+  cats.forEach(c => {
+    const btn = document.createElement('button');
+    btn.className = 'catbtn' + (c === currentFilter ? ' active' : '');
+    btn.textContent = c === "ALL" ? "Усі" : categoryNames[c];
+    btn.onclick = () => {
+      currentFilter = c;
+      document.querySelectorAll('.catbtn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      renderList();
+    };
+    catControls.appendChild(btn);
+  });
+}
+
+function speak(text, lang, onEnd){
+  const u = new SpeechSynthesisUtterance(text);
+  u.lang = lang;
+  u.rate = parseFloat(rateInput.value);
+  u.onend = onEnd || null;
+  window.speechSynthesis.speak(u);
+}
+
+function renderList(){
+  listEl.innerHTML = '';
+  const filtered = currentFilter === "ALL" ? data : data.filter(d => d.category === currentFilter);
+  filtered.forEach((item, idx) => {
+    const card = document.createElement('div');
+    card.className = 'card';
+    card.id = 'card-' + item._id;
+    card.innerHTML = `
+      <div>
+        <span class="tag">${item.category}</span>
+        <div class="word-de">${item.de}</div>
+        <div class="word-uk">${item.uk}</div>
+      </div>
+      <button class="playbtn" aria-label="Слухати">▶</button>
+    `;
+    card.querySelector('.playbtn').onclick = () => playOne(item, card);
+    listEl.appendChild(card);
+  });
+}
+
+function playOne(item, card){
+  window.speechSynthesis.cancel();
+  card.classList.add('playing');
+  speak(item.de, 'de-DE', () => {
+    if(withUkInput.checked){
+      speak(item.uk, 'uk-UA', () => card.classList.remove('playing'));
+    } else {
+      card.classList.remove('playing');
+    }
+  });
+}
+
+function startAll(){
+  window.speechSynthesis.cancel();
+  playQueue = currentFilter === "ALL" ? data : data.filter(d => d.category === currentFilter);
+  playIndex = 0;
+  isPlayingAll = true;
+  progressEl.classList.add('show');
+  playNext();
+}
+
+function playNext(){
+  document.querySelectorAll('.card.playing').forEach(c => c.classList.remove('playing'));
+  if(!isPlayingAll || playIndex >= playQueue.length){
+    isPlayingAll = false;
+    progressEl.classList.remove('show');
+    return;
+  }
+  const item = playQueue[playIndex];
+  const card = document.getElementById('card-' + item._id);
+  if(card){
+    card.classList.add('playing');
+    card.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+  progressEl.textContent = `${playIndex + 1} / ${playQueue.length} · ${item.de}`;
+
+  speak(item.de, 'de-DE', () => {
+    if(withUkInput.checked){
+      speak(item.uk, 'uk-UA', () => {
+        playIndex++;
+        playNext();
+      });
+    } else {
+      playIndex++;
+      playNext();
+    }
+  });
+}
+
+function stopAll(){
+  isPlayingAll = false;
+  window.speechSynthesis.cancel();
+  document.querySelectorAll('.card.playing').forEach(c => c.classList.remove('playing'));
+  progressEl.classList.remove('show');
+}
+
+document.getElementById('startAll').onclick = startAll;
+document.getElementById('stopAll').onclick = stopAll;
+
+data.forEach((d, i) => d._id = i);
+buildCategoryButtons();
+renderList();
+</script>
+
+</body>
+</html>
