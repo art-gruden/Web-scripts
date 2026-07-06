@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>🇩🇪 Німецька лексика B1–B2 – Telegram-публікація</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: #0e0e0e;
+            color: #e4e4e4;
+            padding: 16px 12px 40px;
+            max-width: 600px;
+            margin: 0 auto;
+            line-height: 1.6;
+        }
+
+        .telegram-card {
+            background: #1a1a1a;
+            border-radius: 18px;
+            padding: 24px 18px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+            border: 1px solid #2a2a2a;
+        }
+
+        h1, h2, h3 {
+            font-weight: 600;
+            letter-spacing: -0.02em;
+        }
+
+        h1 {
+            font-size: 26px;
+            color: #ffffff;
+            margin-bottom: 4px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        h1 small {
+            font-size: 16px;
+            font-weight: 400;
+            color: #888;
+        }
+
+        .subhead {
+            color: #9a9a9a;
+            font-size: 15px;
+            margin-bottom: 16px;
+            border-left: 3px solid #2d8cff;
+            padding-left: 14px;
+            background: #121212;
+            border-radius: 0 10px 10px 0;
+            padding: 10px 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            background: #2d8cff;
+            color: #fff;
+            font-size: 12px;
+            font-weight: 600;
+            padding: 2px 12px;
+            border-radius: 30px;
+            letter-spacing: 0.3px;
+            margin-right: 6px;
+        }
+
+        .section-title {
+            font-size: 20px;
+            margin: 28px 0 14px 0;
+            padding-bottom: 6px;
+            border-bottom: 2px solid #2d8cff33;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #f0f0f0;
+        }
+
+        .section-title .emoji-big {
+            font-size: 28px;
+        }
+
+        .word-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 15px;
+            margin: 8px 0 4px;
+        }
+
+        .word-table td {
+            padding: 8px 6px;
+            vertical-align: top;
+            border-bottom: 1px solid #2a2a2a;
+        }
+
+        .word-table .de {
+            font-weight: 500;
+            color: #c7e2ff;
+            width: 42%;
+        }
+
+        .word-table .ua {
+            color: #d4d4d4;
+            width: 28%;
+        }
+
+        .word-table .example {
+            color: #9a9a9a;
+            font-size: 13px;
+            font-style: italic;
+            width: 30%;
+        }
+
+        .word-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .phrase-box {
+            background: #121212;
+            border-radius: 12px;
+            padding: 12px 14px;
+            margin: 6px 0 10px;
+            border-left: 3px solid #f5a623;
+        }
+
+        .phrase-box .de {
+            font-weight: 500;
+            color: #f5d6a0;
+        }
+
+        .phrase-box .ua {
+            color: #bdbdbd;
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+        .conj-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px 18px;
+            background: #121212;
+            border-radius: 12px;
+            padding: 12px 16px;
+            margin: 6px 0 4px;
+        }
+
+        .conj-grid .item {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 1px solid #262626;
+            padding: 5px 0;
+            font-size: 14px;
+        }
+
+        .conj-grid .item:last-child {
+            border-bottom: none;
+        }
+
+        .conj-grid .de {
+            color: #c7e2ff;
+            font-weight: 450;
+        }
+
+        .conj-grid .ua {
+            color: #b0b0b0;
+        }
+
+        .tip-box {
+            background: #1c2a3a;
+            border-radius: 14px;
+            padding: 16px 18px;
+            margin: 20px 0 12px;
+            border: 1px solid #2d4a6a;
+        }
+
+        .tip-box ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tip-box ul li {
+            padding: 4px 0 4px 26px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="%232d8cff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>') left center no-repeat;
+            background-size: 18px;
+            margin-bottom: 2px;
+        }
+
+        .footer-msg {
+            text-align: center;
+            font-size: 15px;
+            padding: 20px 10px 10px;
+            color: #8a8a8a;
+            border-top: 1px solid #2a2a2a;
+            margin-top: 30px;
+        }
+
+        .footer-msg strong {
+            color: #c7e2ff;
+        }
+
+        .inline-code {
+            background: #262626;
+            padding: 0 8px;
+            border-radius: 6px;
+            font-size: 13px;
+            color: #d4d4d4;
+        }
+
+        @media (max-width: 480px) {
+            .word-table td {
+                display: block;
+                width: 100% !important;
+                border-bottom: none;
+                padding: 2px 0;
+            }
+            .word-table tr {
+                display: block;
+                border-bottom: 1px solid #262626;
+                padding: 8px 0;
+            }
+            .word-table tr:last-child {
+                border-bottom: none;
+            }
+            .word-table .de {
+                font-size: 16px;
+            }
+            .word-table .ua {
+                font-size: 14px;
+                color: #b8b8b8;
+            }
+            .word-table .example {
+                font-size: 13px;
+                color: #7a7a7a;
+            }
+            .conj-grid {
+                grid-template-columns: 1fr;
+            }
+            .phrase-box {
+                padding: 10px 12px;
+            }
+        }
+
+        hr {
+            border: none;
+            border-top: 1px solid #2a2a2a;
+            margin: 20px 0;
+        }
+
+        .emoji-big {
+            font-size: 24px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ===================== CARD 1 ===================== -->
+    <div class="telegram-card">
+        <h1>
+            📚 НІМЕЦЬКА ЛЕКСИКА B1–B2
+            <small>з лекції про зцілення</small>
+        </h1>
+        <div class="subhead">
+            🇩🇪 Слова + приклади + переклад<br>
+            🧠 Для тих, хто вчить німецьку і хоче покращити розмовну лексику
+        </div>
+        <div style="font-size: 13px; color: #6a6a6a; margin-top: 2px;">
+            <span class="badge">B1</span> <span class="badge" style="background:#f5a623;">B2</span> 
+            Теми: здоров'я, духовність, емоції, спілкування, медицина
+        </div>
+    </div>
+
+    <!-- ===================== 1. VERBEN ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">1️⃣</span> ДІЄСЛОВА – дії та стани
+        </div>
+
+        <table class="word-table">
+            <tr><td class="de">sich informieren</td><td class="ua">дізнаватися</td><td class="example">*ich möchte mich informieren*</td></tr>
+            <tr><td class="de">folgen</td><td class="ua">слідувати</td><td class="example">*Sie sind der Einladung gefolgt*</td></tr>
+            <tr><td class="de">einladen</td><td class="ua">запрошувати</td><td class="example">*ich lade Sie ein*</td></tr>
+            <tr><td class="de">bitten</td><td class="ua">просити</td><td class="example">*ich bitte Sie*</td></tr>
+            <tr><td class="de">ausschalten</td><td class="ua">вимикати</td><td class="example">*Handys ausschalten*</td></tr>
+            <tr><td class="de">anlassen</td><td class="ua">залишати ввімкненим</td><td class="example">*wir können es anlassen*</td></tr>
+            <tr><td class="de">spüren</td><td class="ua">відчувати</td><td class="example">*etwas spüren*</td></tr>
+            <tr><td class="de">glauben</td><td class="ua">вірити</td><td class="example">*glauben Sie*</td></tr>
+            <tr><td class="de">vertrauen</td><td class="ua">довіряти</td><td class="example">*vertrauen Sie ihm*</td></tr>
+            <tr><td class="de">prüfen</td><td class="ua">перевіряти</td><td class="example">*prüfen Sie es selbst*</td></tr>
+            <tr><td class="de">erleben</td><td class="ua">переживати</td><td class="example">*ich habe viel erlebt*</td></tr>
+            <tr><td class="de">aufnehmen</td><td class="ua">приймати, вбирати</td><td class="example">*den Heilstrom aufnehmen*</td></tr>
+            <tr><td class="de">aufladen</td><td class="ua">заряджати</td><td class="example">*den Körper aufladen*</td></tr>
+            <tr><td class="de">öffnen</td><td class="ua">відкривати</td><td class="example">*die Hände öffnen*</td></tr>
+            <tr><td class="de">verschränken</td><td class="ua">схрещувати</td><td class="example">*Arme und Beine verschränken*</td></tr>
+            <tr><td class="de">verstehen</td><td class="ua">розуміти</td><td class="example">*ich konnte es nicht verstehen*</td></tr>
+            <tr><td class="de">helfen</td><td class="ua">допомагати</td><td class="example">*Menschen helfen*</td></tr>
+            <tr><td class="de">heilen</td><td class="ua">зцілювати</td><td class="example">*nicht ich heile, sondern Gott*</td></tr>
+            <tr><td class="de">verbinden</td><td class="ua">з'єднувати</td><td class="example">*mit Gott verbunden*</td></tr>
+            <tr><td class="de">verfolgen</td><td class="ua">переслідувати</td><td class="example">*man hat ihn verfolgt*</td></tr>
+            <tr><td class="de">verbieten</td><td class="ua">забороняти</td><td class="example">*Heilverbot bekommen*</td></tr>
+            <tr><td class="de">sterben</td><td class="ua">помирати</td><td class="example">*Bruno Gröning ist gestorben*</td></tr>
+            <tr><td class="de">gründen</td><td class="ua">засновувати</td><td class="example">*den Freundeskreis gründen*</td></tr>
+            <tr><td class="de">übernehmen</td><td class="ua">переймати</td><td class="example">*Dieter hat übernommen*</td></tr>
+            <tr><td class="de">sich treffen</td><td class="ua">зустрічатися</td><td class="example">*wir treffen uns alle 3 Wochen*</td></tr>
+            <tr><td class="de">austauschen</td><td class="ua">обмінюватися</td><td class="example">*Erlebnisse austauschen*</td></tr>
+            <tr><td class="de">berichten</td><td class="ua">повідомляти</td><td class="example">*von Heilungen berichten*</td></tr>
+            <tr><td class="de">dokumentieren</td><td class="ua">документувати</td><td class="example">*Heilungen dokumentieren*</td></tr>
+            <tr><td class="de">empfehlen</td><td class="ua">рекомендувати</td><td class="example">*ich empfehle Ihnen*</td></tr>
+            <tr><td class="de">abraten</td><td class="ua">відмовляти (не радити)</td><td class="example">*von einer OP abraten*</td></tr>
+            <tr><td class="de">zuraten</td><td class="ua">радити зробити</td><td class="example">*zu einer OP zuraten*</td></tr>
+            <tr><td class="de">sich bedanken</td><td class="ua">дякувати</td><td class="example">*wir bedanken uns*</td></tr>
+            <tr><td class="de">sich verabschieden</td><td class="ua">прощатися</td><td class="example">*ich verabschiede mich*</td></tr>
+        </table>
+    </div>
+
+    <!-- ===================== 2. NOMEN ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">2️⃣</span> ІМЕННИКИ – здоров'я, духовність, суспільство
+        </div>
+
+        <table class="word-table">
+            <tr><td class="de">die Heilung</td><td class="ua">зцілення</td><td class="example">*Heilung auf geistigem Wege*</td></tr>
+            <tr><td class="de">der Heilstrom</td><td class="ua">цілющий потік</td><td class="example">*den Heilstrom aufnehmen*</td></tr>
+            <tr><td class="de">die Heilkraft</td><td class="ua">цілюща сила</td><td class="example">*die göttliche Heilkraft*</td></tr>
+            <tr><td class="de">die Energie</td><td class="ua">енергія</td><td class="example">*wir sagen dazu Energie*</td></tr>
+            <tr><td class="de">der Glaube</td><td class="ua">віра</td><td class="example">*der Glaube ist wichtig*</td></tr>
+            <tr><td class="de">das Vertrauen</td><td class="ua">довіра</td><td class="example">*Vertrauen zum Arzt*</td></tr>
+            <tr><td class="de">der Vortrag</td><td class="ua">лекція</td><td class="example">*einen Vortrag halten*</td></tr>
+            <tr><td class="de">die Einladung</td><td class="ua">запрошення</td><td class="example">*der Einladung folgen*</td></tr>
+            <tr><td class="de">die Bitte</td><td class="ua">прохання</td><td class="example">*eine große Bitte*</td></tr>
+            <tr><td class="de">die Frage</td><td class="ua">запитання</td><td class="example">*Fragen stellen*</td></tr>
+            <tr><td class="de">die Erfahrung</td><td class="ua">досвід</td><td class="example">*aus eigener Erfahrung*</td></tr>
+            <tr><td class="de">die Kindheit</td><td class="ua">дитинство</td><td class="example">*in der Kindheit*</td></tr>
+            <tr><td class="de">die Jugend</td><td class="ua">юність</td><td class="example">*in der Jugend*</td></tr>
+            <tr><td class="de">der Krieg</td><td class="ua">війна</td><td class="example">*der Zweite Weltkrieg*</td></tr>
+            <tr><td class="de">die Klinik</td><td class="ua">клініка</td><td class="example">*Universitätsklinik*</td></tr>
+            <tr><td class="de">die Krankheit</td><td class="ua">хвороба</td><td class="example">*an einer Krankheit leiden*</td></tr>
+            <tr><td class="de">die Schmerzen</td><td class="ua">біль</td><td class="example">*keine Schmerzen mehr*</td></tr>
+            <tr><td class="de">der Arzt / die Ärztin</td><td class="ua">лікар / лікарка</td><td class="example">*gehen Sie zum Arzt*</td></tr>
+            <tr><td class="de">die Diagnose</td><td class="ua">діагноз</td><td class="example">*von der Diagnose abraten*</td></tr>
+            <tr><td class="de">die Operation (OP)</td><td class="ua">операція</td><td class="example">*eine OP angetragen*</td></tr>
+            <tr><td class="de">die Bandscheibe</td><td class="ua">міжхребцевий диск</td><td class="example">*Bandscheibenvorfall*</td></tr>
+            <tr><td class="de">die Sucht</td><td class="ua">залежність</td><td class="example">*Nikotinsucht, Alkoholsucht*</td></tr>
+            <tr><td class="de">die Zigarette</td><td class="ua">цигарка</td><td class="example">*Zigaretten rauchen*</td></tr>
+            <tr><td class="de">der Tabak</td><td class="ua">тютюн</td><td class="example">*Tabak war einfach weg*</td></tr>
+            <tr><td class="de">die Gemeinschaft</td><td class="ua">спільнота</td><td class="example">*in den Gemeinschaften*</td></tr>
+            <tr><td class="de">der Freundeskreis</td><td class="ua">коло друзів</td><td class="example">*Bruno-Gröning-Freundeskreis*</td></tr>
+            <tr><td class="de">die Religion</td><td class="ua">релігія</td><td class="example">*in seiner Religion bleiben*</td></tr>
+            <tr><td class="de">die Sekte</td><td class="ua">секта</td><td class="example">*vielleicht Sekte?*</td></tr>
+            <tr><td class="de">der Scharlatan</td><td class="ua">шарлатан</td><td class="example">*Scharlatan?*</td></tr>
+            <tr><td class="de">das Wunder</td><td class="ua">диво</td><td class="example">*ein großes Wunder*</td></tr>
+            <tr><td class="de">die Mission</td><td class="ua">місія</td><td class="example">*meine Mission ist helfen*</td></tr>
+            <tr><td class="de">der Weg</td><td class="ua">шлях</td><td class="example">*der richtige Weg*</td></tr>
+            <tr><td class="de">die Öffentlichkeit</td><td class="ua">громадськість</td><td class="example">*an die Öffentlichkeit*</td></tr>
+            <tr><td class="de">die Zeitung</td><td class="ua">газета</td><td class="example">*in die Zeitung setzen*</td></tr>
+            <tr><td class="de">die Medien</td><td class="ua">медіа</td><td class="example">*die Medien haben gesucht*</td></tr>
+            <tr><td class="de">die Wissenschaft</td><td class="ua">наука</td><td class="example">*die Wissenschaft befasste sich*</td></tr>
+        </table>
+    </div>
+
+    <!-- ===================== 3. ADJEKTIVE ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">3️⃣</span> ПРИКМЕТНИКИ / ПРИСЛІВНИКИ – описи та емоції
+        </div>
+
+        <table class="word-table">
+            <tr><td class="de">skeptisch</td><td class="ua">скептичний</td><td class="example">*sie war skeptisch*</td></tr>
+            <tr><td class="de">eigenartig</td><td class="ua">дивний, особливий</td><td class="example">*ein eigenartiges Kind*</td></tr>
+            <tr><td class="de">sonderbar</td><td class="ua">чудернацький</td><td class="example">*ein sonderbares Kind*</td></tr>
+            <tr><td class="de">unheilbar</td><td class="ua">невиліковний</td><td class="example">*absolut unheilbar*</td></tr>
+            <tr><td class="de">gesund</td><td class="ua">здоровий</td><td class="example">*gesund werden*</td></tr>
+            <tr><td class="de">schmerzfrei</td><td class="ua">безболісний</td><td class="example">*schmerzfrei sein*</td></tr>
+            <tr><td class="de">beweglich</td><td class="ua">рухливий</td><td class="example">*wieder beweglich*</td></tr>
+            <tr><td class="de">gelähmt</td><td class="ua">паралізований</td><td class="example">*die Gelähmten*</td></tr>
+            <tr><td class="de">blind</td><td class="ua">сліпий</td><td class="example">*eine blinde Freundin*</td></tr>
+            <tr><td class="de">taub</td><td class="ua">глухий</td><td class="example">*Taubheit*</td></tr>
+            <tr><td class="de">ganz</td><td class="ua">цілком</td><td class="example">*ganz klein anfangen*</td></tr>
+            <tr><td class="de">langsam</td><td class="ua">повільно</td><td class="example">*langsam bekannt werden*</td></tr>
+            <tr><td class="de">plötzlich</td><td class="ua">раптово</td><td class="example">*plötzlich aufstehen*</td></tr>
+            <tr><td class="de">täglich</td><td class="ua">щоденно</td><td class="example">*täglich 30.000 Menschen*</td></tr>
+            <tr><td class="de">ehrenamtlich</td><td class="ua">волонтерський</td><td class="example">*alle arbeiten ehrenamtlich*</td></tr>
+            <tr><td class="de">dankbar</td><td class="ua">вдячний</td><td class="example">*ich bin unendlich dankbar*</td></tr>
+            <tr><td class="de">wichtig</td><td class="ua">важливий</td><td class="example">*das ist wichtig*</td></tr>
+            <tr><td class="de">möglich</td><td class="ua">можливий</td><td class="example">*es ist möglich*</td></tr>
+            <tr><td class="de">unmöglich</td><td class="ua">неможливий</td><td class="example">*das war unmöglich*</td></tr>
+            <tr><td class="de">richtig</td><td class="ua">правильний</td><td class="example">*der richtige Weg*</td></tr>
+            <tr><td class="de">offen</td><td class="ua">відкритий</td><td class="example">*offen sein für etwas*</td></tr>
+            <tr><td class="de">ruhig</td><td class="ua">спокійний</td><td class="example">*ruhig sitzen*</td></tr>
+            <tr><td class="de">still</td><td class="ua">тихий, безмовний</td><td class="example">*alles war still*</td></tr>
+        </table>
+    </div>
+
+    <!-- ===================== 4. REDEMITTEL ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">4️⃣</span> КОРИСНІ ФРАЗИ ДЛЯ СПІЛКУВАННЯ
+        </div>
+
+        <div class="phrase-box">
+            <div class="de">Ich freue mich, dass...</div>
+            <div class="ua">Я радий(а), що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich danke Ihnen für...</div>
+            <div class="ua">Я дякую Вам за...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Darf ich vorstellen...?</div>
+            <div class="ua">Дозвольте представити...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich möchte Sie bitten...</div>
+            <div class="ua">Я хочу попросити Вас...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Bitte schalten Sie... aus.</div>
+            <div class="ua">Будь ласка, вимкніть...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Es ist wichtig, dass...</div>
+            <div class="ua">Важливо, щоб...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich bin überzeugt, dass...</div>
+            <div class="ua">Я переконаний(а), що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich habe erfahren, dass...</div>
+            <div class="ua">Я дізнався(лася), що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Das heißt, dass...</div>
+            <div class="ua">Це означає, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Das liegt daran, dass...</div>
+            <div class="ua">Це тому, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Man muss bedenken, dass...</div>
+            <div class="ua">Слід враховувати, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Es kommt darauf an, dass...</div>
+            <div class="ua">Це залежить від того, щоб...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Zum einen... zum anderen...</div>
+            <div class="ua">З одного боку... з іншого...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Nicht nur..., sondern auch...</div>
+            <div class="ua">Не тільки..., але й...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Es geht darum, dass...</div>
+            <div class="ua">Йдеться про те, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich empfehle Ihnen, dass...</div>
+            <div class="ua">Я рекомендую Вам, щоб...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Bitte prüfen Sie selbst.</div>
+            <div class="ua">Будь ласка, перевірте самі.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Das ist mir sehr wichtig.</div>
+            <div class="ua">Це для мене дуже важливо.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich bin dankbar dafür.</div>
+            <div class="ua">Я вдячний(а) за це.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich wünsche Ihnen alles Gute.</div>
+            <div class="ua">Бажаю Вам всього найкращого.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Kommen Sie gut nach Hause.</div>
+            <div class="ua">Щасливо додому.</div>
+        </div>
+    </div>
+
+    <!-- ===================== 5. KONJUNKTIONEN ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">5️⃣</span> СПОЛУЧНИКИ ДЛЯ СКЛАДНИХ РЕЧЕНЬ
+        </div>
+
+        <div class="conj-grid">
+            <div class="item"><span class="de">weil</span><span class="ua">тому що</span></div>
+            <div class="item"><span class="de">denn</span><span class="ua">бо</span></div>
+            <div class="item"><span class="de">obwohl</span><span class="ua">хоча</span></div>
+            <div class="item"><span class="de">wenn</span><span class="ua">коли / якщо</span></div>
+            <div class="item"><span class="de">als</span><span class="ua">коли (одноразово)</span></div>
+            <div class="item"><span class="de">bevor</span><span class="ua">перш ніж</span></div>
+            <div class="item"><span class="de">nachdem</span><span class="ua">після того, як</span></div>
+            <div class="item"><span class="de">während</span><span class="ua">під час</span></div>
+            <div class="item"><span class="de">seit</span><span class="ua">з тих пір, як</span></div>
+            <div class="item"><span class="de">bis</span><span class="ua">до (моменту)</span></div>
+            <div class="item"><span class="de">damit</span><span class="ua">щоб (мета)</span></div>
+            <div class="item"><span class="de">sodass</span><span class="ua">так що</span></div>
+            <div class="item"><span class="de">zum Beispiel (z.B.)</span><span class="ua">наприклад</span></div>
+            <div class="item"><span class="de">und zwar</span><span class="ua">а саме</span></div>
+            <div class="item"><span class="de">deshalb</span><span class="ua">тому</span></div>
+            <div class="item"><span class="de">trotzdem</span><span class="ua">незважаючи на це</span></div>
+        </div>
+    </div>
+
+    <!-- ===================== 6. MEDIZIN ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">6️⃣</span> МЕДИЧНА ЛЕКСИКА (до теми)
+        </div>
+
+        <table class="word-table">
+            <tr><td class="de">die Muskelatrophie</td><td class="ua">м'язова дистрофія</td><td class="example">*Muskelatrophie*</td></tr>
+            <tr><td class="de">die Osteoporose</td><td class="ua">остеопороз</td><td class="example">*Osteoporose*</td></tr>
+            <tr><td class="de">der Bandscheibenvorfall</td><td class="ua">грижа міжхребцевого диска</td><td class="example">*Bandscheibenvorfall*</td></tr>
+            <tr><td class="de">die Nikotinsucht</td><td class="ua">нікотинова залежність</td><td class="example">*Nikotinsucht*</td></tr>
+            <tr><td class="de">die Alkoholsucht</td><td class="ua">алкогольна залежність</td><td class="example">*Alkoholsucht*</td></tr>
+            <tr><td class="de">die Schmerzfreiheit</td><td class="ua">відсутність болю</td><td class="example">*Schmerzfreiheit*</td></tr>
+            <tr><td class="de">der Heilungsbericht</td><td class="ua">звіт про зцілення</td><td class="example">*Heilungsberichte*</td></tr>
+            <tr><td class="de">die Therapie</td><td class="ua">терапія</td><td class="example">*Therapie*</td></tr>
+            <tr><td class="de">die Physiotherapie</td><td class="ua">фізіотерапія</td><td class="example">*Physiotherapie*</td></tr>
+            <tr><td class="de">die Homöopathie</td><td class="ua">гомеопатія</td><td class="example">*Homöopathie*</td></tr>
+            <tr><td class="de">die Versteifung</td><td class="ua">знерухомлення</td><td class="example">*Versteifung der Wirbelsäule*</td></tr>
+            <tr><td class="de">das MRT</td><td class="ua">МРТ</td><td class="example">*ein MRT machen*</td></tr>
+            <tr><td class="de">die Röntgenaufnahme</td><td class="ua">рентген</td><td class="example">*Röntgenaufnahme*</td></tr>
+            <tr><td class="de">die Beschwerden</td><td class="ua">скарги / симптоми</td><td class="example">*Beschwerden haben*</td></tr>
+            <tr><td class="de">der Heilpraktiker</td><td class="ua">цілитель (без мед. освіти)</td><td class="example">*Heilpraktiker*</td></tr>
+            <tr><td class="de">der Psychotherapeut</td><td class="ua">психотерапевт</td><td class="example">*Psychotherapeut*</td></tr>
+        </table>
+    </div>
+
+    <!-- ===================== 7. DISKUSSION ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">7️⃣</span> ФРАЗИ ДЛЯ ОБГОВОРЕННЯ
+        </div>
+
+        <div class="phrase-box">
+            <div class="de">Was halten Sie von...?</div>
+            <div class="ua">Що Ви думаєте про...?</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich bin der Meinung, dass...</div>
+            <div class="ua">Я вважаю, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Können Sie das genauer erklären?</div>
+            <div class="ua">Можете пояснити точніше?</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Das ist interessant, weil...</div>
+            <div class="ua">Це цікаво, тому що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Das überzeugt mich (nicht).</div>
+            <div class="ua">Це мене (не) переконує.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich habe Zweifel, ob...</div>
+            <div class="ua">Я сумніваюся, чи...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Es gibt Beweise dafür, dass...</div>
+            <div class="ua">Є докази того, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Man darf nicht vergessen, dass...</div>
+            <div class="ua">Не можна забувати, що...</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich stimme zu.</div>
+            <div class="ua">Я погоджуюся.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Ich stimme nicht zu.</div>
+            <div class="ua">Я не погоджуюся.</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Können Sie ein Beispiel nennen?</div>
+            <div class="ua">Можете навести приклад?</div>
+        </div>
+        <div class="phrase-box">
+            <div class="de">Das ist eine gute Frage.</div>
+            <div class="ua">Це гарне запитання.</div>
+        </div>
+    </div>
+
+    <!-- ===================== TIPS ===================== -->
+    <div class="telegram-card">
+        <div class="section-title">
+            <span class="emoji-big">💡</span> ПОРАДИ ДЛЯ ВИВЧЕННЯ
+        </div>
+        <div class="tip-box">
+            <ul>
+                <li>Вчити слова <strong>в реченнях</strong>, а не окремо</li>
+                <li>Промовляти <strong>вголос</strong> – тренує вимову</li>
+                <li>Групувати за темами (здоров'я, емоції, спілкування)</li>
+                <li>Складати <strong>свої приклади</strong></li>
+                <li>Повторювати <strong>через день</strong> для переходу в активний словник</li>
+            </ul>
+        </div>
+    </div>
+
+    <!-- ===================== FOOTER ===================== -->
+    <div class="telegram-card" style="border-color: #2d8cff44;">
+        <div style="font-size: 20px; text-align: center; margin-bottom: 6px;">🔁 ПРОДОВЖЕННЯ?</div>
+        <div style="text-align: center; font-size: 14px; color: #aaa; line-height: 1.7;">
+            Я можу зробити:<br>
+            📝 вправи з пропусками<br>
+            🎧 список слів для аудіозапису<br>
+            🧩 тести на вибір правильного слова<br>
+            📖 додатковий словник A2 або C1
+        </div>
+        <div style="text-align: center; margin-top: 14px; font-size: 15px; color: #c7e2ff;">
+            👇 Напишіть, що вам потрібно!
+        </div>
+    </div>
+
+    <div class="footer-msg">
+        <strong>📌 Зберігайте цей пост, щоб не втратити!</strong><br>
+        🇩🇪 Viel Erfolg beim Deutschlernen!
+    </div>
+
+</body>
+</html>
