@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Antwortbogen · Hören Teil 1–4 · B2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600;700&family=Source+Sans+3:ital,wght@0,400;0,600;0,700;1,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --desk:#D8DAD2;
+  --sheet:#FBFBF8;
+  --ink:#16181A;
+  --print:#173F6B;
+  --graphite:#4A4F55;
+  --marker:#E9F24B;
+  --korrektur:#B8321F;
+
+  --mono:"IBM Plex Mono", ui-monospace, "SF Mono", Menlo, monospace;
+  --body:"Source Sans 3", -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  --rule:1px solid rgba(23,63,107,.28);
+  --gap:clamp(16px,4vw,34px);
+}
+
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{
+  margin:0;
+  background:var(--desk);
+  background-image:repeating-linear-gradient(0deg,rgba(0,0,0,.022) 0 1px,transparent 1px 3px);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.5;
+}
+
+/* ---------- Sheet ---------- */
+.sheet{
+  max-width:820px;margin:0 auto;background:var(--sheet);position:relative;
+  box-shadow:0 1px 0 rgba(0,0,0,.06),0 18px 40px -24px rgba(0,0,0,.45);
+  min-height:100vh;
+}
+.sheet::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:9px;
+  background:repeating-linear-gradient(180deg,var(--ink) 0 7px,transparent 7px 21px);
+  opacity:.5;
+}
+@media (max-width:640px){ .sheet::before{width:5px} }
+
+.crop{position:absolute;width:16px;height:16px;border:1.5px solid var(--print);opacity:.55}
+.crop.tl{top:10px;left:18px;border-right:0;border-bottom:0}
+.crop.tr{top:10px;right:10px;border-left:0;border-bottom:0}
+.crop.bl{bottom:10px;left:18px;border-right:0;border-top:0}
+.crop.br{bottom:10px;right:10px;border-left:0;border-top:0}
+
+.inner{padding:clamp(28px,6vw,52px) var(--gap) 80px calc(var(--gap) + 10px)}
+
+/* ---------- Kopf ---------- */
+.kopf{border-bottom:2px solid var(--print);padding-bottom:16px}
+.eyebrow{font-family:var(--mono);font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--print);font-weight:600}
+h1{
+  font-family:var(--mono);font-weight:700;font-size:clamp(30px,8.5vw,54px);
+  letter-spacing:-.045em;line-height:.94;margin:10px 0 4px;color:var(--ink);text-transform:uppercase;
+}
+.subline{font-size:15px;color:var(--graphite);margin:0}
+.felder{
+  display:flex;flex-wrap:wrap;gap:8px 26px;margin-top:20px;
+  font-family:var(--mono);font-size:11.5px;letter-spacing:.08em;text-transform:uppercase;color:var(--print);
+}
+.feld{display:flex;align-items:flex-end;gap:8px}
+.feld i{font-style:normal;opacity:.75}
+.feld b{font-weight:500;color:var(--ink);border-bottom:1px solid rgba(23,63,107,.4);min-width:74px;padding:0 4px 1px}
+
+/* ---------- Steuerung ---------- */
+.steuerung{
+  position:sticky;top:0;z-index:20;background:rgba(251,251,248,.94);backdrop-filter:blur(8px);
+  border-bottom:var(--rule);
+  margin:0 calc(-1 * var(--gap)) 0 calc(-1 * var(--gap) - 10px);
+  padding:10px var(--gap) 10px calc(var(--gap) + 10px);
+  display:flex;align-items:center;gap:10px;flex-wrap:wrap;
+}
+.uhr{font-family:var(--mono);font-weight:600;font-size:22px;letter-spacing:-.02em;font-variant-numeric:tabular-nums;color:var(--print);min-width:78px}
+.uhr.laeuft{color:var(--ink)}
+.uhr.aus{color:var(--korrektur)}
+.fortschritt{flex:1;min-width:110px}
+.balken{height:5px;background:rgba(23,63,107,.13);position:relative;overflow:hidden}
+.balken span{position:absolute;inset:0 auto 0 0;width:0;background:var(--print);transition:width .3s ease}
+.zaehler{font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;text-transform:uppercase;color:var(--graphite);margin-top:4px;display:block}
+.knopfgruppe{display:flex;gap:7px;flex-wrap:wrap}
+button{font-family:var(--mono);cursor:pointer}
+.btn{
+  border:1.5px solid var(--print);background:transparent;color:var(--print);
+  font-size:11.5px;font-weight:600;letter-spacing:.1em;text-transform:uppercase;
+  padding:9px 13px;border-radius:0;transition:background .15s,color .15s;
+  display:inline-flex;align-items:center;gap:7px;
+}
+.btn:hover{background:var(--print);color:var(--sheet)}
+.btn.primaer{background:var(--print);color:var(--sheet)}
+.btn.primaer:hover{background:var(--ink);border-color:var(--ink)}
+.btn:focus-visible,.bubble:focus-visible,.belegschalter:focus-visible,.spielknopf:focus-visible,.spur:focus-visible{outline:2.5px solid var(--korrektur);outline-offset:2px}
+.schalter{display:flex;align-items:center;gap:7px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--graphite);cursor:pointer;user-select:none}
+.schalter input{accent-color:var(--print);width:15px;height:15px;cursor:pointer}
+@media (max-width:520px){ .btn{padding:8px 10px;font-size:10.5px} }
+
+/* ---------- Audio ---------- */
+.spieler{
+  display:flex;align-items:center;gap:13px;margin-top:16px;
+  border:1.5px solid var(--print);padding:9px 13px;background:var(--sheet);
+}
+.spielknopf{
+  flex:none;width:36px;height:36px;border-radius:50%;border:0;
+  background:var(--print);color:var(--sheet);display:grid;place-items:center;padding:0;
+  transition:background .15s,transform .12s;
+}
+.spielknopf:hover{background:var(--ink)}
+.spielknopf:active{transform:scale(.94)}
+.spurblock{flex:1;min-width:0}
+.spurname{
+  font-family:var(--mono);font-size:10px;font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--print);display:block;margin-bottom:5px;
+  white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+}
+.spur{
+  height:5px;background:rgba(23,63,107,.15);position:relative;cursor:pointer;
+  border:0;padding:0;width:100%;display:block;
+}
+.spur > span{position:absolute;inset:0 auto 0 0;width:0;background:var(--print)}
+.zeit{
+  font-family:var(--mono);font-size:11.5px;font-variant-numeric:tabular-nums;
+  color:var(--graphite);flex:none;letter-spacing:.02em;
+}
+.spieler.fehlt{border-color:var(--korrektur);border-style:dashed}
+.spieler.fehlt .spielknopf{background:rgba(74,79,85,.3);cursor:not-allowed}
+.spieler.fehlt .spurname{color:var(--korrektur)}
+.spieler.fehlt .spur,.spieler.fehlt .zeit{display:none}
+.dateihinweis{font-size:14px;color:var(--graphite);margin:0}
+.spieler.fehlt .spurblock .spurname{white-space:normal}
+
+.punkt{
+  display:inline-block;width:8px;height:8px;border-radius:50%;background:var(--korrektur);
+  margin-left:10px;vertical-align:middle;opacity:0;transition:opacity .2s;
+}
+.teil.laeuft .punkt{opacity:1;animation:pulsen 1.4s ease-in-out infinite}
+@keyframes pulsen{0%,100%{opacity:1}50%{opacity:.25}}
+
+/* ---------- Teile ---------- */
+.teil{margin-top:52px}
+.teilkopf{display:flex;align-items:baseline;gap:14px;border-bottom:var(--rule);padding-bottom:7px}
+.teilkopf h2{font-family:var(--mono);font-weight:700;font-size:clamp(19px,4.6vw,26px);letter-spacing:-.03em;margin:0;text-transform:uppercase}
+.teilkopf .spanne{font-family:var(--mono);font-size:11px;letter-spacing:.16em;color:var(--print);margin-left:auto;font-weight:600;white-space:nowrap}
+.anweisung{font-style:italic;font-size:15.5px;color:var(--graphite);margin:14px 0 0;max-width:60ch}
+.rubrik{font-family:var(--mono);font-size:10.5px;font-weight:600;letter-spacing:.2em;color:var(--print);margin:30px 0 -6px}
+
+/* ---------- Aufgaben ---------- */
+.aufgabe{display:flex;gap:14px;margin-top:30px;scroll-margin-top:100px}
+.nr{font-family:var(--mono);font-weight:700;font-size:15px;color:var(--print);width:26px;flex:none;padding-top:1px;font-variant-numeric:tabular-nums}
+.koerper{flex:1;min-width:0}
+.frage{margin:0 0 12px;font-weight:600;font-size:17.5px}
+.optionen{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:3px}
+
+.opt{display:flex;align-items:flex-start;gap:11px;padding:4px 6px 4px 0;position:relative}
+.bubble{
+  flex:none;width:27px;height:27px;border-radius:50%;border:1.5px solid var(--graphite);
+  background:transparent;font-family:var(--mono);font-size:12px;font-weight:600;color:var(--graphite);
+  display:grid;place-items:center;padding:0;transition:background .12s,color .12s,transform .12s;
+}
+.bubble:hover{background:rgba(74,79,85,.1)}
+.opt.gewaehlt .bubble{background:var(--graphite);color:var(--sheet);border-color:var(--graphite);transform:scale(1.06)}
+.opt.richtig .bubble{background:var(--print);border-color:var(--print);color:var(--sheet)}
+.opt.falsch .bubble{background:var(--korrektur);border-color:var(--korrektur);color:var(--sheet)}
+.opt.loesung .bubble{background:transparent;border:2px solid var(--print);color:var(--print)}
+
+.text{padding-top:3px;flex:1;position:relative;z-index:1}
+.zug{
+  position:absolute;left:38px;right:6px;top:6px;bottom:5px;
+  background:var(--marker);mix-blend-mode:multiply;transform-origin:left center;transform:scaleX(0);
+  clip-path:polygon(0 6%,100% 0,100% 94%,0 100%);z-index:0;pointer-events:none;
+}
+.opt.markiert .zug{animation:streichen .42s cubic-bezier(.2,.7,.3,1) forwards}
+@keyframes streichen{to{transform:scaleX(1)}}
+.opt.durchgestrichen .text{text-decoration:line-through;text-decoration-color:var(--korrektur);text-decoration-thickness:2px;opacity:.62}
+
+.fachwort{border-bottom:1.5px dotted var(--print);cursor:help;text-decoration:none;font-weight:600}
+
+/* ---------- Beleg ---------- */
+.beleg{display:grid;grid-template-rows:0fr;opacity:0;transition:grid-template-rows .34s ease,opacity .28s ease;margin-top:0}
+.aufgabe.geprueft .beleg{grid-template-rows:1fr;opacity:1;margin-top:13px}
+.beleg > .huelle{overflow:hidden}
+.belegkasten{border-left:2px solid var(--print);padding:1px 0 1px 13px}
+.belegzeile{margin:0;font-size:15.5px}
+.belegzeile + .belegzeile{margin-top:9px}
+.marke{font-family:var(--mono);font-size:9.5px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--print);display:block;margin-bottom:2px}
+.zitat{font-style:italic;color:var(--ink)}
+.zitat .schluessel{background:var(--marker);mix-blend-mode:multiply;padding:0 3px;font-style:italic}
+.hinweis{color:var(--graphite)}
+.hinweis .marke{color:var(--korrektur)}
+.belegschalter{
+  border:0;background:transparent;padding:6px 0 0;color:var(--print);
+  font-size:10.5px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;
+  text-decoration:underline;text-underline-offset:3px;
+}
+.aufgabe.geprueft .belegschalter{display:none}
+
+/* ---------- Auswertung ---------- */
+.auswertung{margin-top:60px;border:2px solid var(--print);padding:22px var(--gap);display:none}
+.auswertung.sichtbar{display:block;animation:auf .35s ease-out}
+@keyframes auf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+.punkte{font-family:var(--mono);font-weight:700;font-size:clamp(42px,13vw,76px);letter-spacing:-.05em;line-height:1;color:var(--print);font-variant-numeric:tabular-nums}
+.punkte small{font-size:.34em;letter-spacing:.02em;opacity:.55}
+.bilanz{display:grid;grid-template-columns:repeat(auto-fit,minmax(110px,1fr));gap:2px;margin-top:20px;background:rgba(23,63,107,.2);border:1px solid rgba(23,63,107,.2)}
+.bilanz div{background:var(--sheet);padding:11px 13px}
+.bilanz dt{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--graphite)}
+.bilanz dd{margin:3px 0 0;font-family:var(--mono);font-weight:600;font-size:20px;color:var(--ink)}
+
+/* ---------- Zusatz, Fallen, Wortschatz ---------- */
+.block{margin-top:56px;border-top:2px solid var(--print);padding-top:18px}
+.block h2{font-family:var(--mono);font-size:15px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;margin:0 0 14px;color:var(--print)}
+.fallen ol{margin:0;padding-left:22px}
+.fallen li{margin-bottom:11px;font-size:16px}
+.fallen li span{color:var(--graphite)}
+
+.wortschatz dl{margin:0;display:grid;grid-template-columns:auto 1fr;gap:0}
+.wortschatz dt{font-weight:700;padding:9px 16px 9px 0;border-top:1px dotted rgba(23,63,107,.35);white-space:nowrap}
+.wortschatz dd{margin:0;padding:9px 0;border-top:1px dotted rgba(23,63,107,.35);color:var(--graphite);font-size:15.5px}
+@media (max-width:560px){
+  .wortschatz dl{grid-template-columns:1fr}
+  .wortschatz dt{padding-bottom:0;border-top:1px dotted rgba(23,63,107,.35)}
+  .wortschatz dd{padding-top:2px;border-top:0}
+}
+
+.fuss{margin-top:46px;font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--graphite);opacity:.75}
+
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.01ms !important;transition-duration:.01ms !important}
+  .opt.markiert .zug{transform:scaleX(1)}
+  .teil.laeuft .punkt{animation:none}
+}
+</style>
+</head>
+<body>
+<main class="sheet">
+  <span class="crop tl"></span><span class="crop tr"></span>
+  <span class="crop bl"></span><span class="crop br"></span>
+
+  <div class="inner">
+    <header class="kopf">
+      <p class="eyebrow">Antwortbogen · Hörverstehen</p>
+      <h1>Hören<br>Teil 1–4</h1>
+      <p class="subline">Deutsch-Test für den Beruf B2 · Modelltest 2 · Aufgaben 22–40</p>
+      <div class="felder">
+        <span class="feld"><i>Name</i><b>&nbsp;</b></span>
+        <span class="feld"><i>Datum</i><b>&nbsp;</b></span>
+        <span class="feld"><i>Zeit</i><b>20 Min.</b></span>
+      </div>
+    </header>
+
+    <div class="steuerung">
+      <span class="uhr" id="uhr">20:00</span>
+      <div class="fortschritt">
+        <div class="balken"><span id="balken"></span></div>
+        <span class="zaehler" id="zaehler">0 von 20 markiert</span>
+      </div>
+      <label class="schalter"><input type="checkbox" id="sofort"> Sofort prüfen</label>
+      <div class="knopfgruppe">
+        <button class="btn primaer" id="btnStart">
+          <svg viewBox="0 0 12 14" width="10" height="12" aria-hidden="true"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>
+          Prüfung starten
+        </button>
+        <button class="btn" id="btnAuswerten">Auswerten</button>
+        <button class="btn" id="btnNeu">Neu</button>
+      </div>
+    </div>
+
+    <div id="teile"></div>
+
+    <section class="auswertung" id="auswertung" aria-live="polite">
+      <p class="eyebrow">Ergebnis</p>
+      <div class="punkte" id="punkte">0<small>/20</small></div>
+      <dl class="bilanz" id="bilanz"></dl>
+    </section>
+
+    <section class="block" id="zusatz">
+      <h2>Zusatzaufnahme</h2>
+      <p class="anweisung" style="margin-top:0">Hören und Schreiben (Aufgaben 41–45) — gehört nicht zu den 20 Aufgaben oben und wird hier nicht ausgewertet.</p>
+      <div id="zusatzSpieler"></div>
+    </section>
+
+    <section class="block fallen">
+      <h2>Vier Fallen in diesem Test</h2>
+      <ol>
+        <li><b>Смена субъекта.</b> <span>25a — жалобы документируют <i>ihr</i> (сотрудники), а в варианте стоит <i>sie</i> (гости). Так же 27b и 40b.</span></li>
+        <li><b>Слово-приманка под отрицанием.</b> <span>31e — <i>schüchtern</i> звучит, но с <i>nicht</i>. 37c — окна звучат, но Bea в них уверена.</span></li>
+        <li><b>Подмена степени или квантора.</b> <span>23b <i>bevorzugt → nur</i>, 33b <i>zweiter Kaffee → nur Getränke</i>, 35b <i>kleiner Preis → kostenlos</i>.</span></li>
+        <li><b>Верное слово в чужом контексте.</b> <span>34c — <i>Winter</i> относится к сезонным блюдам, а не к обновлению системы.</span></li>
+      </ol>
+    </section>
+
+    <section class="block wortschatz">
+      <h2>Wortschatz</h2>
+      <dl id="glossar"></dl>
+    </section>
+
+    <p class="fuss">Lösungen geprüft gegen den Cornelsen-Lösungsschlüssel · Modelltest 2 · 19/19</p>
+  </div>
+</main>
+
+<script>
+const GLOSSAR = {
+  "Urlaubssperre":"Zeitraum, in dem kein Urlaub genehmigt wird — период, когда отпуск заблокирован",
+  "Wartung":"regelmäßige technische Kontrolle — техобслуживание",
+  "Bedienung":"der Umgang mit einem Gerät — управление, эксплуатация",
+  "Entschädigung":"Ausgleich für einen Schaden — компенсация",
+  "entgegenkommen":"jemandem einen Schritt weit nachgeben — идти навстречу",
+  "Mehrheitsmeinung":"die Meinung der Mehrheit — мнение большинства",
+  "schüchternen":"zurückhaltend, nicht selbstbewusst — застенчивый",
+  "fördern":"unterstützen, weiterbringen — способствовать развитию",
+  "anfallen":"entstehen (Abfälle fallen an) — образовываться, возникать",
+  "Mitnahmebehälter":"Gefäß zum Mitnehmen von Speisen — контейнер для еды с собой",
+  "abgeschafft":"beendet, nicht mehr angeboten — отменено",
+  "Anlass":"Grund, Ursache (der Anlass → anlässlich + Genitiv) — повод",
+  "Lebensmittelrettung":"Verwertung noch essbarer Lebensmittel — фудшеринг",
+  "Anzahlung":"erste Teilzahlung vor der Lieferung — предоплата",
+  "Teillieferung":"Lieferung nur eines Teils der Ware — частичная поставка",
+  "kündigt":"ankündigen = im Voraus informieren — заранее сообщать",
+  "Protokoll":"schriftliche Mitschrift einer Sitzung — протокол",
+  "weist darauf hin":"hinweisen auf = aufmerksam machen — обращать внимание",
+  "überlegt":"sich etwas überlegen = nachdenken, planen — обдумать"
+};
+
+const BASIS = "9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3";
+const ZUSATZ = {datei:"011_" + BASIS, label:"Track 011 · Hören und Schreiben 41–45"};
+
+const TF = [{k:"a",t:"richtig"},{k:"b",t:"falsch"}];
+const SAETZE = [
+  {k:"a",t:"Für eine gute Teamführung muss man sich qualifizieren."},
+  {k:"b",t:"Bei der Teamarbeit kann man sich schnell hinter der [[Mehrheitsmeinung]] verstecken."},
+  {k:"c",t:"Teamarbeit kann alle Mitarbeitenden [[fördern]]."},
+  {k:"d",t:"Teamarbeit heißt mehr Arbeit."},
+  {k:"e",t:"Mit [[schüchternen]] Menschen gibt es im Team oft Konflikte."},
+  {k:"f",t:"Teamarbeit ist effektiv."}
+];
+
+const TEILE = [
+  {
+    titel:"Hören Teil 1", spanne:"Aufgaben 22–27",
+    audio:"007_" + BASIS, spur:"Track 007 · Gespräche 22–27",
+    anweisung:"Sie hören drei Gespräche. Zu jedem Gespräch gibt es zwei Aufgaben. Ist die Aussage dazu richtig oder falsch und welche Antwort (a, b oder c) passt am besten? Sie hören die Gespräche einmal.",
+    fragen:[
+      {nr:22, stem:"Die Mitarbeiterin möchte ihre Urlaubsplanung besprechen.", opt:TF, loesung:"b",
+       beleg:"Ich weiß nicht genau, wie das hier mit {{Urlaubsanträgen}}, Genehmigung von Urlaub usw. geregelt ist.",
+       falle:"Она выясняет процедуру, а не обсуждает свой план — дат ещё не знает: «Im Moment weiß ich es noch nicht»."},
+      {nr:23, stem:"Dieses Jahr", loesung:"c", opt:[
+        {k:"a",t:"gibt es an Weihnachten eine [[Urlaubssperre]]."},
+        {k:"b",t:"dürfen im Sommer nur Mitarbeitende mit Kindern Urlaub machen."},
+        {k:"c",t:"gibt es eine neue Methode, den Urlaub anzumelden."}],
+       beleg:"Vergessen Sie nicht, sich in unsere {{Urlaubsliste}} einzutragen … Wir machen das {{seit diesem Jahr}}.",
+       falle:"a — на Рождество отпуск брать <b>обязаны</b> (Betriebsferien), это не запрет. b — сказано <i>bevorzugt</i>, а не <i>nur</i>."},
+      {nr:24, stem:"Das Team plant den Umgang mit unzufriedenen Gästen.", opt:TF, loesung:"a",
+       beleg:"Was machen wir, wenn Gäste wirklich unzufrieden sind? Ich würde mich gern darauf {{vorbereiten}}."},
+      {nr:25, stem:"Wenn Gäste unzufrieden sind,", loesung:"c", opt:[
+        {k:"a",t:"sollen sie ihre Beschwerden dokumentieren."},
+        {k:"b",t:"sollte man ihnen mit kostenlosem Infomaterial über die Sehenswürdigkeiten der Stadt [[entgegenkommen]]."},
+        {k:"c",t:"ist eine finanzielle [[Entschädigung]] nur nach Rücksprache mit der Hotelleitung möglich."}],
+       beleg:"Wenn es um finanzielle Entschädigungen geht, {{ruft bitte mich}} oder jemanden aus der Hoteldirektion an.",
+       falle:"a — в аудио «dass <b>ihr</b> die Beschwerden dokumentiert» (сотрудники), в варианте <b>sie</b> = гости. b — бесплатные карты города получают все гости, это не реакция на жалобу."},
+      {nr:26, stem:"Herr Rossi von der Pizzeria Luigi möchte eine regelmäßige [[Wartung]].", opt:TF, loesung:"b",
+       beleg:"Bitte schicken Sie einen {{Techniker}} vorbei, um eine Lösung zu finden.",
+       falle:"Разовый выезд по конкретной поломке ≠ регулярное техобслуживание."},
+      {nr:27, stem:"Die Pizzeria möchte", loesung:"a", opt:[
+        {k:"a",t:"eine funktionierende Maschine."},
+        {k:"b",t:"ein Gerät umtauschen."},
+        {k:"c",t:"Hilfe bei der [[Bedienung]] eines Geräts."}],
+       beleg:"Wir müssen davon ausgehen können, dass sie {{einwandfrei funktioniert}}.",
+       falle:"b — обмен прибора предлагает <b>продавец</b>, не Rossi. c — инструкцию они уже прочли и сервис обзвонили."}
+    ]
+  },
+  {
+    titel:"Hören Teil 2", spanne:"Aufgaben 28–31",
+    audio:"008_" + BASIS, spur:"Track 008 · Gespräche 28–31",
+    anweisung:"Sie hören vier Gespräche. Welcher der Sätze a–f passt am besten zu welchem Gespräch? Lesen Sie zuerst die Sätze a–f. Dazu haben Sie eine Minute Zeit. Danach hören Sie die Gespräche einmal.",
+    fragen:[
+      {nr:28, stem:"Gespräch 28 — welcher Satz passt?", opt:SAETZE, loesung:"c",
+       beleg:"Wie schafft ihr es, dass alle sich beteiligen, auch die Schwächeren? … So haben sich {{alle}} schon im Vorfeld beteiligt."},
+      {nr:29, stem:"Gespräch 29 — welcher Satz passt?", opt:SAETZE, loesung:"a",
+       beleg:"Dazu gehört auch, sich einmal durch ein {{Seminar}} für die Leitung zu {{qualifizieren}}."},
+      {nr:30, stem:"Gespräch 30 — welcher Satz passt?", opt:SAETZE, loesung:"f",
+       beleg:"Wir klären alles viel {{schneller}} als früher, ohne diese Teamtermine.",
+       falle:"d («mehr Arbeit») опровергается прямо: «haben wir <b>weniger</b> Besprechungstermine als früher»."},
+      {nr:31, stem:"Gespräch 31 — welcher Satz passt?", opt:SAETZE, loesung:"b",
+       beleg:"Man akzeptiert sehr schnell, was die {{Mehrheit}} vorschlägt … man war ja eigentlich {{nicht verantwortlich}}.",
+       falle:"e — слово <i>schüchtern</i> звучит, но под отрицанием: «sind bestimmt <b>nicht</b> schüchtern»."}
+    ]
+  },
+  {
+    titel:"Hören Teil 3", spanne:"Aufgaben 32–35",
+    audio:"009_" + BASIS, spur:"Track 009 · Präsentation 32–35",
+    anweisung:"Sie hören gleich eine Präsentation. Dazu gibt es vier Aufgaben. Welche Lösung (a, b oder c) passt jeweils am besten? Lesen Sie zuerst die Aufgaben. Danach hören Sie die Präsentation einmal.",
+    fragen:[
+      {nr:"Bsp.", rubrik:"Abfall", stem:"Warum gibt es eine Präsentation zum Abfallproblem?", loesung:"b", opt:[
+        {k:"a",t:"Im Restaurant nehmen die Küchenabfälle zu."},
+        {k:"b",t:"Trotz vieler Modernisierungen wurde das Problem noch nicht gelöst."},
+        {k:"c",t:"Viele Gäste interessiert das Thema überhaupt nicht."}],
+       falle:"Вступление презентации не попало в расшифровку, а Beispiel не входит в официальный ключ Cornelsen — единственный ответ здесь взят из пометок в тетради."},
+      {nr:32, rubrik:"Abfallvermeidung", stem:"Um Abfälle zu vermeiden, überlegt das Restaurant,", loesung:"a", opt:[
+        {k:"a",t:"wo die Abfälle [[anfallen]]."},
+        {k:"b",t:"die Gäste zu bitten, eigene [[Mitnahmebehälter]] zu benutzen."},
+        {k:"c",t:"die Portionen kleiner zu machen."}],
+       beleg:"Punkt 1: die {{Portionsgröße}} · Punkt 2: die {{Essensreste}} — plus «bei unserer Bestandsaufnahme festgestellt».",
+       falle:"c — вводят <b>три размера на выбор</b> («drei verschiedene Portionsgrößen»), а не уменьшают порции. b — упаковку даёт ресторан, гости свою не приносят."},
+      {nr:33, rubrik:"Angebote", stem:"In Zukunft soll", loesung:"c", opt:[
+        {k:"a",t:"das Sonntagsfrühstück [[abgeschafft]] werden."},
+        {k:"b",t:"es zum Sonntagsfrühstück nur noch kostenlos Getränke geben."},
+        {k:"c",t:"sich das Sonntagsangebot ändern."}],
+       beleg:"Dieses Buffet {{in dieser Form}} nicht mehr anbieten … verschiedene Frühstücksangebote zu einem {{festen Preis}}.",
+       falle:"a — отменяют формат шведского стола за 15 €, а не завтрак. b — бесплатны только <b>второй и третий</b> кофе или чай."},
+      {nr:34, rubrik:"Logistik", stem:"Das Lagerverwaltungssystem", loesung:"a", opt:[
+        {k:"a",t:"gibt wenig [[Anlass]] zur Kritik."},
+        {k:"b",t:"hat öfter Fehler im Lager angezeigt."},
+        {k:"c",t:"bekommt im Winter ein Update."}],
+       beleg:"Unser System war in der Vergangenheit sehr {{zuverlässig}} — auch durch die {{regelmäßigen Updates}}.",
+       falle:"c — <i>Winter</i> сказано про сезонные блюда, обновления идут <b>регулярно</b>. b — система показывает, чего не хватает, а не ошибки."},
+      {nr:35, rubrik:"Weitere Maßnahmen", stem:"Damit weniger Lebensmittel verschwendet werden,", loesung:"c", opt:[
+        {k:"a",t:"wird das Restaurant seine Preise senken."},
+        {k:"b",t:"werden nicht verkaufte Speisen kostenlos angeboten."},
+        {k:"c",t:"wird man sich an einer Methode zur [[Lebensmittelrettung]] beteiligen."}],
+       beleg:"Unser Restaurant bei einer {{Initiative gegen Lebensmittelverschwendung}} anmelden — über eine App.",
+       falle:"b — остатки отдают «für einen <b>kleinen Preis</b>», а не бесплатно."}
+    ]
+  },
+  {
+    titel:"Hören Teil 4", spanne:"Aufgaben 36–40",
+    audio:"010_" + BASIS, spur:"Track 010 · Mitteilungen 36–40",
+    anweisung:"Sie hören fünf telefonische Mitteilungen. Zu jeder Mitteilung gibt es eine Aufgabe. Welche Lösung (a, b oder c) passt am besten? Sie hören jede Mitteilung einmal.",
+    fragen:[
+      {nr:36, stem:"Olaf möchte", loesung:"b", opt:[
+        {k:"a",t:"am Samstag nicht im Hotel essen."},
+        {k:"b",t:"heute noch reservieren."},
+        {k:"c",t:"vor dem Essen eine Stadtrundfahrt machen."}],
+       beleg:"Ich rufe {{heute Nachmittag}} noch im Restaurant an, damit wir morgen sicher Plätze haben.",
+       falle:"a — ресторан ещё не выбран, он спрашивает коллег. c — «etwas von Frankfurt sehen» ≠ обзорная экскурсия."},
+      {nr:37, stem:"Bea", loesung:"a", opt:[
+        {k:"a",t:"weiß nicht, ob sie die Ladentür offen gelassen hat."},
+        {k:"b",t:"hat ihre Schlüssel im Laden vergessen."},
+        {k:"c",t:"möchte nach ihrem Kurs nach den Fenstern im Laden sehen."}],
+       beleg:"Ich {{weiß nicht}}, ob ich vergessen habe, den Laden {{abzuschließen}}.",
+       falle:"c — в окнах она как раз уверена: «Ich bin <b>sicher</b>, dass ich die Fenster geschlossen habe». b — ключи вообще не упоминаются."},
+      {nr:38, stem:"Die Firma K+W GmbH", loesung:"c", opt:[
+        {k:"a",t:"hat Lagerprobleme."},
+        {k:"b",t:"bittet um eine [[Anzahlung]]."},
+        {k:"c",t:"[[kündigt]] eine [[Teillieferung]] an."}],
+       beleg:"Anstelle der acht bestellten Fensterrahmen können wir heute nur {{sechs}} zuschicken.",
+       falle:"b — ровно наоборот: «zahlen Sie <b>erst nach</b> vollständiger Auftragsabwicklung»."},
+      {nr:39, stem:"Thomas", loesung:"b", opt:[
+        {k:"a",t:"möchte am Samstag frei haben."},
+        {k:"b",t:"sucht jemanden, der oder die am Freitagabend für ihn arbeitet."},
+        {k:"c",t:"feiert seinen Geburtstag in der Schule."}],
+       beleg:"Ich suche für morgen Abend, also {{Freitag}}, eine {{Vertretung}} in der Schule.",
+       falle:"a — суббота у него и так свободна. c — школа это место работы; про место праздника «Ich schicke noch eine Mail»."},
+      {nr:40, stem:"Susanne", loesung:"a", opt:[
+        {k:"a",t:"[[weist darauf hin]], dass alle zur Sitzung kommen müssen."},
+        {k:"b",t:"möchte auf der Sitzung kein [[Protokoll]] mehr schreiben."},
+        {k:"c",t:"hat sich Besprechungsthemen für die Sitzung [[überlegt]]."}],
+       beleg:"Ihr wisst, dass {{Teilnahme Pflicht}} ist, auch wenn ihr im Moment viel Arbeit habt.",
+       falle:"c — наоборот, тем прислали мало и она их просит. b — она ищет <b>добровольцев</b> на протокол, а не отказывается."}
+    ]
+  }
+];
+
+/* ---------- Text-Helfer ---------- */
+const esc = s => String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;");
+function fachwoerter(text){
+  return esc(text).replace(/\[\[(.+?)\]\]/g, (_, w) => {
+    const def = GLOSSAR[w];
+    return def
+      ? '<abbr class="fachwort" title="' + def.replace(/"/g,"&quot;") + '">' + w + '</abbr>'
+      : '<span class="fachwort">' + w + '</span>';
+  });
+}
+function zitat(text){
+  return esc(text).replace(/\{\{(.+?)\}\}/g, '<span class="schluessel">$1</span>');
+}
+function hinweisText(text){
+  return esc(text).replace(/&lt;b&gt;/g,"<b>").replace(/&lt;\/b&gt;/g,"</b>")
+                  .replace(/&lt;i&gt;/g,"<i>").replace(/&lt;\/i&gt;/g,"</i>");
+}
+function mmss(sek){
+  if (!isFinite(sek) || sek < 0) sek = 0;
+  const m = String(Math.floor(sek / 60)).padStart(2,"0");
+  const s = String(Math.floor(sek % 60)).padStart(2,"0");
+  return m + ":" + s;
+}
+
+/* ---------- Audio ---------- */
+const IKON_PLAY  = '<svg viewBox="0 0 12 14" width="12" height="14" aria-hidden="true"><path d="M0 0 L12 7 L0 14 Z" fill="currentColor"/></svg>';
+const IKON_PAUSE = '<svg viewBox="0 0 12 14" width="12" height="14" aria-hidden="true"><rect x="0" y="0" width="4" height="14" fill="currentColor"/><rect x="8" y="0" width="4" height="14" fill="currentColor"/></svg>';
+
+const spuren = [];
+let kette = false;
+
+function bauSpieler(datei, label, teilEl){
+  const box = document.createElement("div");
+  box.className = "spieler";
+  box.innerHTML =
+    '<button class="spielknopf" type="button" aria-label="Abspielen">' + IKON_PLAY + '</button>'
+  + '<div class="spurblock">'
+  +   '<span class="spurname">' + esc(label) + '</span>'
+  +   '<button class="spur" type="button" aria-label="Position wählen"><span></span></button>'
+  + '</div>'
+  + '<span class="zeit">00:00</span>';
+
+  const audio = new Audio();
+  audio.preload = "metadata";
+  audio.src = datei;
+
+  const knopf = box.querySelector(".spielknopf");
+  const spur  = box.querySelector(".spur");
+  const fuell = spur.querySelector("span");
+  const zeit  = box.querySelector(".zeit");
+  const name  = box.querySelector(".spurname");
+
+  const eintrag = {audio, box, knopf, teilEl, datei};
+  spuren.push(eintrag);
+
+  knopf.addEventListener("click", () => {
+    if (box.classList.contains("fehlt")) return;
+    if (audio.paused){ kette = false; abspielen(eintrag); }
+    else audio.pause();
+  });
+
+  spur.addEventListener("click", e => {
+    if (!isFinite(audio.duration)) return;
+    const r = spur.getBoundingClientRect();
+    audio.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * audio.duration;
+  });
+
+  audio.addEventListener("play", () => {
+    spuren.forEach(s => { if (s.audio !== audio) s.audio.pause(); });
+    knopf.innerHTML = IKON_PAUSE;
+    knopf.setAttribute("aria-label","Pause");
+    if (teilEl) teilEl.classList.add("laeuft");
+    starteUhr();
+  });
+  audio.addEventListener("pause", () => {
+    knopf.innerHTML = IKON_PLAY;
+    knopf.setAttribute("aria-label","Abspielen");
+    if (teilEl) teilEl.classList.remove("laeuft");
+  });
+  audio.addEventListener("timeupdate", () => {
+    const d = isFinite(audio.duration) ? audio.duration : 0;
+    fuell.style.width = d ? (audio.currentTime / d * 100) + "%" : "0%";
+    zeit.textContent = mmss(audio.currentTime) + (d ? " / " + mmss(d) : "");
+  });
+  audio.addEventListener("loadedmetadata", () => {
+    zeit.textContent = "00:00 / " + mmss(audio.duration);
+  });
+  audio.addEventListener("ended", () => {
+    if (teilEl) teilEl.classList.remove("laeuft");
+    if (!kette) return;
+    const i = spuren.indexOf(eintrag);
+    const naechste = spuren.slice(i + 1).find(s => !s.box.classList.contains("fehlt") && s.imTest);
+    if (naechste) abspielen(naechste);
+    else kette = false;
+  });
+  audio.addEventListener("error", () => {
+    box.classList.add("fehlt");
+    name.textContent = "Datei nicht gefunden: " + datei;
+    const p = document.createElement("p");
+    p.className = "dateihinweis";
+    p.textContent = "Lege die MP3 in denselben Ordner wie diese HTML-Datei.";
+    box.querySelector(".spurblock").appendChild(p);
+  });
+
+  return {box, eintrag};
+}
+
+function abspielen(eintrag){
+  const p = eintrag.audio.play();
+  if (p && p.catch) p.catch(() => {});
+}
+
+/* ---------- Rendern ---------- */
+const antworten = {};
+const behaelter = document.getElementById("teile");
+
+TEILE.forEach((teil, ti) => {
+  const sec = document.createElement("section");
+  sec.className = "teil";
+  sec.innerHTML =
+    '<div class="teilkopf"><h2>' + teil.titel + '<span class="punkt"></span></h2>'
+  + '<span class="spanne">' + teil.spanne + '</span></div>'
+  + '<p class="anweisung">' + teil.anweisung + '</p>';
+
+  const sp = bauSpieler(teil.audio, teil.spur, sec);
+  sp.eintrag.imTest = true;
+  sec.appendChild(sp.box);
+
+  teil.fragen.forEach((f, fi) => {
+    const id = ti + "-" + fi;
+    if (f.rubrik) {
+      const r = document.createElement("p");
+      r.className = "rubrik";
+      r.textContent = f.rubrik;
+      sec.appendChild(r);
+    }
+    const belegInhalt =
+      (f.beleg ? '<p class="belegzeile zitat"><span class="marke">Audio · Belegstelle</span>„' + zitat(f.beleg) + '“</p>' : '')
+    + (f.falle ? '<p class="belegzeile hinweis"><span class="marke">Falle</span>' + hinweisText(f.falle) + '</p>' : '');
+
+    const art = document.createElement("article");
+    art.className = "aufgabe";
+    art.dataset.id = id;
+    art.innerHTML =
+      '<span class="nr">' + f.nr + '</span>'
+    + '<div class="koerper">'
+    +   '<p class="frage">' + fachwoerter(f.stem) + '</p>'
+    +   '<ul class="optionen">'
+    +     f.opt.map(o =>
+            '<li class="opt" data-k="' + o.k + '">'
+          + '<span class="zug"></span>'
+          + '<button class="bubble" type="button" aria-label="Antwort ' + o.k + '">' + o.k + '</button>'
+          + '<span class="text">' + fachwoerter(o.t) + '</span>'
+          + '</li>').join("")
+    +   '</ul>'
+    +   (belegInhalt
+          ? '<button class="belegschalter" type="button">Beleg zeigen</button>'
+          + '<div class="beleg"><div class="huelle"><div class="belegkasten">' + belegInhalt + '</div></div></div>'
+          : '')
+    + '</div>';
+
+    art.querySelectorAll(".opt").forEach(li => {
+      li.querySelector(".bubble").addEventListener("click", () => waehlen(art, id, li.dataset.k, f));
+    });
+    const bs = art.querySelector(".belegschalter");
+    if (bs) bs.addEventListener("click", () => art.classList.add("geprueft"));
+
+    sec.appendChild(art);
+  });
+  behaelter.appendChild(sec);
+});
+
+document.getElementById("zusatzSpieler").appendChild(bauSpieler(ZUSATZ.datei, ZUSATZ.label, null).box);
+
+const gl = document.getElementById("glossar");
+Object.entries(GLOSSAR).forEach(([w, d]) => {
+  gl.insertAdjacentHTML("beforeend", "<dt>" + w + "</dt><dd>" + d + "</dd>");
+});
+
+/* ---------- Logik ---------- */
+const GESAMT = TEILE.reduce((s, t) => s + t.fragen.length, 0);
+const sofort = document.getElementById("sofort");
+
+function waehlen(art, id, k, f){
+  if (art.dataset.fixiert === "1") return;
+  antworten[id] = k;
+  art.querySelectorAll(".opt").forEach(li => li.classList.toggle("gewaehlt", li.dataset.k === k));
+  starteUhr();
+  aktualisiereFortschritt();
+  if (sofort.checked) pruefeAufgabe(art, id, f);
+}
+
+function pruefeAufgabe(art, id, f){
+  art.classList.add("geprueft");
+  art.dataset.fixiert = "1";
+  const gewaehlt = antworten[id];
+  art.querySelectorAll(".opt").forEach(li => {
+    li.classList.remove("gewaehlt");
+    const k = li.dataset.k;
+    if (k === f.loesung){
+      li.classList.add("markiert");
+      li.classList.add(gewaehlt === k ? "richtig" : "loesung");
+    } else if (k === gewaehlt){
+      li.classList.add("falsch", "durchgestrichen");
+    }
+  });
+}
+
+function aktualisiereFortschritt(){
+  const n = Object.keys(antworten).length;
+  document.getElementById("balken").style.width = (n / GESAMT * 100) + "%";
+  document.getElementById("zaehler").textContent = n + " von " + GESAMT + " markiert";
+}
+
+document.getElementById("btnStart").addEventListener("click", () => {
+  const erste = spuren.find(s => s.imTest && !s.box.classList.contains("fehlt"));
+  starteUhr();
+  if (!erste) return;
+  kette = true;
+  abspielen(erste);
+  erste.box.scrollIntoView({behavior:"smooth", block:"center"});
+});
+
+document.getElementById("btnAuswerten").addEventListener("click", () => {
+  let punkte = 0;
+  const bilanz = [];
+  TEILE.forEach((teil, ti) => {
+    let t = 0;
+    teil.fragen.forEach((f, fi) => {
+      const id = ti + "-" + fi;
+      const art = document.querySelector('.aufgabe[data-id="' + id + '"]');
+      pruefeAufgabe(art, id, f);
+      if (antworten[id] === f.loesung){ punkte++; t++; }
+    });
+    bilanz.push([teil.titel.replace("Hören ", ""), t + "/" + teil.fragen.length]);
+  });
+  document.getElementById("punkte").innerHTML = punkte + "<small>/" + GESAMT + "</small>";
+  document.getElementById("bilanz").innerHTML =
+    bilanz.map(p => "<div><dt>" + p[0] + "</dt><dd>" + p[1] + "</dd></div>").join("");
+  const box = document.getElementById("auswertung");
+  box.classList.add("sichtbar");
+  kette = false;
+  spuren.forEach(s => s.audio.pause());
+  stopUhr();
+  box.scrollIntoView({behavior:"smooth", block:"center"});
+});
+
+document.getElementById("btnNeu").addEventListener("click", () => {
+  Object.keys(antworten).forEach(k => delete antworten[k]);
+  document.querySelectorAll(".aufgabe").forEach(a => {
+    a.classList.remove("geprueft");
+    delete a.dataset.fixiert;
+  });
+  document.querySelectorAll(".opt").forEach(li => { li.className = "opt"; });
+  document.getElementById("auswertung").classList.remove("sichtbar");
+  kette = false;
+  spuren.forEach(s => { s.audio.pause(); s.audio.currentTime = 0; });
+  aktualisiereFortschritt();
+  setzeUhrZurueck();
+  window.scrollTo({top:0, behavior:"smooth"});
+});
+
+/* ---------- Uhr ---------- */
+let rest = 20 * 60, timer = null;
+const uhr = document.getElementById("uhr");
+function zeige(){
+  uhr.textContent = mmss(rest);
+  uhr.classList.toggle("aus", rest <= 60);
+  uhr.classList.toggle("laeuft", timer !== null && rest > 60);
+}
+function starteUhr(){
+  if (timer) return;
+  timer = setInterval(() => {
+    rest--;
+    if (rest <= 0){ rest = 0; stopUhr(); }
+    zeige();
+  }, 1000);
+  zeige();
+}
+function stopUhr(){ clearInterval(timer); timer = null; zeige(); }
+function setzeUhrZurueck(){ clearInterval(timer); timer = null; rest = 20 * 60; zeige(); }
+zeige();
+aktualisiereFortschritt();
+</script>
+</body>
+</html>
