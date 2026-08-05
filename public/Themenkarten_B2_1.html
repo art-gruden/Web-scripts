@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Themenkarten — B2 Beruf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@100..125,400..900&family=IBM+Plex+Mono:wght@400;500;600&family=Newsreader:opsz,wght@6..72,400;6..72,500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --ink:#0E1C22;
+  --petrol:#0F343F;
+  --petrol-2:#164A59;
+  --paper:#FAF6EA;
+  --paper-2:#EDE6D5;
+  --amber:#F0B429;
+  --stamp:#BF3B2E;
+  --sage:#8FBCB0;
+  --rule:rgba(14,28,34,.20);
+  --shadow:0 22px 50px -18px rgba(0,0,0,.55);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  min-height:100vh;
+  background:
+    linear-gradient(180deg,#0C2B34 0%, var(--petrol) 45%, #0A2028 100%);
+  color:var(--paper);
+  font-family:"Newsreader",Georgia,serif;
+  -webkit-font-smoothing:antialiased;
+}
+body::before{
+  content:"";position:fixed;inset:0;pointer-events:none;z-index:0;
+  background-image:
+    linear-gradient(rgba(143,188,176,.055) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(143,188,176,.055) 1px,transparent 1px);
+  background-size:26px 26px;
+}
+.frame{position:relative;z-index:1;max-width:920px;margin:0 auto;padding:28px 20px 64px}
+
+/* ---------- masthead ---------- */
+.masthead{
+  display:flex;justify-content:space-between;align-items:flex-end;gap:16px;
+  border-bottom:1px solid rgba(143,188,176,.28);padding-bottom:10px;margin-bottom:34px;
+}
+.eyebrow{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--sage);
+}
+.eyebrow b{color:var(--amber);font-weight:600}
+.deckstate{font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;color:rgba(250,246,234,.55);white-space:nowrap}
+
+/* ---------- card stack ---------- */
+.stage{position:relative;margin:0 auto;perspective:1200px}
+.stage::before,.stage::after{
+  content:"";position:absolute;inset:14px 0 auto;height:96%;border-radius:3px;
+  background:var(--paper-2);box-shadow:var(--shadow);
+}
+.stage::before{transform:rotate(-1.6deg) translateY(9px);opacity:.5}
+.stage::after{transform:rotate(1.1deg) translateY(5px);opacity:.75}
+
+.card{
+  position:relative;background:var(--paper);color:var(--ink);border-radius:3px;
+  padding:26px 30px 30px;box-shadow:var(--shadow);
+  min-height:330px;display:flex;flex-direction:column;
+}
+.card::after{
+  content:"";position:absolute;inset:7px;border:1px solid var(--rule);
+  border-radius:1px;pointer-events:none;
+}
+.card.dealing{animation:deal .5s cubic-bezier(.2,.9,.25,1)}
+@keyframes deal{
+  0%{opacity:0;transform:translateY(-22px) rotate(-2.4deg) scale(.985)}
+  60%{opacity:1;transform:translateY(3px) rotate(.5deg)}
+  100%{opacity:1;transform:none}
+}
+
+.formrow{
+  display:flex;flex-wrap:wrap;gap:6px 26px;align-items:baseline;
+  font-family:"IBM Plex Mono",monospace;font-size:10.5px;letter-spacing:.13em;
+  text-transform:uppercase;color:rgba(14,28,34,.5);
+  border-bottom:1px solid var(--rule);padding-bottom:12px;
+}
+.formrow span{color:var(--ink);letter-spacing:.06em}
+
+.stamp{
+  position:absolute;top:16px;right:22px;width:88px;height:88px;border-radius:50%;
+  border:2.5px solid var(--stamp);color:var(--stamp);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  transform:rotate(-9deg);opacity:.9;
+  font-family:"IBM Plex Mono",monospace;
+}
+.stamp small{font-size:9px;letter-spacing:.22em;text-transform:uppercase;opacity:.85}
+.stamp b{font-family:"Archivo",sans-serif;font-size:30px;font-weight:800;line-height:1;font-variant-numeric:tabular-nums}
+.stamp i{font-size:8.5px;font-style:normal;letter-spacing:.14em;opacity:.7;margin-top:2px}
+.card.dealing .stamp{animation:thump .42s .2s backwards cubic-bezier(.2,1.2,.3,1)}
+@keyframes thump{
+  0%{opacity:0;transform:rotate(-24deg) scale(1.9)}
+  100%{opacity:.9;transform:rotate(-9deg) scale(1)}
+}
+
+.thema{
+  font-family:"Archivo",system-ui,sans-serif;font-weight:800;font-stretch:112%;
+  font-size:clamp(24px,4.4vw,38px);line-height:1.07;letter-spacing:-.015em;
+  margin:24px 96px 0 0;text-wrap:balance;
+}
+.aufgabe{
+  font-size:clamp(17px,2.4vw,20px);line-height:1.52;margin:16px 0 0;max-width:60ch;
+  color:rgba(14,28,34,.88);
+}
+.perf{border-top:1px dashed var(--rule);margin:22px 0 0}
+.cardfoot{
+  display:flex;flex-wrap:wrap;gap:12px 18px;align-items:center;justify-content:space-between;
+  margin-top:auto;padding-top:14px;
+}
+.role{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+  background:var(--amber);color:var(--ink);padding:6px 11px;border-radius:2px;font-weight:600;
+}
+.role[hidden]{display:none}
+.srclink{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;letter-spacing:.08em;
+  color:rgba(14,28,34,.62);text-decoration:none;border-bottom:1px solid var(--rule);
+}
+.srclink:hover{color:var(--stamp);border-color:var(--stamp)}
+
+/* ---------- controls ---------- */
+.controls{display:flex;flex-wrap:wrap;gap:12px;align-items:center;margin-top:26px}
+button{font:inherit;cursor:pointer;border:none;background:none;color:inherit}
+.draw{
+  font-family:"Archivo",sans-serif;font-weight:700;font-stretch:106%;font-size:17px;
+  letter-spacing:.01em;background:var(--amber);color:#17242A;
+  padding:15px 26px;border-radius:2px;box-shadow:0 8px 0 -3px rgba(240,180,41,.28);
+  transition:transform .12s ease, box-shadow .12s ease;
+}
+.draw:hover{transform:translateY(-2px);box-shadow:0 11px 0 -3px rgba(240,180,41,.3)}
+.draw:active{transform:translateY(1px);box-shadow:0 5px 0 -3px rgba(240,180,41,.28)}
+.ghost{
+  font-family:"IBM Plex Mono",monospace;font-size:12px;letter-spacing:.08em;text-transform:uppercase;
+  border:1px solid rgba(143,188,176,.4);color:var(--sage);padding:13px 15px;border-radius:2px;
+  transition:border-color .15s,color .15s,background .15s;
+}
+.ghost:hover{border-color:var(--sage);color:var(--paper)}
+.ghost.on{background:rgba(143,188,176,.16);color:var(--paper);border-color:var(--sage)}
+:focus-visible{outline:2px solid var(--amber);outline-offset:3px}
+
+.timer{
+  display:flex;align-items:center;gap:10px;margin-left:auto;
+  border:1px solid rgba(143,188,176,.28);border-radius:2px;padding:8px 10px 8px 14px;
+}
+.clock{
+  font-family:"Archivo",sans-serif;font-weight:700;font-size:20px;font-variant-numeric:tabular-nums;
+  letter-spacing:.02em;min-width:74px;
+}
+.clock.done{color:var(--amber);animation:blink 1s steps(2,end) infinite}
+@keyframes blink{50%{opacity:.25}}
+.timer .ghost{padding:8px 10px;font-size:11px}
+.hint{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;color:rgba(250,246,234,.42);
+  letter-spacing:.06em;margin-top:18px;
+}
+kbd{
+  font-family:"IBM Plex Mono",monospace;border:1px solid rgba(143,188,176,.35);
+  border-bottom-width:2px;border-radius:3px;padding:1px 5px;font-size:10px;color:var(--sage);
+}
+
+/* ---------- list ---------- */
+.list{margin-top:34px;border-top:1px solid rgba(143,188,176,.28);padding-top:20px}
+.list[hidden]{display:none}
+.search{
+  width:100%;background:rgba(255,255,255,.05);border:1px solid rgba(143,188,176,.3);
+  color:var(--paper);font-family:"IBM Plex Mono",monospace;font-size:13px;
+  padding:12px 14px;border-radius:2px;
+}
+.search::placeholder{color:rgba(250,246,234,.35)}
+.items{margin:16px 0 0;padding:0;list-style:none;max-height:52vh;overflow:auto}
+.items li{border-bottom:1px solid rgba(143,188,176,.15)}
+.items button{
+  display:flex;gap:14px;align-items:baseline;width:100%;text-align:left;padding:11px 6px;
+  transition:background .12s;
+}
+.items button:hover{background:rgba(143,188,176,.1)}
+.items .num{
+  font-family:"IBM Plex Mono",monospace;font-size:11px;color:var(--sage);
+  font-variant-numeric:tabular-nums;flex:0 0 30px;
+}
+.items .ttl{font-size:16px;line-height:1.35;color:rgba(250,246,234,.9)}
+.items .drawn .ttl{color:rgba(250,246,234,.4)}
+.empty{font-family:"IBM Plex Mono",monospace;font-size:12px;color:rgba(250,246,234,.4);padding:14px 6px}
+
+@media (max-width:620px){
+  .frame{padding:20px 14px 48px}
+  .card{padding:20px 18px 22px;min-height:300px}
+  .stamp{width:64px;height:64px;top:12px;right:14px}
+  .stamp b{font-size:22px}
+  .thema{margin-right:70px}
+  .timer{margin-left:0;width:100%;justify-content:space-between}
+  .draw{flex:1}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important}
+}
+</style>
+</head>
+<body>
+<div class="frame">
+
+  <header class="masthead">
+    <div class="eyebrow">telc <b>B2 Beruf</b> · Themenkarten<br>Forumsbeitrag &amp; Sprechen</div>
+    <div class="deckstate" id="deckstate"></div>
+  </header>
+
+  <main class="stage">
+    <article class="card" id="card">
+      <div class="formrow">
+        <div>Thema Nr. <span id="fNr">—</span></div>
+        <div>Quelle <span>deutsch-vorbereitung.com</span></div>
+        <div>Aufgabe <span>Stellung nehmen</span></div>
+      </div>
+
+      <div class="stamp" id="stamp" aria-hidden="true">
+        <small>Nr.</small><b id="sNr">00</b><i>B2 Beruf</i>
+      </div>
+
+      <h1 class="thema" id="thema">Karte ziehen</h1>
+      <p class="aufgabe" id="aufgabe">Натисніть «Thema ziehen» — і випаде одна з тем для форумного допису або усного висловлювання.</p>
+
+      <div class="perf"></div>
+      <div class="cardfoot">
+        <div class="role" id="role" hidden></div>
+        <a class="srclink" id="src" href="#" target="_blank" rel="noopener" hidden>Übung öffnen ↗</a>
+      </div>
+    </article>
+  </main>
+
+  <div class="controls">
+    <button class="draw" id="drawBtn">Thema ziehen</button>
+    <button class="ghost" id="roleBtn" aria-pressed="false">Rolle: aus</button>
+    <button class="ghost" id="listBtn" aria-expanded="false">Alle Themen</button>
+
+    <div class="timer">
+      <div class="clock" id="clock">00:00</div>
+      <button class="ghost" data-min="3">3′</button>
+      <button class="ghost" data-min="15">15′</button>
+      <button class="ghost" data-min="30">30′</button>
+      <button class="ghost" id="playBtn">▶</button>
+      <button class="ghost" id="stopBtn">↺</button>
+    </div>
+  </div>
+
+  <p class="hint"><kbd>Space</kbd> Thema ziehen · <kbd>L</kbd> Alle Themen · <kbd>C</kbd> Thema kopieren</p>
+
+  <section class="list" id="list" hidden>
+    <input class="search" id="search" type="search" placeholder="Пошук за назвою або текстом…" autocomplete="off">
+    <ul class="items" id="items"></ul>
+  </section>
+
+</div>
+
+<script>
+const THEMEN = [{"n": 1, "title": "Freizeitausgleich statt Bezahlung von Überstunden", "url": "https://deutsch-vorbereitung.com/uebung-2102.html", "text": "Die Mitarbeiterinnen und Mitarbeiter der Firma machen im Dezember viele Überstunden. Sie können sie ab sofort nur als Freizeit ausgleichen. Die Auszahlung von Überstunden ist nicht mehr erlaubt."}, {"n": 2, "title": "Essensgebühr", "url": "https://deutsch-vorbereitung.com/uebung-2103.html", "text": "In der Firma soll eine Kantine eingerichtet werden. Allen Mitarbeiterinnen und Mitarbeitern werden pro Arbeitstag vier Euro vom Gehalt dafür abgezogen. Dafür sind alle Mahlzeiten dort kostenlos."}, {"n": 3, "title": "Firmenhandy für alle", "url": "https://deutsch-vorbereitung.com/uebung-2104.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen ein Firmenhandy bekommen, damit sie immer erreichbar sind - auch am Abend und an den Wochenenden. Privat dürfen sie das Handy auch nutzen."}, {"n": 4, "title": "Pausenräume sauber machen", "url": "https://deutsch-vorbereitung.com/uebung-2105.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen abwechselnd \"Putzdienst\" in den Pausenräumen übernehmen. Die nötigen Materialien werden zur Verfügung gestellt."}, {"n": 5, "title": "Interview für die Mitarbeiterzeitung", "url": "https://deutsch-vorbereitung.com/uebung-2106.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen einander besser kennenlernen und sich für die Rubrik \"Ganz privat\" in der Mitarbeiterzeitung interviewen lassen. Das Interview kann während der Arbeitszeit stattfinden."}, {"n": 6, "title": "Kleiderordnung", "url": "https://deutsch-vorbereitung.com/uebung-2107.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen einheitliche Kleidung tragen. Die Reinigungskosten soll aber jeder privat übernehmen."}, {"n": 7, "title": "Nachtarbeit", "url": "https://deutsch-vorbereitung.com/uebung-2108.html", "text": "Ab dem kommenden Monat sollen die Mitarbeiter in der Produktion in allen Schichten arbeiten, d.h. Früh-, Spät- und Nachtschicht. Dafür bekommen diese Mitarbeiter zwei Tage mehr Urlaub im Jahr."}, {"n": 8, "title": "Urlaubsplanung", "url": "https://deutsch-vorbereitung.com/uebung-2109.html", "text": "Die Mitarbeiter sollen ihren Urlaub planen, In den Sommerferien sollen nur Mitarbeiter mit schulpflichtigen Kindern Urlaub bekommen. Mitarbeiter ohne Kinder müssen zu anderen Zeiten Urlaub machen."}, {"n": 9, "title": "Weiterbildung am Wochenende", "url": "https://deutsch-vorbereitung.com/uebung-2110.html", "text": "Fachliche Weiterbildungen sollen in Zukunft nicht mehr während der Arbeitszeit, sondern nur noch am Wochenende stattfinden. Dafür werden auch Kosten für nicht verpflichtende Fortbildungen übernommen."}, {"n": 10, "title": "Dienstreisen reduzieren", "url": "https://deutsch-vorbereitung.com/uebung-2111.html", "text": "Dienstreisen reduzieren und virtuelle Treffen fördern. Ich bin dagegen."}, {"n": 11, "title": "Aktive Mittagspause", "url": "https://deutsch-vorbereitung.com/uebung-2112.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter sollen die Möglichkeit haben, in der Mittagspause Fitnesskurse zu besuchen. Deshalb wird die Pausenzeit um 30 Minuten verlängert, dafür muss man abends 30 Minuten länger arbeiten."}, {"n": 12, "title": "Verpflichtende Teamsitzungen", "url": "https://deutsch-vorbereitung.com/uebung-2113.html", "text": "Alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen verpflichtet werden, an regelmäßigen Teamsitzungen teilzunehmet, auch wenn diese außerhalb ihrer Arbeitszeit stattfinden."}, {"n": 13, "title": "Bürogestaltung", "url": "https://deutsch-vorbereitung.com/uebung-2115.html", "text": "In Ihrer Firma soll im Großraumbüro gearbeitet werden. Die Geschäftsführung ist der Meinung, dass offene Räume gut für das Arbeitsklima sind."}, {"n": 14, "title": "Jobticket für alle", "url": "https://deutsch-vorbereitung.com/uebung-2116.html", "text": "Ihre Firma möchte für alle Mitarbeitenden ein kostenloses Jobticketfür die Fahrten mit dem ÖPNV einführen. Dafür soll Parken auf dem Firmenparkplatz in Zukunft Geld kosten."}, {"n": 15, "title": "Jobticket oder Firmenfahrrad", "url": "https://deutsch-vorbereitung.com/uebung-2117.html", "text": "Ihr Arbeitgeber möchte allen Mitarbeiter*innen entweder ein Firmen-E-Bike zur Verfügung stellen, das auch privat genutzt werden darf, oder monatlich einen 50-Euro-Zuschuss zum Jobticket zahlen."}, {"n": 16, "title": "Überstunden", "url": "https://deutsch-vorbereitung.com/uebung-2118.html", "text": "Das Unternehmen muss alle Überstunden durch Freizeit ersetzen. Eine Bezahlung von Überstunden ist nicht mehr möglich."}, {"n": 17, "title": "Wohltätigkeitslauf", "url": "https://deutsch-vorbereitung.com/uebung-2119.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen in diesem Jahr an der Veranstaltung \"Lauf und hilf\" teilnehmen. Der Betriebsausflug ins Gewürzmuseum wird deshalb abgesagt."}, {"n": 18, "title": "Radioverbot", "url": "https://deutsch-vorbereitung.com/uebung-2120.html", "text": "In Zukunft soll es in den Büros verboten sein, Radio zu hören, da sich einige Mitarbeitende beschwert haben, dass sie sich durch die laute Musik nicht mehr konzentrieren können."}, {"n": 19, "title": "Parkplätze", "url": "https://deutsch-vorbereitung.com/uebung-2121.html", "text": "Alle Mitarbeiterinnen und Mitarbeiterin Ihrer Firma sollen möglichst mit den öffentlichen Verkehrsmitteln zur Arbeit kommen. Der Zuschuss für Parkplätze soll durch einen Zuschuss für die öffentlichen Verkehrsmittel ersetzt werden."}, {"n": 20, "title": "Raucherpausenraum und Raucherzone", "url": "https://deutsch-vorbereitung.com/uebung-2122.html", "text": "Für die Raucher soll in jedem Gebäude der Firma ein Raucherraum angeschafft werden, damit man schnell die 5-Minutenzigarette rauchen kann und auch während der Pausen nicht erst vor das Bürogebäude gehen muss. Die Raucher sollen jedoch dafür 15 Minuten täglich länger bleiben."}, {"n": 21, "title": "Verpflichtender Englischkurs für alle", "url": "https://deutsch-vorbereitung.com/uebung-2123.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen einen verpflichteten Englisch-kurs außerhalb der Arbeitszeit besuchen. Die Firma will die Kosten übernehmen."}, {"n": 22, "title": "Schichtsystems und Kita in der Firma", "url": "https://deutsch-vorbereitung.com/uebung-2124.html", "text": "Ihr Unternehmen wechselt zu einem Schichtsystem, was sich unmittelbar auf die Vereinbarkeit von Familie und Beruf auswirken wird. Als Lösung könnte die Eröffnung einer firmeneigenen Kindertagesstätte sein."}, {"n": 23, "title": "Arbeit im Homeoffice", "url": "https://deutsch-vorbereitung.com/uebung-2125.html", "text": "Die Geschäftsleitung möchte allen Mitarbeiterinnen und Mitarbeitern die Möglichkeit geben, einen Teil ihrer Arbeit im Homeoffice zu leisten."}, {"n": 24, "title": "Arbeit an Samstagen und kostenlose Mittagessen in der Kantine", "url": "https://deutsch-vorbereitung.com/uebung-2126.html", "text": "Ihr Unternehmen wechselt zu einem Sechs-Tage-Arbeitsplan. Einigen Mitarbeitern wird es erforderlich sein, samstags zu arbeiten. Als kleiner Bonus dafür werden kostenlose Mahlzeiten in der Kantine angeboten."}, {"n": 25, "title": "Anschaffung von Wasserautomaten in jeder Etage", "url": "https://deutsch-vorbereitung.com/uebung-2127.html", "text": "Für alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen in jeder Etage Wasserautomaten angebracht Werden. Sie sollen jedoch für das Wasser eine jährliche Pauschale bezahlen."}, {"n": 26, "title": "Mehr Geld für Sportkurse", "url": "https://deutsch-vorbereitung.com/uebung-2128.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma können kostenlos bei Sportkursen mitmachen und bekommen für die regelmäßige Teilnahme am Jahresende einen Bonus. Die Kurse finden außerhalb der Arbeitszeiten statt."}, {"n": 27, "title": "Arbeit von Zuhause aus", "url": "https://deutsch-vorbereitung.com/uebung-2129.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen die Möglichkeit erhalten, mehr Stunden im Homeoffice zu verbringen, um Familie und Beruf besser miteinander vereinbaren zu können."}, {"n": 28, "title": "Handynutzung während der Arbeit", "url": "https://deutsch-vorbereitung.com/uebung-2130.html", "text": "In Ihrer Firma soll die private Handynutzung während der Arbeit nicht mehr erlaubt sein. Diensthandys dürfen nur mit Erlaubnis privat genutzt werden."}, {"n": 29, "title": "Weniger Müll im Betrieb", "url": "https://deutsch-vorbereitung.com/uebung-2131.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen Verpackungsmüll sparen, daher gibt es neue Kühlschränke und Mikrowellen, sodass man sich Essen mitbringen kann. Alle Snackautomaten auf dem Gelände sollen entfernt werden."}, {"n": 30, "title": "Gesundheitskurse", "url": "https://deutsch-vorbereitung.com/uebung-2132.html", "text": "Die Geschäftsleitung möchte allen Mitarbeiterinnen und Mitarbeiter die Möglichkeit geben, an Fitness und Gesundheitskursen mit Kostenbeteiligung teilzunehmen."}, {"n": 31, "title": "Betriebliche Kinderbetreuung", "url": "https://deutsch-vorbereitung.com/uebung-2133.html", "text": "Die Mitarbeiterinnen und Mitarbeiter der Firma sollen ab dem nächsten Jahr kein Urlaubsgeld mehr bekommen, um die Einrichtung einer betriebseigenen Kita zu finanzieren."}, {"n": 32, "title": "Jedes Jahr zwei Weiterbildungen", "url": "https://deutsch-vorbereitung.com/uebung-2134.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen zweimal pro Jahr eine Weiterbildung machen, die von der Firma vorgegeben wird. Wünsche können nicht geäußert werden."}, {"n": 33, "title": "Zigarettenpausen", "url": "https://deutsch-vorbereitung.com/uebung-2135.html", "text": "Die Mitarbeiterinnen und Mitarbeiter der Firma dürfen ab sofort nur noch während der geregelten Pausenzeiten rauchen. Zusätzliche Zigarettenpausen sind nicht mehr erlaubt."}, {"n": 34, "title": "Einführung flexibler Arbeitszeit", "url": "https://deutsch-vorbereitung.com/uebung-2136.html", "text": "Die festen Arbeitszeiten von 8 Uhr bis 16.30 Uhr sollen abgeschafft werden. Zukünftig soll eine feste Arbeitszeit nur von 8 Uhr bis 13 Uhr gelten, vorher und nachher kann jeder selbst entscheiden, wann er kommen und gehen möchte."}, {"n": 35, "title": "Flexible Arbeitsplätze", "url": "https://deutsch-vorbereitung.com/uebung-2137.html", "text": "In Ihrer Firma sollen die festen Büros abgeschafft werden, stattdessen kann man jeden Tag frei wählen, in welchem Büro man arbeiten möchte."}, {"n": 36, "title": "Verpflichtender Computerkurs für alle", "url": "https://deutsch-vorbereitung.com/uebung-2138.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen einen verpflichteten Computerkurs außerhalb der Arbeitszeit besuchen. Die Firma will die Kosten übernehmen."}, {"n": 37, "title": "Klassische Musik", "url": "https://deutsch-vorbereitung.com/uebung-2139.html", "text": "In Zukunft soll in allen Büros klassische Musik während der Arbeit gespielt werden, damit sich die Mitarbeitenden wohler fühlen."}, {"n": 38, "title": "Energie sparen", "url": "https://deutsch-vorbereitung.com/uebung-2140.html", "text": "In der Firma soll Energie gespart und nicht mehr so viel geheizt werden. Im Winter können die Mitarbeitenden, wenn ihnen zu kalt ist, in Winterkleidung im Büro arbeiten."}, {"n": 39, "title": "Obst statt Süßigkeiten", "url": "https://deutsch-vorbereitung.com/uebung-2141.html", "text": "Im Pausenraum sollen zukünftig keine Süßigkeiten mehr auf dem Tisch stehen. Stattdessen gibt es immer Körbe mit frischem Obst: So soll etwas für die Gesundheit der Mitarbeitenden getan werden."}, {"n": 40, "title": "Praktikanten", "url": "https://deutsch-vorbereitung.com/uebung-2142.html", "text": "Da es in der Firma viel zu tun gibt, sollen in Zukunft mehr Praktikantinnen und Praktikanten eingestellt werden."}, {"n": 41, "title": "Geburtstag des Geschäftsführers", "url": "https://deutsch-vorbereitung.com/uebung-2143.html", "text": "Der Geschäftsführer hat bald Geburtstag und die Mitarbeitenden wollen eine große Party für ihn organisieren. Jede/r soll sich mit einem Beitrag von 50 Euro pro Person beteiligen."}, {"n": 42, "title": "Nachhaltigkeit", "url": "https://deutsch-vorbereitung.com/uebung-2147.html", "text": "Nachhaltigkeit kann unsere Umwelt schützen und jeder kann selbst etwas dafür tun. Ein paar Sätze und Beispiele,was kann ich tun."}, {"n": 43, "title": "Digitalisierung", "url": "https://deutsch-vorbereitung.com/uebung-2148.html", "text": "Durch Digitalisierung kann man alles online erwerben. Die Welt öffnet sich nicht nur regional sondern auch global."}, {"n": 44, "title": "Abstellen von Fahrräder in den Büroräumen", "url": "https://deutsch-vorbereitung.com/uebung-2163.html", "text": "Damit Mitarbeiter mit Fahrrädern ins Büro kommen, möchte das Unternehmen ermöglichen, dass diese direkt am Büro abgestellt werden können."}, {"n": 45, "title": "Einführung von einem Casual Day", "url": "https://deutsch-vorbereitung.com/uebung-2164.html", "text": "Ihr Unternehmen möchte einmal pro Woche den Casual Day einführen. Wie stehen Sie und Ihre Kollegen dazu?"}, {"n": 46, "title": "Verkürzte Arbeitszeiten", "url": "https://deutsch-vorbereitung.com/uebung-2165.html", "text": "Das Unternehmen will kürzere Arbeitszeiten einführen, was sich entsprechend auf die Löhne auswirken wird."}, {"n": 47, "title": "Die Überstunden werden nicht vergütet", "url": "https://deutsch-vorbereitung.com/uebung-2166.html", "text": "Ihr Unternehmen möchte eine Regelung einführen, dass Überstunden nicht mehr vergütet werden, aber im Form von Freizeit berücksichtigt."}, {"n": 48, "title": "Zuschuss für die Mitarbeiter mit Fahrrad", "url": "https://deutsch-vorbereitung.com/uebung-2167.html", "text": "Mitarbeiter, die mit dem Fahrrad zur Arbeit fahren, werden zusätzlich belohnt."}, {"n": 49, "title": "Seminar für alle Mitarbeiter", "url": "https://deutsch-vorbereitung.com/uebung-2168.html", "text": "Alle Mitarbeiter sind verpflichtet, an einem Kommunikations- und Konfliktmanagement-Seminar teilzunehmen."}, {"n": 50, "title": "Laptops für alle Mitarbeiter", "url": "https://deutsch-vorbereitung.com/uebung-2178.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma erhalten einen Laptop. Dieser darf auch privat genutzt werden. Allerdings müssen sie dafür eine Laptopversicherung abschließen und diese selbst bezahlen."}, {"n": 51, "title": "Obst statt Süsigkeiten", "url": "https://deutsch-vorbereitung.com/uebung-2180.html", "text": "Im Pausenraum sollen zukünftig keine Süßigkeiten mehr auf dem Tisch stehen. Stattdessen gibt es immer Körbe mit frischem Obst: So soll etwas für die Gesundheit der Mitarbeitenden eingestellt werden."}, {"n": 52, "title": "Gemeinsames Mittagessen", "url": "https://deutsch-vorbereitung.com/uebung-2181.html", "text": "Ihr Vorgesetzter möchte den Zusammenhalt im Team stärken und schlägt vor, jeden Freitag das Mittagessen von einem Cateringservice liefern zu lassen. Die Kosten dafür sollen die Angestellten tragen."}, {"n": 53, "title": "Kleiderordnung", "url": "https://deutsch-vorbereitung.com/uebung-2182.html", "text": "Auch an heißen Sommertagen erwartet Ihr Arbeitsgeber angemessene, formelle Kleidung im Büro. Es sind nur lange Röcke oder Hosen, geschlossene Schuhe und Jackett oder Sakko erlaubt."}, {"n": 54, "title": "Neuer Standort der Firma", "url": "https://deutsch-vorbereitung.com/uebung-2183.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter sollen umziehen oder pendeln, da ihre Firma einen neuen Standort eröffnet. Der Standort ist zwar mit modernernster Technik ausgestattet, ist aber 75 km vom jetzigen Standort entfernt."}, {"n": 55, "title": "Firmenparkplatz gebührenpflichtig", "url": "https://deutsch-vorbereitung.com/uebung-2185.html", "text": "Die Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen verpflichtet werden, in Zukunft für das Parken auf dem Firmenparkplatz Gebühren zu zahlen."}, {"n": 56, "title": "Betriebskantine - fleischlos", "url": "https://deutsch-vorbereitung.com/uebung-2186.html", "text": "In Ihrer Firma gibt es einen Vorschlag in der Kantine nur noch vegetarisches Essen anzubieten."}, {"n": 57, "title": "Gesundheitstage im Betrieb", "url": "https://deutsch-vorbereitung.com/uebung-2187.html", "text": "Die Geschäftsleitung möchte zur Förderung der Sensibilisierung, Beratung und Information der Mitarbeiter einen monatlichen Gesundheitstag einführen. Immer am jeweiligen letzten Freitag im Monat. Welche Aktivitäten wären sinnvoll?"}, {"n": 58, "title": "Mehr Urlaubstage nach Betriebszugehörigkeit", "url": "https://deutsch-vorbereitung.com/uebung-2188.html", "text": "Um die Mitarbeiterbindung zu stärken, möchte Ihre Firma in Zukunft den Mitarbeiterinnen und Mitarbeitern alle 5 Jahre den Urlaub um einen tag verlängern."}, {"n": 59, "title": "Interne Fortbildungen außerhalb der Arbeitszeiten", "url": "https://deutsch-vorbereitung.com/uebung-2189.html", "text": "Ab September soll das fachliche Wissen der Mitarbeiter durch Fortbildung verbessert werden. Diese Fortbildungen werden jedoch außerhalb der Regelarbeitszeiten und am Wochenende stattfinden."}, {"n": 60, "title": "Geschirrspüler in der Gemeinschaftsküche ein- und ausräumen", "url": "https://deutsch-vorbereitung.com/uebung-2190.html", "text": "Da es in letzter Zeit anscheinend ein Problem mit dem Ein- genauer gesagt Ausräumen des Geschirrspülers in der Gemeinschaftsküche gab, möchten wir zusammen mit euch neue Regeln ausdenken, damit das in Zukunft ohne Komplikationen abläuft."}, {"n": 61, "title": "Arbeit am Samstag", "url": "https://deutsch-vorbereitung.com/uebung-2191.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen aufgrund der guten Auftragslage auch am Samstagen arbeiten. Diese Arbeitszeiten werden mit einem Zuschlag in Höhe von 120 Prozent vergütet."}, {"n": 62, "title": "Samstagarbeit", "url": "https://deutsch-vorbereitung.com/uebung-2192.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen in Zukunft auch am Samstagen arbeiten. Es gibt keinen Zuschlag, und die Bezahlung ist genauso wie an den anderen Tagen."}, {"n": 63, "title": "Nur noch vegetarische Speisen in der Kantine", "url": "https://deutsch-vorbereitung.com/uebung-2193.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen in der Kantine nur noch zwischen fleischlosen Gerichten wählen können. Alles soll Bioqualität haben und dafür etwas mehr kosten."}, {"n": 64, "title": "Weiterbildung", "url": "https://deutsch-vorbereitung.com/uebung-2194.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter Ihrer Firma sollen an einer Weiterbildung teilnehmen. Die Weiterbildung sollen sie selbst bezahlen, aber sie findet während der Arbeitszeit statt."}, {"n": 65, "title": "Homeoffice", "url": "https://deutsch-vorbereitung.com/uebung-2195.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter sollen abwechselnd eine Woche im Homeoffice und eine Woche im Büro arbeiten. Ihre Firma möchte die vorhandenen Arbeitsplätze effektiver nutzen."}, {"n": 66, "title": "Nachhaltigkeit im Büro und Papiersparen", "url": "https://deutsch-vorbereitung.com/uebung-2196.html", "text": "Warum sollte von den Mitarbeitern und Mitarbeiterinnen Papier gespart werden? Ist es möglich, in Unternehmen durch relativ einfache Maßnahmen deutliche Mengen an Papier zu sparen. Welche Methoden schlagen Sie vor?"}, {"n": 67, "title": "Rückenfreundliche Bürostühle", "url": "https://deutsch-vorbereitung.com/uebung-2197.html", "text": "Für alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen rückenfreundliche Bürostühle angeschafft werden. Die Hälfte der Anschaffungskosten sollen sie selbst bezahlen."}, {"n": 68, "title": "Mitarbeit im Firmengarten", "url": "https://deutsch-vorbereitung.com/uebung-2199.html", "text": "Alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen die Möglichkeit haben, in einem Firmengarten Pause machen zu können. Die Firmenleitung schlägt vor, dass Sie in ihrer Freizeit beim Anlegen und Pflegen des Gartens mithelfen."}, {"n": 69, "title": "Pausenräume sauber machen", "url": "https://deutsch-vorbereitung.com/uebung-2200.html", "text": "Alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen abweichend \"Putzdienst\" in den Pausenräumen übernehmen. Die nötigen Materialien werden zur Verfügung gestellt."}, {"n": 70, "title": "Interview für die Mitarbeiterzeitung", "url": "https://deutsch-vorbereitung.com/uebung-2201.html", "text": "Alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen einander besser kennenlernen und sich für Rubrik \"Ganz privat\" in der Mitarbeiterzeitung interviewen lassen. Das Interview kann während der Arbeitszeit stattfinden."}, {"n": 71, "title": "Arbeiten bei hohen Temperaturen", "url": "https://deutsch-vorbereitung.com/uebung-2202.html", "text": "Alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma sollen im Sommer gut arbeiten können, deshalb wird demnächst in allen Büroräumen eine Klimaanlage eingebaut. Dafür soll es dann kein kostenloses Mineralwasser mehr geben."}, {"n": 72, "title": "Fitnessraum im Betrieb", "url": "https://deutsch-vorbereitung.com/uebung-2203.html", "text": "Für alle Mitarbeiter und Mitarbeiterinnen in Ihrer Firma soll ein Fitnessraum mit Geräten eingerichtet werden. Für den Zutritt sollen sie eine monatliche Gebühr zahlen."}, {"n": 73, "title": "Einführung eines Veggie-Tages", "url": "https://deutsch-vorbereitung.com/uebung-2204.html", "text": "In der Kantine soll es freitags ausschließlich vegetarisches Essen angeboten werden. Wer Fleisch essen möchte, muss sich sein Essen selbst von zuhause mitbringen."}, {"n": 74, "title": "Vegetarische Küche", "url": "https://deutsch-vorbereitung.com/uebung-2205.html", "text": "In Zukunft soll in der Betriebskantine nur noch vegetarisches Essen angeboten werden. Wer Fleisch essen möchte, muss sich sein Essen selbst von Zuhause mitbringen."}, {"n": 75, "title": "Kürzere Mittagspause", "url": "https://deutsch-vorbereitung.com/uebung-2206.html", "text": "Die Mittagspause soll in Zukunft statt einer Stunde nur noch 30 Minuten betragen. Dadurch haben die Mitarbeiterinnen und Mitarbeiter auch früher Feierabend."}, {"n": 76, "title": "Ein großer Drucker pro Etage statt vieler kleiner", "url": "https://deutsch-vorbereitung.com/uebung-2207.html", "text": "In Ihrer Firma sollen alle Drucker in den Büros abgeschafft werden, stattdessen soll es pro Etage einen großen Drucker auf dem Flur geben, den man zum Ausdrucken benutzen soll."}, {"n": 77, "title": "Yoga- und Fitnesskurse", "url": "https://deutsch-vorbereitung.com/uebung-2208.html", "text": "In Ihrer Firma bietet mittwochs in der Mittagspause Yoga- und Fitnesskurse für alle Mitarbeiterinnen und Mitarbeiter an. Diese sollen im Rahmen von Einsparungsmaßnahmen gestrichen werden."}, {"n": 78, "title": "Betriebsurlaub im August", "url": "https://deutsch-vorbereitung.com/uebung-2364.html", "text": "Immer wieder gibt es Konflitte wegen der Urlaubsplanung in der Ferienzeit. Die GL plant deshalb künflig im August vier Wochen Betriebsurlaub. Alle Mitarbeiter müssen dann ihren Urlaub nehmen."}, {"n": 79, "title": "Im nächsten Monat jede Woche drei Stunden Überstunden machen", "url": "https://deutsch-vorbereitung.com/uebung-2407.html", "text": "Aufgrund eines Großauftrags wird von allen Mitarbeitern des Unternehmens erwartet, dass sie im nächsten Monat jede Woche drei Stunden Überstunden machen."}, {"n": 80, "title": "Motivationscoach", "url": "https://deutsch-vorbereitung.com/uebung-2572.html", "text": "Um das Betriebsklima zu verbessern, soll ein Coach in die Firma kommen, der allen Mitarbeiterinnen und Mitarbeitern beibringet, wie man seine Motivation steigert, gut im Team zusammenarbeitet und Konflikte bewältigt."}, {"n": 81, "title": "Umstellung auf Homeoffice, außer Rezeption und Leitung", "url": "https://deutsch-vorbereitung.com/uebung-2632.html", "text": "Als Sparmaßnahme will Ihre Firma in ein paar Monaten auf Büroräumlichkeiten für alle Mitarbeiter verzichten. Es gibt dann nur noch Büroräume für die Leitung und Rezeption. Fast alle Mitarbeiter werden dann künftig von zu Hause aus im Homeoffice arbeiten."}, {"n": 82, "title": "Weiterbildung", "url": "https://deutsch-vorbereitung.com/uebung-2649.html", "text": "Um die Fähigkeiten unserer Mitarbeiterinnen und Mitarbeiter zu erweitern, planen wir für das nächste Jahr eine Reihe von Weiterbildungsseminaren. Themen sind Projektmanagement, Kommunikation, IT und Führungstraining. Alle sind herzlich eingeladen teilzunehmen. Termine und Themen folgen in Kürze."}, {"n": 83, "title": "Praktikanten", "url": "https://deutsch-vorbereitung.com/uebung-2650.html", "text": "Um frische Perspektiven zu gewinnen, planen wir, im nächsten Jahr Praktikanten in unsere Firma aufzunehmen. Sie erhalten die Möglichkeit, praktische Erfahrungen zu sammeln und ihre Fähigkeiten zu erweitern. Alle Abteilungen sind eingeladen, Praktikanten zu betreuen und von ihrem Enthusiasmus zu profitieren."}, {"n": 84, "title": "Großraumbüro", "url": "https://deutsch-vorbereitung.com/uebung-2651.html", "text": "Um die Kommunikation und Zusammenarbeit zu verbessern, planen wir, im nächsten Jahr Großraumbüros in unserem Unternehmen einzurichten. Diese Büros ermöglichen schnellere Kommunikation und fördern den Austausch zwischen den Mitarbeitern. Alle Abteilungen sind eingeladen, die neuen Arbeitsbereiche zu nutzen und von der offenen Arbeitsumgebung zu profitieren."}, {"n": 85, "title": "Homeoffice", "url": "https://deutsch-vorbereitung.com/uebung-2652.html", "text": "Um die Flexibilität und Work-Life-Balance unserer Mitarbeiter zu verbessern, planen wir, im nächsten Jahr verstärkt Homeoffice-Möglichkeiten anzubieten. Dies ermöglicht es den Mitarbeitern, ihre Arbeitszeit flexibler zu gestalten und produktiver zu arbeiten. Alle Abteilungen sind eingeladen, die neuen Homeoffice-Regelungen zu nutzen und von den Vorteilen der Remote-Arbeit zu profitieren."}, {"n": 86, "title": "Fitnesskurs", "url": "https://deutsch-vorbereitung.com/uebung-2653.html", "text": "Um die Gesundheit und das Wohlbefinden unserer Mitarbeiter zu fördern, planen wir, im nächsten Jahr regelmäßige Fitnesskurse anzubieten. Diese Kurse bieten eine ausgezeichnete Gelegenheit, körperliche Fitness zu verbessern und Stress abzubauen. Alle Abteilungen sind eingeladen, an den Fitnesskursen teilzunehmen und von den gesundheitlichen Vorteilen zu profitieren."}, {"n": 87, "title": "Computerkurs", "url": "https://deutsch-vorbereitung.com/uebung-2654.html", "text": "Um die Fähigkeiten und Kenntnisse unserer Mitarbeiter zu stärken, planen wir, im nächsten Jahr Computerkurse anzubieten. Diese Kurse bieten eine großartige Gelegenheit, die Computerkenntnisse zu verbessern und sich mit neuen Technologien vertraut zu machen. Alle Abteilungen sind herzlich eingeladen, an den Kursen teilzunehmen und von den Vorteilen der digitalen Kompetenz zu profitieren."}, {"n": 88, "title": "Alle Mitarbeiterinnen und Mitarbeiter sollen an zwei Samstagen im Monat arbeiten.", "url": "https://deutsch-vorbereitung.com/uebung-2657.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen in Zukunft an zwei Samstagen im Monat arbeiten. Als Ausgleich erhalten sie am Ende des Jahres zusätzliche Urlaubstage."}, {"n": 89, "title": "Handyverbot aus hygienischen Gründen in der Küche", "url": "https://deutsch-vorbereitung.com/uebung-2662.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma dürfen aus hygienischen Gründen in der Küche keine Handys mehr benutzen."}, {"n": 90, "title": "Fahrgemeinschaften zur Arbeit mit Benzinzuschuss", "url": "https://deutsch-vorbereitung.com/uebung-2663.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen zukünftig Fahrgemeinschaften bilden, um gemeinsam mit dem Auto zur Arbeit zu kommen. Es gibt einen Zuschuss für Benzinkosten."}, {"n": 91, "title": "Erreichbarkeit rund um die Uhr", "url": "https://deutsch-vorbereitung.com/uebung-2843.html", "text": "Die Geschäftsführung Ihrer Firma stellt den Mitarbeiterinnen und Mitarbeitern Mobiltelefone zur Verfügung. Im Gegenzug müssen die Mitarbeiterinnen und Mitarbeiter rund um die Uhr erreichbar sein und auf Nachrichten antworten."}, {"n": 92, "title": "Einmalhandschuhe während der Arbeit", "url": "https://deutsch-vorbereitung.com/uebung-2845.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen in Zukunft aus Arbeitsschutzgründen während der Arbeit Einmalhandschuhe tragen, die mehrmals täglich gewechselt werden müssen."}, {"n": 93, "title": "20 Euro pro Monat für den Firmenparkplatz", "url": "https://deutsch-vorbereitung.com/uebung-2892.html", "text": "Ihre Firma plant, für alle Mitarbeiter eine monatliche Gebühr von 20 Euro für den Firmenparkplatz einzuführen. Dabei wird Ihr Auto überwacht."}, {"n": 94, "title": "Obstkiste", "url": "https://deutsch-vorbereitung.com/uebung-2976.html", "text": "Für alle Mitarbeiterinnen und Mitarbeiter in der Firma soll ab nächsten Monat pro Abteilung eine Obstkiste am Anfang der Woche bestellt werden, Jeder Mitarbeiter soll eine gewisse Summe dazuzahlen."}, {"n": 95, "title": "Fenster schließen und Licht ausmachen, bevor man geht", "url": "https://deutsch-vorbereitung.com/uebung-2977.html", "text": "Den letzten beißen die Hunde. Anscheinend ist in der letzten Zeit für einige Mitarbeiter ein Problem geworden, das Licht auszumachen und die Fenster zu schließen, bevor man als Letzte/r den Arbeitsplatz verlässt. Wie sollen wir das handhaben?"}, {"n": 96, "title": "Freizeitausgleich statt Bezahlung von Überstunden", "url": "https://deutsch-vorbereitung.com/uebung-2978.html", "text": "Die Mitarbeiterinnen und Mitarbeiter der Firma machen im Dezember viele Überstunden. Sie können sie ab sofort nur ats Freizeit ausgleichen. Die Auszahlung von Überstunden ist nicht mehr erlaubt."}, {"n": 97, "title": "Essensgebühr", "url": "https://deutsch-vorbereitung.com/uebung-2979.html", "text": "In der Firma soll eine Kantine eingerichtet werden, Allen Mitarbeiterinnen und Mitarbeitern werden pro Arbeitstag vier Euro vom Gehalt dafür abgezogen. Dafür sind alle Mahlzeiten dort kostenlos."}, {"n": 98, "title": "Verstöße gegen die Sicherheitsvorschriften", "url": "https://deutsch-vorbereitung.com/uebung-2980.html", "text": "Es hat in letzter Zeit immer wieder Verstöße gegen die Sicherheitsvorschriften. Die Verstöße sollen in Zukunft streng bestraft werden."}, {"n": 99, "title": "Anschaffung eines Betriebskindergartens", "url": "https://deutsch-vorbereitung.com/uebung-2981.html", "text": "Aus aktuellem Anlass soll ab September ein Betriebskindergarten eingeführt werden. Wir haben 25 Plätze zur Verfügung."}, {"n": 100, "title": "Handynutzung während der Arbeit", "url": "https://deutsch-vorbereitung.com/uebung-2982.html", "text": "In Ihrer Firma soll die private Handynutzung während der Arbeit nicht mehr erlaubt sein, Diensthandys dürfen nur mit Erlaubnis privat genutzt werden."}, {"n": 101, "title": "Workshop Zeitmanagement", "url": "https://deutsch-vorbereitung.com/uebung-3015.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen an einem Workshop zum Thema Zeitmanagement teilnehmen. Die Teilnahmegebühr soll aber jeder privat übernehmen."}, {"n": 102, "title": "Einheitliche Kleidung", "url": "https://deutsch-vorbereitung.com/uebung-3016.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter in Ihrer Firma sollen einheitliche Kleidung tragen. Die Reinigungskosten soll aber jeder privat übernehmen."}, {"n": 103, "title": "Firmenfitness für 15 Euro im Monat", "url": "https://deutsch-vorbereitung.com/uebung-3472.html", "text": "Alle Mitarbeiterinnen und Mitarbeiter sollen die Möglichkeit haben, die neue Fitnessstudio-Einrichtung am Arbeitsplatz während der Pausen zu nutzen. Dafür wird eine Gebühr von 15 Euro pro Monat direkt vom Gehalt abgezogen."}, {"n": 104, "title": "Einführung von einem Casual Day", "url": "https://deutsch-vorbereitung.com/uebung-3473.html", "text": "Am Freitag soll ein Casual Day eingeführt werden. So muss man nicht im Geschäftsanzug ins Büro kommen, sondern wie man will. Jeans oder Trainingsanzug sind dann erlaubt."}, {"n": 105, "title": "Essen nur noch in der Betriebskantine", "url": "https://deutsch-vorbereitung.com/uebung-3474.html", "text": "Ab sofort sollen alle Mitarbeiter und Mitarbeiterinnen nur noch in der Betriebskantine essen dürfen. Das Essen ist am Arbeitsplatz ab sofort verboten."}, {"n": 106, "title": "Einige Mitarbeiter nach Italien zu schicken.", "url": "https://deutsch-vorbereitung.com/uebung-3505.html", "text": "Unsere Firma plant, einige Mitarbeiter aus jeder Abteilung für sechsmonatige Einsätze in die neue Filiale nach Italien zu schicken."}, {"n": 107, "title": "Freikarten für das Schwimmbad zur Stressbewältigung – eine sinnvolle Maßnahme?", "url": "https://deutsch-vorbereitung.com/uebung-3541.html", "text": "Die Firma hat beschlossen, ihren Mitarbeiterinnen und Mitarbeitern Freikarten für das örtliche Schwimmbad zur Verfügung zu stellen, um ihnen zu ermöglichen, Stress abzubauen und sich körperlich zu betätigen."}, {"n": 108, "title": "Homeoffice", "url": "https://deutsch-vorbereitung.com/uebung-4061.html", "text": "Alle Mitarbeitenden sollten die Möglichkeit zum Homeoffice haben, um Arbeit und Familie besser vereinbaren zu können."}];
+
+const $ = id => document.getElementById(id);
+const card=$('card'), thema=$('thema'), aufgabe=$('aufgabe'), src=$('src'),
+      fNr=$('fNr'), sNr=$('sNr'), roleEl=$('role'), deckstate=$('deckstate');
+
+let pool = [];            // ще не витягнуті
+let current = null;
+let roleMode = false;
+
+function pad(n){ return String(n).padStart(2,'0'); }
+
+function refillIfEmpty(){
+  if(pool.length===0) pool = THEMEN.map(t=>t.n);
+}
+function updateDeck(){
+  const used = THEMEN.length - pool.length;
+  deckstate.textContent = used + ' / ' + THEMEN.length + ' витягнуто';
+}
+
+function show(item, animate=true){
+  current = item;
+  thema.textContent = item.title;
+  aufgabe.textContent = item.text;
+  fNr.textContent = pad(item.n);
+  sNr.textContent = pad(item.n);
+  src.href = item.url; src.hidden = false;
+  if(roleMode){
+    const pro = Math.random() < .5;
+    roleEl.textContent = pro ? 'Ihre Rolle: dafür' : 'Ihre Rolle: dagegen';
+    roleEl.hidden = false;
+  } else roleEl.hidden = true;
+
+  if(animate){
+    card.classList.remove('dealing');
+    void card.offsetWidth;
+    card.classList.add('dealing');
+  }
+  renderList();
+}
+
+function draw(){
+  refillIfEmpty();
+  const i = Math.floor(Math.random()*pool.length);
+  const n = pool.splice(i,1)[0];
+  updateDeck();
+  show(THEMEN.find(t=>t.n===n));
+}
+
+$('drawBtn').addEventListener('click', draw);
+
+$('roleBtn').addEventListener('click', e=>{
+  roleMode = !roleMode;
+  e.currentTarget.classList.toggle('on', roleMode);
+  e.currentTarget.setAttribute('aria-pressed', roleMode);
+  e.currentTarget.textContent = roleMode ? 'Rolle: zufällig' : 'Rolle: aus';
+  if(current) show(current, false);
+});
+
+/* ---------- список ---------- */
+const listEl=$('list'), itemsEl=$('items'), search=$('search');
+$('listBtn').addEventListener('click', e=>{
+  const open = listEl.hidden;
+  listEl.hidden = !open;
+  e.currentTarget.classList.toggle('on', open);
+  e.currentTarget.setAttribute('aria-expanded', open);
+  if(open) search.focus();
+});
+search.addEventListener('input', renderList);
+
+function renderList(){
+  const q = search.value.trim().toLowerCase();
+  const hits = THEMEN.filter(t => !q || (t.title+' '+t.text).toLowerCase().includes(q));
+  if(!hits.length){ itemsEl.innerHTML = '<li class="empty">Нічого не знайдено.</li>'; return; }
+  itemsEl.innerHTML = hits.map(t =>
+    '<li><button data-n="'+t.n+'" class="'+(pool.includes(t.n)?'':'drawn')+'">'+
+    '<span class="num">'+pad(t.n)+'</span><span class="ttl">'+esc(t.title)+'</span></button></li>'
+  ).join('');
+}
+function esc(s){ return s.replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c])); }
+
+itemsEl.addEventListener('click', e=>{
+  const b = e.target.closest('button[data-n]');
+  if(!b) return;
+  const n = +b.dataset.n;
+  const idx = pool.indexOf(n);
+  if(idx > -1){ pool.splice(idx,1); updateDeck(); }
+  show(THEMEN.find(t=>t.n===n));
+  window.scrollTo({top:0, behavior:'smooth'});
+});
+
+/* ---------- таймер ---------- */
+const clock=$('clock');
+let left=0, tick=null;
+function paint(){
+  clock.textContent = pad(Math.floor(left/60)) + ':' + pad(left%60);
+  clock.classList.toggle('done', left===0 && tick===null);
+}
+function setMin(m){ stop(); left = m*60; clock.classList.remove('done'); paint(); }
+function start(){
+  if(tick || left<=0) return;
+  $('playBtn').textContent = '❚❚';
+  tick = setInterval(()=>{
+    left--; paint();
+    if(left<=0){ clearInterval(tick); tick=null; $('playBtn').textContent='▶'; clock.classList.add('done'); beep(); }
+  },1000);
+}
+function pause(){ if(tick){ clearInterval(tick); tick=null; $('playBtn').textContent='▶'; } }
+function stop(){ pause(); clock.classList.remove('done'); }
+$('playBtn').addEventListener('click', ()=> tick ? pause() : start());
+$('stopBtn').addEventListener('click', ()=>{ setMin(0); });
+document.querySelectorAll('[data-min]').forEach(b=>
+  b.addEventListener('click', ()=>{ setMin(+b.dataset.min); start(); }));
+
+function beep(){
+  try{
+    const ac = new (window.AudioContext||window.webkitAudioContext)();
+    [880,660].forEach((f,i)=>{
+      const o=ac.createOscillator(), g=ac.createGain();
+      o.frequency.value=f; o.connect(g); g.connect(ac.destination);
+      const t=ac.currentTime+i*.28;
+      g.gain.setValueAtTime(.0001,t); g.gain.exponentialRampToValueAtTime(.16,t+.02);
+      g.gain.exponentialRampToValueAtTime(.0001,t+.25);
+      o.start(t); o.stop(t+.26);
+    });
+  }catch(e){}
+}
+
+/* ---------- клавіатура ---------- */
+document.addEventListener('keydown', e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.code==='Space'){ e.preventDefault(); draw(); }
+  if(e.key.toLowerCase()==='l'){ $('listBtn').click(); }
+  if(e.key.toLowerCase()==='c' && current){
+    navigator.clipboard?.writeText(current.title + '\n' + current.text);
+  }
+});
+
+/* ---------- старт ---------- */
+refillIfEmpty(); updateDeck(); renderList(); paint();
+</script>
+</body>
+</html>
