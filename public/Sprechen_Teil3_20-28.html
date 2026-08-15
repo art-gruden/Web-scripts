@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprechen Teil 3 – Dialogtrainer (Situationen 20–28)</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#E9EDE6;
+  --card:#FBFCF9;
+  --ink:#131C18;
+  --muted:#5D6B63;
+  --line:#CFD8CB;
+  --a:#0E6A57;
+  --a-soft:#E2F0EB;
+  --b:#33468F;
+  --b-soft:#E6E9F6;
+  --signal:#C07A10;
+  --radius:14px;
+  --display:"Space Grotesk", "Segoe UI", Roboto, sans-serif;
+  --body:"Literata", Georgia, "Times New Roman", serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:var(--paper);
+  color:var(--ink);
+  font-family:var(--body);
+  font-size:17px;
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+.app{display:grid;grid-template-columns:262px minmax(0,1fr);gap:0;min-height:100vh;max-width:1240px;margin:0 auto}
+
+/* ---------- Sidebar ---------- */
+.side{
+  border-right:1px solid var(--line);
+  padding:26px 22px 40px;
+  position:sticky;top:0;height:100vh;overflow-y:auto;
+  background:linear-gradient(180deg,#E9EDE6,#E3E8DF);
+}
+.brand{font-family:var(--display);font-weight:700;font-size:19px;letter-spacing:-.02em;line-height:1.25}
+.brand span{display:block;font-weight:500;font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+.part{font-family:var(--display);font-size:12.5px;color:var(--muted);margin:14px 0 20px;padding-top:12px;border-top:1px solid var(--line)}
+.gridnav{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+.gridnav button{
+  font-family:var(--display);font-weight:500;font-size:15px;
+  aspect-ratio:1/1;border:1px solid var(--line);border-radius:10px;
+  background:var(--card);color:var(--ink);cursor:pointer;
+  transition:transform .12s ease, background .12s ease, color .12s ease;
+}
+.gridnav button:hover{background:var(--a-soft);border-color:var(--a);transform:translateY(-1px)}
+.gridnav button[aria-current="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.hint{font-family:var(--display);font-size:11.5px;color:var(--muted);margin-top:22px;line-height:1.55}
+kbd{font-family:var(--display);font-size:11px;background:var(--card);border:1px solid var(--line);border-radius:5px;padding:1px 5px}
+
+/* ---------- Main ---------- */
+main{padding:34px 40px 90px;min-width:0}
+.eyebrow{font-family:var(--display);font-size:11.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--display);font-weight:700;font-size:29px;line-height:1.2;letter-spacing:-.02em;margin:8px 0 14px}
+.lead{margin:0 0 22px;max-width:62ch}
+.tasks{list-style:none;margin:0 0 26px;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.tasks li{
+  font-family:var(--display);font-size:13px;background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:6px 13px 6px 10px;
+}
+.tasks li b{color:var(--signal);font-weight:700;margin-right:5px}
+
+/* ---------- Gesprächsuhr ---------- */
+.clock{
+  background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+  padding:16px 18px;margin-bottom:26px;position:sticky;top:14px;z-index:5;
+  box-shadow:0 1px 0 rgba(19,28,24,.04);
+}
+.clockrow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.time{font-family:var(--display);font-weight:700;font-size:30px;letter-spacing:-.03em;font-variant-numeric:tabular-nums;min-width:92px}
+.time.low{color:var(--signal)}
+.ctrl{display:flex;gap:7px;flex-wrap:wrap}
+.ctrl button{
+  font-family:var(--display);font-size:13px;font-weight:500;
+  border:1px solid var(--line);background:var(--paper);color:var(--ink);
+  border-radius:999px;padding:7px 14px;cursor:pointer;transition:background .12s,border-color .12s,color .12s;
+}
+.ctrl button:hover{border-color:var(--ink)}
+.ctrl button[aria-pressed="true"]{background:var(--ink);color:#fff;border-color:var(--ink)}
+.track{position:relative;height:6px;background:var(--paper);border-radius:99px;margin-top:15px;border:1px solid var(--line)}
+.fill{position:absolute;inset:0 auto 0 0;width:0;background:var(--a);border-radius:99px;transition:width .3s linear}
+.tick{position:absolute;top:-7px;width:1px;height:18px;background:var(--line)}
+.ticklabels{position:relative;height:16px;margin-top:4px}
+.ticklabels span{position:absolute;transform:translateX(-50%);font-family:var(--display);font-size:10.5px;color:var(--muted)}
+
+/* ---------- Dialog ---------- */
+.turn{display:grid;grid-template-columns:52px minmax(0,1fr);gap:14px;margin-bottom:14px;align-items:start}
+.who{
+  font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:.04em;
+  border-radius:9px;padding:7px 0;text-align:center;
+}
+.turn.a .who{background:var(--a-soft);color:var(--a)}
+.turn.b .who{background:var(--b-soft);color:var(--b)}
+.say{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);padding:13px 17px}
+.turn.a .say{border-left:3px solid var(--a)}
+.turn.b .say{border-left:3px solid var(--b)}
+.turn.veiled .say{cursor:pointer;color:transparent;background:repeating-linear-gradient(120deg,#F1F3EE,#F1F3EE 9px,#E8ECE5 9px,#E8ECE5 18px);user-select:none;position:relative}
+.turn.veiled .say::after{
+  content:"Selbst sprechen – tippen zum Aufdecken";
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:var(--display);font-size:12.5px;color:var(--muted);
+}
+.turn.veiled .say *{visibility:hidden}
+
+/* ---------- Redemittel ---------- */
+.tools{margin-top:32px;border-top:1px solid var(--line);padding-top:20px}
+.tools h2{font-family:var(--display);font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--muted);font-weight:500;margin:0 0 12px}
+.tools ul{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:8px}
+.tools li{font-size:15px;background:var(--card);border:1px dashed var(--line);border-radius:10px;padding:7px 13px}
+.pager{display:flex;justify-content:space-between;gap:12px;margin-top:34px}
+.pager button{
+  font-family:var(--display);font-size:14px;font-weight:500;background:var(--card);
+  border:1px solid var(--line);border-radius:999px;padding:10px 20px;cursor:pointer;
+}
+.pager button:hover{border-color:var(--ink)}
+.pager button:disabled{opacity:.35;cursor:default}
+:focus-visible{outline:2.5px solid var(--signal);outline-offset:2px}
+
+@media (max-width:880px){
+  .app{grid-template-columns:1fr}
+  .side{position:static;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:20px 18px 22px}
+  .gridnav{grid-template-columns:repeat(8,1fr)}
+  main{padding:24px 18px 70px}
+  h1{font-size:24px}
+  .clock{position:static}
+  .turn{grid-template-columns:44px minmax(0,1fr);gap:10px}
+  .hint{display:none}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="app">
+  <aside class="side">
+    <div class="brand"><span>Mündliche Prüfung B2</span>Teil 3 – Gemeinsam eine Lösung finden</div>
+    <div class="part" id="partinfo"></div>
+    <div class="gridnav" id="grid"></div>
+    <p class="hint"><kbd>←</kbd> <kbd>→</kbd> wechseln die Situation. Die Uhr läuft 2 Minuten – so lange dauert Ihr Gespräch in der Prüfung.</p>
+  </aside>
+
+  <main>
+    <p class="eyebrow" id="eyebrow">Situation 01</p>
+    <h1 id="title"></h1>
+    <p class="lead" id="lead"></p>
+    <ul class="tasks" id="tasks"></ul>
+
+    <section class="clock" aria-label="Gesprächsuhr">
+      <div class="clockrow">
+        <div class="time" id="time">2:00</div>
+        <div class="ctrl">
+          <button id="startBtn">Start</button>
+          <button id="resetBtn">Zurücksetzen</button>
+        </div>
+        <div class="ctrl" style="margin-left:auto">
+          <button data-veil="none" aria-pressed="true">Beide lesen</button>
+          <button data-veil="A">A selbst sprechen</button>
+          <button data-veil="B">B selbst sprechen</button>
+        </div>
+      </div>
+      <div class="track" id="track"><div class="fill" id="fill"></div></div>
+      <div class="ticklabels" id="ticklabels"></div>
+    </section>
+
+    <div id="dialog"></div>
+
+    <section class="tools">
+      <h2>Redemittel für diese Situation</h2>
+      <ul id="redemittel"></ul>
+    </section>
+
+    <nav class="pager">
+      <button id="prev">← Vorherige</button>
+      <button id="next">Nächste →</button>
+    </nav>
+  </main>
+</div>
+
+<script>
+/* DATA_START */
+const PART = {nr:3, von:4, bereich:"Situationen 20–28"};
+const SITUATIONS = [
+{n:20,t:"Verkehrsbetrieb: Die Busse fahren zu früh",
+b:"Sie arbeiten bei einem städtischen Verkehrsbetrieb. Einige Fahrgäste haben sich beschwert, dass die Busfahrer und Busfahrerinnen oft zu früh losfahren, manchmal schon drei Minuten vor der angegebenen Zeit.",
+s:["Zu frühe Abfahrten: was tun?","Mit Fahrern sprechen","Wie entschuldigen?","Langfristig: Zeiten einhalten"],
+d:[["A","Es gibt viele Beschwerden: Manche Busse fahren bis zu drei Minuten zu früh ab, und die Fahrgäste verpassen sie. Wie reagieren wir?"],
+["B","Zuerst brauchen wir Fakten. Die Fahrzeuge haben GPS – ich würde die Abfahrtszeiten der letzten zwei Wochen auswerten."],
+["A","Gute Idee. Danach sprechen wir mit den betroffenen Fahrerinnen und Fahrern, aber sachlich und nicht als Vorwurf."],
+["B","Genau. Viele fahren früher los, weil der Fahrplan zu eng ist und sie am Ende der Strecke sonst keine Pause haben."],
+["A","Das müssen wir der Planung melden. Vielleicht braucht die Linie einfach zwei Minuten mehr Fahrzeit."],
+["B","Und die Fahrgäste? Ich würde eine kurze Mitteilung an den Haltestellen und auf der Website veröffentlichen."],
+["A","Ja, mit einer Entschuldigung und der Bitte, solche Fälle mit Uhrzeit und Linie zu melden. Wer den Bus verpasst hat, bekommt das Ticket erstattet."],
+["B","Einverstanden. Langfristig: den Fahrplan anpassen, eine Schulung für die Fahrer und jeden Monat eine Kontrolle der Abfahrtszeiten."]],
+r:["Zuerst brauchen wir Fakten.","Sachlich und nicht als Vorwurf.","Ich würde … veröffentlichen.","Langfristig: … anpassen."]},
+
+{n:21,t:"Sprachschule: Lärm von der Baustelle",
+b:"Sie arbeiten bei einer Sprachschule. Einige Schüler und Schülerinnen haben sich beschwert, dass es oft sehr laut ist, weil es draußen eine Baustelle gibt. Deshalb können sie sich nicht gut konzentrieren.",
+s:["Lärm: was tun?","Andere Räume?","Wie entschuldigen?","Langfristig: Störungen vermeiden"],
+d:[["A","Die Schüler beschweren sich über den Lärm von der Baustelle. In Raum zwölf versteht man das Hörverstehen kaum noch."],
+["B","Ich würde als Erstes bei der Baufirma anrufen und fragen, wann genau die lauten Arbeiten stattfinden."],
+["A","Sehr gut. Vielleicht können sie die lautesten Arbeiten auf den Nachmittag legen, wenn nur wenige Kurse laufen."],
+["B","Und wir könnten die Räume tauschen. Die Räume zum Hof sind viel ruhiger, dort ist morgens nichts los."],
+["A","Einverstanden. Für die großen Gruppen können wir zusätzlich die Bibliothek im ersten Stock nutzen."],
+["B","Bei den Schülern sollten wir uns entschuldigen und die Situation offen erklären. Die Baustelle ist ja nicht unsere Schuld."],
+["A","Trotzdem würde ich ihnen entgegenkommen, zum Beispiel mit einer kostenlosen Online-Stunde als Ausgleich."],
+["B","Gute Idee. Langfristig könnten wir Schallschutzfenster einbauen lassen und die Prüfungen nur in den ruhigen Räumen planen."]],
+r:["Ich würde als Erstes …","Wir könnten die Räume tauschen.","Trotzdem würde ich ihnen entgegenkommen.","… als Ausgleich anbieten."]},
+
+{n:22,t:"Elektrofachgeschäft: keine Verkäufer, schlechte Beratung",
+b:"Sie arbeiten bei einem Elektrofachgeschäft. Einige Kunden haben sich beschwert, dass sie oft keinen Verkäufer finden, wenn sie Hilfe brauchen. Auch die Beratung sei oft schlecht.",
+s:["Zu wenig Personal: was tun?","Schlechte Beratung: was tun?","Wie entschuldigen?","Langfristig: Service verbessern"],
+d:[["A","Die Kunden finden niemanden, wenn sie Hilfe brauchen, und die Beratung ist oft zu ungenau. Woran liegt das deiner Meinung nach?"],
+["B","Wir sind einfach zu wenige, vor allem samstags. Außerdem sind zwei Kollegen neu und kennen die Produkte noch nicht gut."],
+["A","Dann sollten wir den Dienstplan ändern und samstags zwei Aushilfen zusätzlich einsetzen."],
+["B","Einverstanden. Und wir könnten die Abteilungen klar aufteilen, damit immer jemand in der Nähe der Kunden ist."],
+["A","Gegen die schlechte Beratung hilft nur eine Schulung. Die Hersteller bieten kostenlose Produktschulungen an, oft sogar bei uns im Laden."],
+["B","Sehr gut, ich frage bei zwei Firmen an. Zusätzlich könnten wir jeden Morgen zehn Minuten ein Produkt gemeinsam besprechen."],
+["A","Bei den Kunden, die sich beschwert haben, würde ich mich schriftlich entschuldigen und einen persönlichen Beratungstermin anbieten."],
+["B","Und langfristig ein Service-Knopf im Laden, mit dem ein Kunde sofort jemanden rufen kann."]],
+r:["Woran liegt das deiner Meinung nach?","Wir sind einfach zu wenige.","Dagegen hilft nur eine Schulung.","Zusätzlich könnten wir …"]},
+
+{n:23,t:"Kindergarten: unfreundlicher Erzieher",
+b:"Sie arbeiten in einem Kindergarten. Einige Eltern haben sich beschwert, dass ein neuer Erzieher sehr unfreundlich zu den Kindern ist. Manche Kinder haben sogar Angst, in den Kindergarten zu gehen.",
+s:["Unfreundlicher Erzieher: was tun?","Kündigung? Neue Person einstellen?","Wie bei den Eltern entschuldigen?","Wie mit den Kindern umgehen?"],
+d:[["A","Mehrere Eltern haben sich über den neuen Erzieher beschwert. Einige Kinder haben sogar Angst herzukommen – das müssen wir sofort klären."],
+["B","Ich würde ihn zuerst ein paar Tage in der Gruppe beobachten, damit wir genau wissen, was wirklich passiert."],
+["A","Einverstanden, und danach führen wir ein offenes Gespräch mit ihm. Vielleicht ist er überfordert, weil die Gruppe sehr groß ist."],
+["B","Das kann sein. Eine Kündigung wäre der letzte Schritt. Erst geben wir ihm eine Chance mit klaren Regeln und einer Fortbildung."],
+["A","Wenn sich in vier Wochen nichts ändert, müssen wir mit der Leitung über eine Versetzung oder Kündigung sprechen."],
+["B","So machen wir es. Bei den Eltern sollten wir uns entschuldigen und sie zu einem Elternabend einladen."],
+["A","Wichtig ist, dass wir ehrlich sagen, was wir unternehmen, ohne private Details über den Kollegen zu erzählen."],
+["B","Und mit den Kindern sprechen wir im Morgenkreis darüber, wie sie sich fühlen und an wen sie sich wenden können."]],
+r:["Das müssen wir sofort klären.","Eine Kündigung wäre der letzte Schritt.","Wenn sich nichts ändert, müssen wir …","Wichtig ist, dass wir ehrlich sind."]},
+
+{n:24,t:"Firma: Kaffeeautomat und Aufzug defekt",
+b:"Sie arbeiten in einer großen Firma. Einige Kunden haben sich beschwert, dass der Kaffeeautomat nicht funktioniert. Außerdem funktioniert auch der Aufzug oft nicht.",
+s:["Kaffeeautomat: was tun?","Aufzug: Techniker rufen?","Wie entschuldigen?","Langfristig: Probleme vermeiden"],
+d:[["A","Kunden beschweren sich, dass der Kaffeeautomat im Empfangsbereich nicht funktioniert und der Aufzug ständig stehen bleibt."],
+["B","Der Automat ist alt. Ich würde den Anbieter anrufen und um einen Austausch bitten – wir zahlen ja jeden Monat für die Wartung."],
+["A","Und bis das neue Gerät kommt, stellen wir eine Kaffeemaschine mit Kannen und Wasser an den Empfang."],
+["B","Das ist eine gute Zwischenlösung. Beim Aufzug ist es ernster, das ist auch eine Sicherheitsfrage."],
+["A","Ich rufe heute den Techniker an und fordere eine komplette Prüfung, nicht nur eine schnelle Reparatur."],
+["B","Ja, und wir hängen ein Schild auf, das den zweiten Aufzug im Nebengebäude zeigt."],
+["A","Bei den Kunden würde ich mich persönlich entschuldigen. Wer im Aufzug festsaß, bekommt zusätzlich einen Brief von der Geschäftsleitung."],
+["B","Langfristig brauchen wir feste Wartungstermine, eine Notrufnummer am Aufzug und einen festen Ansprechpartner für solche Probleme."]],
+r:["Ich würde … um einen Austausch bitten.","Das ist eine gute Zwischenlösung.","Ich fordere eine komplette Prüfung.","Langfristig brauchen wir feste …"]},
+
+{n:25,t:"Hotel: kaltes Buffet und kein WLAN",
+b:"Sie arbeiten in einem Hotel. Einige Gäste haben sich beschwert, dass das Essen vom Buffet oft kalt ist. Außerdem gibt es auf den Zimmern manchmal kein WLAN.",
+s:["Kaltes Essen: was tun?","Kein WLAN: welche Lösung?","Entschädigung/Rabatt?","Langfristig: Service verbessern"],
+d:[["A","Zwei Beschwerden häufen sich: Das Essen am Buffet ist kalt, und das WLAN funktioniert auf den Zimmern nicht."],
+["B","Beim Buffet würde ich kleinere Mengen anbieten und dafür öfter nachfüllen, dann bleibt alles warm."],
+["A","Und wir sollten die Warmhaltebehälter prüfen. Bei zwei Geräten ist die Heizung kaputt."],
+["B","Stimmt, die tausche ich morgen aus. Beim WLAN vermute ich, dass das Signal in den oberen Stockwerken zu schwach ist."],
+["A","Dann brauchen wir zusätzliche Router auf jeder Etage. Ich frage die IT-Firma nach einem Angebot."],
+["B","Für die betroffenen Gäste würde ich fünfzehn Prozent Rabatt oder ein kostenloses Frühstück anbieten."],
+["A","Einverstanden, das entscheidet die Rezeption je nach Fall. Wichtig ist, dass wir uns persönlich entschuldigen."],
+["B","Und langfristig: eine monatliche Technikkontrolle, Temperaturmessung am Buffet und eine kurze Umfrage beim Auschecken."]],
+r:["Zwei Beschwerden häufen sich.","Dann bleibt alles warm.","Ich vermute, dass das Signal zu schwach ist.","Das entscheidet die Rezeption je nach Fall."]},
+
+{n:26,t:"Altenheim: Das Essen ist immer gleich",
+b:"Sie arbeiten in einem Altenheim. Einige Bewohner haben sich beschwert, dass das Essen immer gleich ist und oft nicht schmeckt.",
+s:["Essen: was tun?","Bewohner: Umfrage?","Wie entschuldigen?","Langfristig: Menü ändern"],
+d:[["A","Die Bewohner sagen, das Essen ist jede Woche gleich und schmeckt oft nicht. Wie gehen wir das an?"],
+["B","Ich würde eine Woche lang aufschreiben, was auf den Tellern übrig bleibt. Dann sehen wir genau, welche Gerichte niemand mag."],
+["A","Sehr gute Idee. Zusätzlich könnten wir eine kleine Umfrage machen und nach den Lieblingsgerichten fragen."],
+["B","Am besten mündlich beim Kaffeetrinken, dann machen auch die Bewohner mit, die schlecht sehen."],
+["A","Bei den Beschwerden sollten wir uns entschuldigen und offen sagen, dass wir den Speiseplan ändern."],
+["B","Und wir könnten einmal im Monat einen Wunschtag einführen – da wählen die Bewohner selbst das Menü."],
+["A","Das gefällt mir sehr. Mit dem Küchenchef müssten wir dafür den Speiseplan auf vier Wochen erweitern."],
+["B","Genau: mehr Abwechslung und regionale Gerichte. In drei Monaten fragen wir noch einmal, ob es besser geworden ist."]],
+r:["Wie gehen wir das an?","Dann sehen wir genau, welche …","Das gefällt mir sehr.","… noch einmal nachfragen."]},
+
+{n:27,t:"Onlineshop: beschädigte Ware",
+b:"Sie arbeiten zusammen für einen Onlineshop. Einige Kunden haben sich beschwert, dass bestellte Ware schlecht verpackt oder in beschädigtem Zustand angekommen ist.",
+s:["Beschädigte Ware: was tun?","Kunden kontaktieren, Entschädigung","Langfristig: sichere Verpackung"],
+d:[["A","Immer mehr Kunden schreiben, dass die Ware beschädigt ankommt. Was machen wir mit den betroffenen Bestellungen?"],
+["B","Sofortiger Ersatz ohne lange Diskussion, und die Rücksendung ist für den Kunden kostenlos. Ein Foto reicht uns als Nachweis."],
+["A","Einverstanden. Ich schreibe allen betroffenen Kunden persönlich und rufe die an, die schon zweimal Pech hatten."],
+["B","Als Entschädigung würde ich einen Gutschein über zehn Prozent für die nächste Bestellung anbieten."],
+["A","Wir müssen aber auch die Ursache finden. Ich glaube, die Kartons sind zu groß und die Ware rutscht beim Transport."],
+["B","Da hast du recht. Wir sollten passende Kartongrößen bestellen und deutlich mehr Polstermaterial verwenden."],
+["A","Außerdem sollten wir mit dem Versanddienst sprechen, vielleicht liegt es teilweise auch am Transport."],
+["B","Ja, und wir machen einen Falltest mit zehn Paketen. Wer neu im Lager anfängt, bekommt eine kurze Verpackungsschulung."]],
+r:["Sofortiger Ersatz ohne lange Diskussion.","Wir müssen auch die Ursache finden.","Da hast du recht.","Außerdem sollten wir …"]},
+
+{n:28,t:"Fitnessstudio: alte Geräte, kein Trainer",
+b:"Sie arbeiten in einem kleinen Fitnessstudio. Einige Kunden haben sich beschwert, dass die Geräte zu alt sind und schlechte Qualität haben. Außerdem findet man oft keine Trainerin, wenn man eine Frage hat.",
+s:["Geräte: was tun?","Service verbessern","Entschuldigung/Entschädigung","Langfristig: zufriedene Kunden"],
+d:[["A","Die Mitglieder beschweren sich über die alten Geräte und darüber, dass kein Trainer da ist, wenn sie eine Frage haben."],
+["B","Alle Geräte können wir nicht auf einmal ersetzen. Ich würde die drei ältesten austauschen, am besten das Laufband und das Rudergerät."],
+["A","Leasing wäre eine Möglichkeit, dann müssen wir nicht alles sofort bezahlen."],
+["B","Guter Punkt. Und die kaputten Geräte müssen sofort repariert oder abgebaut werden, sonst sieht es schlecht aus."],
+["A","Beim Service würde ich feste Trainerzeiten einführen, zum Beispiel von siebzehn bis zwanzig Uhr immer eine Ansprechperson auf der Fläche."],
+["B","Einverstanden. Zusätzlich könnten wir einmal pro Woche eine kostenlose Einführung für neue Mitglieder anbieten."],
+["A","Bei den Beschwerden sollten wir uns entschuldigen und einen Gratismonat oder ein kostenloses Personaltraining anbieten."],
+["B","Und langfristig: ein Wartungsplan für alle Geräte und einmal im Jahr eine Umfrage unter den Mitgliedern."]],
+r:["Alle … können wir nicht auf einmal ersetzen.","Leasing wäre eine Möglichkeit.","Ich würde feste Zeiten einführen.","… und einmal im Jahr eine Umfrage."]}
+];
+
+/* DATA_END */
+
+const grid = document.getElementById('grid');
+const dialogEl = document.getElementById('dialog');
+let current = 0, veil = 'none';
+
+document.getElementById('partinfo').textContent =
+  'Datei ' + PART.nr + ' von ' + PART.von + ' · ' + PART.bereich;
+
+SITUATIONS.forEach((s,i)=>{
+  const b=document.createElement('button');
+  b.textContent=s.n; b.type='button';
+  b.setAttribute('aria-label','Situation '+s.n);
+  b.addEventListener('click',()=>show(i));
+  grid.appendChild(b);
+});
+
+function show(i){
+  current=i;
+  const s=SITUATIONS[i];
+  document.getElementById('eyebrow').textContent='Situation '+String(s.n).padStart(2,'0')+' · Gespräch zu zweit';
+  document.getElementById('title').textContent=s.t;
+  document.getElementById('lead').textContent=s.b;
+
+  const tasks=document.getElementById('tasks'); tasks.innerHTML='';
+  s.s.forEach((p,k)=>{const li=document.createElement('li');
+    li.innerHTML='<b>'+(k+1)+'</b>'+p; tasks.appendChild(li);});
+
+  const tl=document.getElementById('ticklabels'); tl.innerHTML='';
+  document.querySelectorAll('.tick').forEach(t=>t.remove());
+  const track=document.getElementById('track');
+  s.s.forEach((p,k)=>{
+    const pos=(k+1)/s.s.length*100;
+    const t=document.createElement('div'); t.className='tick'; t.style.left=pos+'%'; track.appendChild(t);
+    const lab=document.createElement('span'); lab.textContent='Punkt '+(k+1); lab.style.left=pos+'%'; tl.appendChild(lab);
+  });
+
+  dialogEl.innerHTML='';
+  s.d.forEach(([who,text])=>{
+    const row=document.createElement('div');
+    row.className='turn '+who.toLowerCase();
+    row.innerHTML='<div class="who">'+who+'</div><div class="say"><p style="margin:0">'+text+'</p></div>';
+    row.querySelector('.say').addEventListener('click',()=>row.classList.remove('veiled'));
+    dialogEl.appendChild(row);
+  });
+  applyVeil();
+
+  const rm=document.getElementById('redemittel'); rm.innerHTML='';
+  s.r.forEach(x=>{const li=document.createElement('li'); li.textContent=x; rm.appendChild(li);});
+
+  [...grid.children].forEach((b,k)=>b.setAttribute('aria-current', k===i?'true':'false'));
+  document.getElementById('prev').disabled = i===0;
+  document.getElementById('next').disabled = i===SITUATIONS.length-1;
+  resetClock();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+function applyVeil(){
+  document.querySelectorAll('.turn').forEach(row=>{
+    row.classList.remove('veiled');
+    if(veil!=='none' && row.classList.contains(veil.toLowerCase())) row.classList.add('veiled');
+  });
+}
+document.querySelectorAll('[data-veil]').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    veil=btn.dataset.veil;
+    document.querySelectorAll('[data-veil]').forEach(b=>b.setAttribute('aria-pressed', b===btn?'true':'false'));
+    applyVeil();
+  });
+});
+
+/* Gesprächsuhr: 2 Minuten */
+const TOTAL=120; let left=TOTAL, timer=null;
+const timeEl=document.getElementById('time'), fillEl=document.getElementById('fill'), startBtn=document.getElementById('startBtn');
+function render(){
+  const m=Math.floor(left/60), sec=left%60;
+  timeEl.textContent=m+':'+String(sec).padStart(2,'0');
+  timeEl.classList.toggle('low', left<=20);
+  fillEl.style.width=((TOTAL-left)/TOTAL*100)+'%';
+}
+function tick(){ left--; if(left<=0){left=0; stopClock(); startBtn.textContent='Zeit vorbei';} render(); }
+function stopClock(){ clearInterval(timer); timer=null; }
+function resetClock(){ stopClock(); left=TOTAL; startBtn.textContent='Start'; render(); }
+startBtn.addEventListener('click',()=>{
+  if(timer){ stopClock(); startBtn.textContent='Weiter'; }
+  else if(left>0){ timer=setInterval(tick,1000); startBtn.textContent='Pause'; }
+});
+document.getElementById('resetBtn').addEventListener('click',resetClock);
+document.getElementById('prev').addEventListener('click',()=>show(Math.max(0,current-1)));
+document.getElementById('next').addEventListener('click',()=>show(Math.min(SITUATIONS.length-1,current+1)));
+document.addEventListener('keydown',e=>{
+  if(e.target.tagName==='INPUT') return;
+  if(e.key==='ArrowLeft'&&current>0) show(current-1);
+  if(e.key==='ArrowRight'&&current<SITUATIONS.length-1) show(current+1);
+});
+show(0);
+</script>
+</body>
+</html>
