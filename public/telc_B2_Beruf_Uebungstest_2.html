@@ -1,0 +1,772 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Deutsch-Test für den Beruf B2 · Übungstest 2 – Trainer</title>
+<style>
+:root{
+  --navy:#0d4f7c;
+  --navy-dark:#093a5c;
+  --ink:#1b1a18;
+  --muted:#6b6660;
+  --paper:#ffffff;
+  --bg:#e9e6e0;
+  --field:#f7ded1;
+  --field-2:#efc9b4;
+  --line:#d9d3cb;
+  --ok:#1c7a4d;
+  --bad:#b8352a;
+  --warn:#a8620d;
+  --sans:"Helvetica Neue",Helvetica,Arial,"Segoe UI",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:112px}
+body{
+  margin:0;background:var(--bg);color:var(--ink);
+  font-family:var(--serif);font-size:17px;line-height:1.55;
+}
+.wrap{max-width:900px;margin:0 auto;padding:0 18px 120px}
+
+/* ---------- Kopf / Leiste ---------- */
+.bar{
+  position:sticky;top:0;z-index:50;background:var(--navy);color:#fff;
+  font-family:var(--sans);
+  box-shadow:0 2px 0 rgba(0,0,0,.15);
+}
+.bar-in{max-width:900px;margin:0 auto;padding:10px 18px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:700;letter-spacing:.14em;text-transform:uppercase;font-size:12px;opacity:.85}
+.clock{
+  font-variant-numeric:tabular-nums;font-size:26px;font-weight:700;letter-spacing:.02em;
+  padding:2px 10px;border:2px solid rgba(255,255,255,.35);border-radius:4px;min-width:104px;text-align:center;
+}
+.clock.low{border-color:#ffb4a2;color:#ffd7cd;animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.55}}
+.bar .meta{font-size:13px;opacity:.9;margin-left:auto;text-align:right}
+button{font-family:var(--sans);cursor:pointer}
+.btn{
+  border:none;border-radius:4px;padding:8px 14px;font-size:13px;font-weight:600;
+  letter-spacing:.04em;background:#fff;color:var(--navy);
+}
+.btn:hover{background:#eaf2f8}
+.btn.ghost{background:transparent;color:#fff;border:1px solid rgba(255,255,255,.5)}
+.btn.ghost:hover{background:rgba(255,255,255,.12)}
+.btn.big{padding:12px 22px;font-size:15px;background:var(--navy);color:#fff}
+.btn.big:hover{background:var(--navy-dark)}
+select{font-family:var(--sans);font-size:13px;padding:7px 8px;border-radius:4px;border:1px solid var(--line);background:#fff;color:var(--ink)}
+:focus-visible{outline:3px solid #ffb703;outline-offset:2px}
+
+/* ---------- Blätter ---------- */
+.sheet{background:var(--paper);border:1px solid var(--line);margin:26px 0;padding:26px 28px 30px}
+h1{font-family:var(--sans);font-size:30px;line-height:1.15;margin:.1em 0 .2em;color:var(--navy);letter-spacing:-.01em}
+h2{font-family:var(--sans);font-size:19px;margin:0 0 4px;color:var(--navy)}
+h3{font-family:var(--sans);font-size:15px;margin:22px 0 6px}
+.eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+.anweisung{font-family:var(--sans);font-size:14px;color:#3d3a36;background:#f4f2ee;border-left:3px solid var(--navy);padding:9px 12px;margin:8px 0 18px}
+.txt{border:1px solid var(--line);padding:16px 18px;margin:14px 0;background:#fcfbf9}
+.txt h4{font-family:var(--sans);font-size:15px;margin:0 0 8px}
+.txt p{margin:.55em 0}
+.small{font-size:14px;color:var(--muted)}
+.person{margin:6px 0}
+.forum{border:1px solid var(--line);border-left:5px solid var(--field-2);padding:12px 14px;margin:10px 0;background:#fcfbf9}
+.forum b{font-family:var(--sans);font-size:13px;letter-spacing:.03em}
+.opts{list-style:none;padding:0;margin:6px 0 0}
+.opts li{margin:3px 0}
+.opts .k{font-family:var(--sans);font-weight:700;color:var(--navy);display:inline-block;width:1.3em}
+.frage{margin:18px 0 0;font-family:var(--sans);font-size:15px}
+.wortkasten{display:flex;flex-wrap:wrap;gap:6px 18px;border:1px solid var(--line);padding:12px 14px;background:#fcfbf9;font-family:var(--sans);font-size:14px}
+.wortkasten span b{color:var(--navy)}
+.luecke{display:inline-block;min-width:64px;text-align:center;border-bottom:2px solid var(--navy);font-family:var(--sans);font-weight:700;color:var(--navy)}
+
+/* ---------- Antwortbogen-Blasen ---------- */
+.bogen{
+  display:flex;align-items:center;gap:4px;flex-wrap:wrap;
+  background:var(--field);border-radius:22px;padding:6px 12px;margin:8px 0 2px;width:fit-content;max-width:100%;
+}
+.bogen .num{font-family:var(--sans);font-size:13px;font-weight:700;color:#5b4034;padding:0 6px}
+.bub{display:flex;flex-direction:column;align-items:center;gap:1px;padding:2px 5px;border-radius:6px;cursor:pointer}
+.bub input{position:absolute;opacity:0;width:0;height:0}
+.bub .dot{width:17px;height:17px;border-radius:50%;border:1.5px solid #8d6a58;background:#fff;display:block;transition:.12s}
+.bub .lbl{font-family:var(--sans);font-size:10px;color:#5b4034;letter-spacing:.02em}
+.bub:hover .dot{border-color:var(--navy)}
+.bub input:checked + .dot{background:var(--navy);border-color:var(--navy);box-shadow:inset 0 0 0 2px #fff}
+.bub input:focus-visible + .dot{outline:3px solid #ffb703;outline-offset:2px}
+.bogen.rf .bub .lbl{font-size:11px}
+.bub.is-correct .dot{border-color:var(--ok)}
+.bub.is-correct input:checked + .dot{background:var(--ok);border-color:var(--ok)}
+.bub.is-wrong input:checked + .dot{background:var(--bad);border-color:var(--bad)}
+.bub.is-key .dot{border:2.5px solid var(--ok)}
+.bub.is-key .lbl{color:var(--ok);font-weight:700}
+
+.fb{display:none;font-family:var(--sans);font-size:13.5px;line-height:1.5;padding:8px 12px;margin:4px 0 6px;border-left:3px solid var(--line);background:#f6f5f2}
+.fb.show{display:block}
+.fb .tag{font-weight:700;letter-spacing:.04em;text-transform:uppercase;font-size:11px;margin-right:8px}
+.fb.ok .tag{color:var(--ok)} .fb.ok{border-left-color:var(--ok)}
+.fb.bad .tag{color:var(--bad)} .fb.bad{border-left-color:var(--bad)}
+
+/* ---------- Schreiben ---------- */
+textarea{
+  width:100%;min-height:210px;padding:14px;border:1px solid var(--line);background:
+  repeating-linear-gradient(#fff,#fff 27px,#e7e3dd 27px,#e7e3dd 28px);
+  font-family:var(--serif);font-size:16px;line-height:28px;resize:vertical;
+}
+.zaehler{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:6px}
+.zaehler b{color:var(--ink)}
+details.muster{margin-top:14px;border:1px solid var(--line);background:#fcfbf9}
+details.muster summary{font-family:var(--sans);font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;color:var(--navy)}
+details.muster .inner{padding:0 16px 14px;font-size:16px}
+.check{font-family:var(--sans);font-size:14px;padding-left:20px}
+.check li{margin:4px 0}
+
+/* ---------- Ergebnis ---------- */
+#ergebnis{display:none}
+#ergebnis.show{display:block}
+.score-top{display:flex;gap:24px;align-items:baseline;flex-wrap:wrap;border-bottom:2px solid var(--navy);padding-bottom:14px;margin-bottom:18px}
+.score-big{font-family:var(--sans);font-size:52px;font-weight:700;color:var(--navy);line-height:1}
+.score-big small{font-size:20px;color:var(--muted);font-weight:400}
+.verdikt{font-family:var(--sans);font-size:15px;font-weight:700;padding:5px 12px;border-radius:3px}
+.verdikt.pass{background:#e2f2e9;color:var(--ok)}
+.verdikt.fail{background:#fbe7e4;color:var(--bad)}
+table{width:100%;border-collapse:collapse;font-family:var(--sans);font-size:14px}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line)}
+th{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)}
+td.z{text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+.balken{height:8px;background:#eee9e3;border-radius:4px;overflow:hidden;min-width:90px}
+.balken i{display:block;height:100%;background:var(--navy)}
+.balken i.low{background:var(--bad)} .balken i.mid{background:var(--warn)} .balken i.high{background:var(--ok)}
+.tipp{border:1px solid var(--line);border-top:3px solid var(--navy);padding:14px 16px;margin:12px 0;background:#fcfbf9}
+.tipp h4{font-family:var(--sans);font-size:15px;margin:0 0 6px;color:var(--navy)}
+.tipp p{margin:.3em 0;font-size:15.5px}
+.tipp ul{margin:.4em 0;padding-left:20px;font-size:15.5px}
+.hinweis{font-family:var(--sans);font-size:13.5px;color:var(--muted);border:1px dashed var(--line);padding:10px 12px;margin:14px 0}
+.aktionen{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}
+nav.teile{font-family:var(--sans);font-size:12.5px;display:flex;gap:6px;flex-wrap:wrap;margin-top:14px}
+nav.teile a{text-decoration:none;color:var(--navy);border:1px solid var(--line);padding:5px 10px;border-radius:3px;background:#fff}
+nav.teile a:hover{background:var(--navy);color:#fff}
+@media (max-width:620px){
+  body{font-size:16px}
+  .sheet{padding:18px 16px 22px}
+  h1{font-size:24px}
+  .clock{font-size:21px;min-width:88px}
+  .bar .meta{width:100%;text-align:left;margin-left:0}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="brand">Deutsch-Test für den Beruf B2 · Übungstest 2</span>
+    <span class="clock" id="uhr">80:00</span>
+    <button class="btn" id="btnStart">Test starten</button>
+    <button class="btn ghost" id="btnPause" hidden>Pause</button>
+    <select id="dauer" aria-label="Bearbeitungszeit">
+      <option value="80" selected>80 Minuten</option>
+      <option value="60">60 Minuten</option>
+      <option value="100">100 Minuten</option>
+      <option value="0">ohne Zeitlimit</option>
+    </select>
+    <span class="meta"><b id="fortschritt">0</b> von 26 Aufgaben markiert</span>
+  </div>
+</div>
+
+<div class="wrap">
+
+<div class="sheet">
+  <p class="eyebrow">Schriftliche Prüfung · Trainer</p>
+  <h1>Übungstest 2: Lesen, Lesen und&nbsp;Schreiben, Sprachbausteine, Schreiben</h1>
+  <p class="small">Wählen Sie oben Ihre Bearbeitungszeit und klicken Sie auf <b>Test starten</b>. Markieren Sie Ihre Lösungen in den Antwortfeldern. Am Ende klicken Sie auf <b>Auswerten</b>: Sie erhalten Ihre Punktzahl, die Begründung zu jeder Aufgabe und konkrete Lernempfehlungen.</p>
+  <p class="hinweis">Die Prüfungsteile <b>Hören</b> (Aufgaben 22–45) sind hier nicht enthalten, weil dafür die Audiodateien nötig sind. Trainiert werden die 26 auswertbaren Aufgaben: Lesen 1–18, Lesen und Schreiben 19–20, Sprachbausteine 46–57. Die freien Schreibaufgaben 21 und 58 schreiben Sie selbst; dazu gibt es eine Musterlösung und eine Checkliste.</p>
+  <nav class="teile">
+    <a href="#l1">Lesen 1</a><a href="#l2">Lesen 2</a><a href="#l3">Lesen 3</a><a href="#l4">Lesen 4</a>
+    <a href="#ls">Lesen und Schreiben</a><a href="#sb1">Sprachbausteine 1</a><a href="#sb2">Sprachbausteine 2</a><a href="#schreiben">Schreiben</a>
+  </nav>
+</div>
+
+<!-- ============ LESEN TEIL 1 ============ -->
+<div class="sheet" id="l1">
+  <p class="eyebrow">Lesen</p>
+  <h2>Teil 1 · Aufgaben 1–5</h2>
+  <p class="anweisung">Sie lesen online in einer Wirtschaftszeitung und möchten Ihren Freunden einige Artikel schicken. Entscheiden Sie, welcher Artikel a–h zu welcher Person 1–5 passt. Jeder Artikel passt nur einmal.</p>
+
+  <div class="txt">
+    <p><span class="opts"><span class="k">a</span></span><b>Gleichwertigkeit</b><br>
+    Wer einen Berufsabschluss in seinem Heimatland erworben hat, hat einen Rechtsanspruch auf Überprüfung der Gleichwertigkeit dieses Abschlusses mit dem entsprechenden Berufsabschluss in Deutschland. In unserem Anerkennungsportal finden Sie weitere Informationen.</p>
+    <p><span class="opts"><span class="k">b</span></span><b>Perfekter Auftritt</b><br>
+    Bei deiner Bewerbung kommt es auch auf das Äußere an. Schon auf dem Foto präsentierst du dich bestmöglich und beim Vorstellungsgespräch möchtest du mit deinem Outfit überzeugen. Unsere Modeexpertin gibt Tipps für die passende Kleidung.</p>
+    <p><span class="opts"><span class="k">c</span></span><b>Ab ins Ausland!</b><br>
+    Nicht nur für Studierende, sondern auch für Auszubildende bietet das ERASMUS-Programm die Möglichkeit, Auslandserfahrung zu sammeln, z. B. in Form von europaweiten Praktika und Sprachkursen. Hier berichten drei Lehrlinge von ihren Erfahrungen.</p>
+    <p><span class="opts"><span class="k">d</span></span><b>Mode bietet Berufschancen</b><br>
+    Du arbeitest gern mit Stoffen, hast ein Gespür für Trends und suchst eine neue Herausforderung? In der Modebranche gibt es zahlreiche Möglichkeiten für ausgebildete Mitarbeitende mit Erfahrung, ihr Talent im Design oder im Verkauf einzubringen. Hier kannst du dich ausführlich informieren.</p>
+    <p><span class="opts"><span class="k">e</span></span><b>Neustart wagen</b><br>
+    Der in jungen Jahren gewählte Beruf machte Brigitte Körner (45) irgendwann keinen Spaß mehr. Sie berichtet in ihrem Buch „Alles auf Anfang“, wie sie nach 20 Jahren Bürotätigkeit ganz von vorne angefangen und sich ihren Traum von einer eigenen Tauchschule in Neuseeland erfüllt hat.</p>
+    <p><span class="opts"><span class="k">f</span></span><b>Der Interessencheck</b><br>
+    Auf www.keinplan.com findest du heraus, welcher Beruf zu dir passt. Du ermittelst deine Talente und beruflichen Interessen und erkennst dabei, was dir Spaß macht und was du gut kannst. Zusätzlich zum Testergebnis bekommst du eine Liste mit Ausbildungsplätzen in deiner Region.</p>
+    <p><span class="opts"><span class="k">g</span></span><b>Karriere im Handwerk</b><br>
+    Nach der erfolgreichen Ausbildung und dem Sammeln einiger Erfahrung bietet sich der Erwerb des Meistertitels an. Auf die vier erforderlichen Prüfungsteile kann man sich an Meisterschulen oder Bildungseinrichtungen der Handwerkskammern vorbereiten. Lesen Sie hier weitere Informationen zu Anmeldung, Inhalten und Abläufen.</p>
+    <p><span class="opts"><span class="k">h</span></span><b>Vom Hobby zum Beruf</b><br>
+    Andrea Weiler liebt den Umgang mit der Kamera und die ästhetische Darstellung der Produkte ihrer Kunden, egal ob Speisen oder die neuste Mode. Lesen Sie, wie aus einer Leidenschaft durch eine fundierte Ausbildung ihr Beruf geworden ist.</p>
+  </div>
+
+  <p class="frage">1 Carola braucht Orientierung bei der Berufswahl.</p>
+  <div class="bogen" data-q="1" data-opts="a b c d e f g h"></div>
+  <p class="frage">2 Mariana hat ein Zertifikat als Erzieherin aus Rumänien.</p>
+  <div class="bogen" data-q="2" data-opts="a b c d e f g h"></div>
+  <p class="frage">3 Mayada ist kreativ und hat Spaß an schöner Kleidung.</p>
+  <div class="bogen" data-q="3" data-opts="a b c d e f g h"></div>
+  <p class="frage">4 Oliver fotografiert gern und möchte damit Geld verdienen.</p>
+  <div class="bogen" data-q="4" data-opts="a b c d e f g h"></div>
+  <p class="frage">5 Philip ist noch Azubi und möchte Französisch lernen.</p>
+  <div class="bogen" data-q="5" data-opts="a b c d e f g h"></div>
+</div>
+
+<!-- ============ LESEN TEIL 2 ============ -->
+<div class="sheet" id="l2">
+  <p class="eyebrow">Lesen</p>
+  <h2>Teil 2 · Aufgaben 6–9</h2>
+  <p class="anweisung">Lesen Sie die Texte und die Aufgaben 6–9. Ist die Aussage dazu richtig oder falsch und welche Antwort (a, b oder c) passt am besten?</p>
+
+  <div class="txt">
+    <h4>Text 1 · Willkommensmappe für neue Mitarbeiterinnen und Mitarbeiter: Kennenlerntage der neuen Azubis</h4>
+    <p>Wir begrüßen euch bei „Auto Dengler“ und wünschen euch einen guten Ausbildungsstart!</p>
+    <p>Heute machen wir einen Rundgang durch die Firma und ihr lernt eure Ansprechpartner, Ausbilder und die anderen Azubis kennen. Gemeinsam nehmen wir im Anschluss auf dem Ausstellungsgelände ein Gruppenbild zur Erinnerung an euren Ausbildungsbeginn auf.</p>
+    <p>Danach folgt eine Präsentation unseres Familienunternehmens. Wir zeigen seine Entwicklung von der kleinen Werkstatt zum größten Autohaus und Servicezentrum der Region, unsere Vertriebswege im In- und Ausland und die Marken, die wir exklusiv vertreten.</p>
+    <p>Morgen startet ihr bereits in den Abteilungen, in denen ihr während eurer jeweiligen Ausbildung eingesetzt werdet: Rechnungswesen, Kundenservice, Verkauf, Lager und Logistik sowie technischer Service. Eure Ausbilder weisen euch in die Arbeitsabläufe ein.</p>
+    <p>Übermorgen teilen wir euch den Zeitplan für das erste Ausbildungshalbjahr inklusive der Berufsschulzeiten mit. Am Ende der Kennenlerntage stehen eine Schulung in Arbeitssicherheit und eine Einführung in die Firmensoftware auf dem Programm.</p>
+  </div>
+
+  <p class="frage">6 Am ersten Tag wird ein Foto von den Azubis gemacht.</p>
+  <div class="bogen rf" data-q="6" data-opts="richtig falsch"></div>
+  <p class="frage">7 Die Azubis sollen</p>
+  <ul class="opts">
+    <li><span class="k">a</span>am dritten Tag in die Berufsschule gehen.</li>
+    <li><span class="k">b</span>in allen Abteilungen arbeiten.</li>
+    <li><span class="k">c</span>wichtige Vertriebsstrukturen kennenlernen.</li>
+  </ul>
+  <div class="bogen" data-q="7" data-opts="a b c"></div>
+
+  <div class="txt">
+    <h4>Text 2 · Willkommensmappe für neue Mitarbeiterinnen und Mitarbeiter: Arbeitszeit</h4>
+    <p>Vollzeitbeschäftigte unseres Unternehmens arbeiten 38,5 Stunden pro Woche. Teilzeitbeschäftigungen sind zwischen 6 und 30 Stunden pro Woche möglich.</p>
+    <p>Jeder Mitarbeiter hat Anspruch auf mindestens 25 Urlaubstage pro Jahr. Die Anzahl erhöht sich mit längerer Dienstzugehörigkeit und steigendem Alter auf bis zu 30 Tage pro Jahr. Sie sind angehalten, einmal pro Jahr mindestens 10 aufeinanderfolgende Arbeitstage zu nehmen.</p>
+    <p>Ihren Urlaubswunsch für das folgende Jahr geben Sie bis spätestens 30.09. des laufenden Jahres auf dem dafür vorgesehenen Formular bei Ihrem Vorgesetzten an. Er genehmigt ihn im Laufe des Folgemonats.</p>
+    <p>Am 24. und am 31. Dezember ist das Unternehmen geschlossen. Alle Angestellten haben frei und die beiden Tage werden als ein Arbeitstag auf den Urlaubsanspruch angerechnet. Auch in der Probezeit kann Urlaub genommen werden. Gemäß dem gültigen Tarifvertrag steht jedem Mitarbeiter ein jährliches Urlaubsgeld zu. Dieses wird mit der Dezemberabrechnung ausgezahlt.</p>
+    <p>Im Rahmen unserer Unternehmensrichtlinien begrüßen wir die Weiterbildung unserer Mitarbeiter. Um mehr über unsere vielfältigen internen Angebote zu erfahren, empfehlen wir Ihnen einen Blick in unser Programmheft. Für die Teilnahme an Fortbildungen gewährt Ihnen das Unternehmen pro Jahr fünf freie Tage. Sollten Sie an einer Fortbildung außerhalb der Arbeitszeit teilnehmen, so wird diese Zeit nicht vergütet oder durch Freizeit ausgeglichen. Die Teilnahme an einer Fortbildung während der Arbeitszeit ist genehmigungspflichtig. Das Antragsformular ist in der Personalabteilung erhältlich und muss vom Abteilungsleiter bis spätestens 14 Tage vor Fortbildungsbeginn unterschrieben werden. Der Besuch einer fachbezogenen Fort- oder Weiterbildung kann auch vom Arbeitgeber angeordnet werden. In diesem Fall werden die Kosten in voller Höhe übernommen.</p>
+  </div>
+
+  <p class="frage">8 Der Urlaub für das nächste Jahr muss bis Ende September eingereicht werden.</p>
+  <div class="bogen rf" data-q="8" data-opts="richtig falsch"></div>
+  <p class="frage">9 Der Besuch von Fortbildungen während der Arbeitszeit muss</p>
+  <ul class="opts">
+    <li><span class="k">a</span>fünf Tage vorher beantragt werden.</li>
+    <li><span class="k">b</span>mit einem Formular beantragt werden.</li>
+    <li><span class="k">c</span>vom Arbeitgeber beantragt werden.</li>
+  </ul>
+  <div class="bogen" data-q="9" data-opts="a b c"></div>
+</div>
+
+<!-- ============ LESEN TEIL 3 ============ -->
+<div class="sheet" id="l3">
+  <p class="eyebrow">Lesen</p>
+  <h2>Teil 3 · Aufgaben 10–13</h2>
+  <p class="anweisung">Lesen Sie die Fragen 10–13 und die Texte a–f. Welche Frage passt zu welchem Tipp? Für eine Frage gibt es keinen passenden Tipp – markieren Sie dafür ein <b>x</b>.</p>
+
+  <p class="frage">10 <i>Nina21</i></p>
+  <p>Hallo Leute, meine Mutter ist schwerstkrank mit Pflegestufe 4 und ich möchte sie in den nächsten Monaten selbst zu Hause betreuen und pflegen. Ist dafür eine bezahlte Auszeit bei der Arbeit möglich? Ich arbeite bei einer Finanzbehörde.</p>
+  <div class="bogen" data-q="10" data-opts="a b c d e f x"></div>
+
+  <p class="frage">11 <i>Mom</i></p>
+  <p>Nach der Elternzeit möchte ich wieder meine alte Arbeit im Außendienst aufnehmen. Nun will mein Arbeitgeber mich in ein weit entferntes Gebiet versetzen, weil da eine Stelle frei ist. Das kann ich unmöglich organisieren. Hat er das Recht dazu?</p>
+  <div class="bogen" data-q="11" data-opts="a b c d e f x"></div>
+
+  <p class="frage">12 <i>Mandy B.</i></p>
+  <p>Ich bekomme bald mein Baby und habe noch einen Urlaubsanspruch von 15 Tagen. Ich möchte nach der Geburt Elternzeit nehmen, ich werde zwei Jahre beantragen. Kann ich danach meinen Resturlaub nehmen oder verfällt der Anspruch in der Zwischenzeit?</p>
+  <div class="bogen" data-q="12" data-opts="a b c d e f x"></div>
+
+  <p class="frage">13 <i>Anita</i></p>
+  <p>Habt ihr euren Antrag auf Elternzeit vor oder nach der Geburt des Kindes beim Arbeitgeber abgegeben? Ich weiß, dass alles spätestens eine Woche nach der Geburt dort sein muss. Aber gibt es dafür ein bestimmtes Formular?</p>
+  <div class="bogen" data-q="13" data-opts="a b c d e f x"></div>
+
+  <h3>Rund um den Beruf</h3>
+  <div class="forum"><b>a · Nemo, vor 23 Minuten</b><p>Wenn jemand nach der Elternzeit an einem anderen Arbeitsplatz arbeiten soll, so muss der Arbeitgeber vor dieser Versetzung den Betriebsrat in die Entscheidung einbinden. Versetzung bedeutet z. B., dass sich der Arbeitsort wesentlich ändert. Also, sprich mal mit dem Betriebsrat.</p></div>
+  <div class="forum"><b>b · BestOma, vor 48 Minuten</b><p>Wenn dein Kind unter 12 Jahren krank wird und betreut werden muss, dann dürfen sowohl du als auch der Vater für die Betreuung zehn Arbeitstage im Jahr freinehmen – so ist der gesetzliche Anspruch definiert. Alleinerziehende haben Anspruch auf die Gesamtzahl, das heißt 20 Tage.</p></div>
+  <div class="forum"><b>c · Anonym 123, vor 51 Minuten</b><p>Du hast recht, der Antrag muss innerhalb der ersten Woche nach der Geburt vorgelegt werden. Es ist einfach ein formloses Schreiben, das du jetzt schon vorbereiten kannst. Nach der Geburt musst du die fehlenden Daten ergänzen und es deinem Arbeitgeber schicken.</p></div>
+  <div class="forum"><b>d · Jury, vor 2 Stunden</b><p>Obwohl die Pflege von Angehörigen bekanntlich eine enorme Leistung ist und oft viel Kraft und Energie fordert, gibt es für pflegende Angehörige bisher leider keinen Rechtsanspruch auf eine Kur. Wenn ein medizinischer Grund vorliegt, sieht die Sache anders aus.</p></div>
+  <div class="forum"><b>e · Stormy, vor 5 Stunden</b><p>Du kannst von deinem Arbeitgeber eine Freistellung für bis zu sechs Monate kurzfristig beantragen, wenn du die Pflegebedürftigkeit von Familienmitgliedern nachweisen kannst. Allerdings gilt für diese Zeit kein Recht auf Lohnfortzahlung.</p></div>
+  <div class="forum"><b>f · Emily, vor 6 Stunden</b><p>Ich finde, so hast du den Antrag auf Elternzeit korrekt formuliert. Ich würde dir allerdings raten, einfach sicherheitshalber zwei Jahre Elternzeit anzumelden, da du nie weißt, wie es nach einem Jahr mit der Betreuung aussieht.</p></div>
+</div>
+
+<!-- ============ LESEN TEIL 4 ============ -->
+<div class="sheet" id="l4">
+  <p class="eyebrow">Lesen</p>
+  <h2>Teil 4 · Aufgaben 14–18</h2>
+  <p class="anweisung">Lesen Sie das Protokoll und die Aufgaben 14–18. Welche Antwort (a, b oder c) passt am besten?</p>
+
+  <div class="txt">
+    <h4>Protokoll</h4>
+    <p class="small">04. März 20XX, 15.00 bis 16.10 Uhr · Speiseraum der Kantine der Firma „Gallauf-Logistik“</p>
+    <p><i>Anwesende:</i> Svenja Ballauf (SB, Kantinenleitung), Miro Batic (MB, Küchenchef), Alessija Topol (AT, Küchenhilfe), Simon Knoop (SK, Küchenhilfe), Mustafa Tukur (MT, Küchenhilfe), Elin Furch (EF, Reinigungsdienst)<br>
+    <i>Entschuldigt:</i> Oli Jansen (OJ, Küchenhilfe), Claudia Zeschau (CZ, Küchenhilfe)<br>
+    <i>Sitzungsleitung:</i> Svenja Ballauf · <i>Protokollführung:</i> Alessija Topol</p>
+    <p><i>Tagesordnungspunkte:</i> 1 Begrüßung, Genehmigung des Protokolls vom Februar · 2 Austausch eines Kühlgeräts · 3 Vegane Gerichte · 4 Beschwerden · 5 Interne Bewirtungsaufträge · 6 Sonstiges</p>
+    <p><b>TOP 1</b> SB eröffnet die monatliche Besprechung und begrüßt das Team. Sie verliest das Protokoll der letzten Besprechung vom 1. Februar und fragt nach Wortmeldungen dazu. Da es keine Meldung gibt, bittet sie um Genehmigung. Das Protokoll wird von den Anwesenden einstimmig angenommen.</p>
+    <p><b>TOP 2</b> MB berichtet von den Problemen mit den Kühlgeräten, die in den vergangenen Monaten immer häufiger aufgetreten sind. Es ist zu kurzfristigen Stromausfällen und damit verbunden zu Temperaturschwankungen gekommen. Er erläutert die Vorteile des neuen Gastro-Kühlschranks, den er nach Absprache mit der Geschäftsleitung vor vier Wochen bestellt hat. Dieser hat ein deutlich höheres Volumen und ermöglicht trotzdem Energieeinsparung durch ein automatisches Abtausystem, einen verbrauchsarmen Kompressor sowie eine Türdichtung mit spezieller Hartschaum-Isolierung. Die Anlieferung des neuen Kühlschranks ist für den 6. März geplant. An diesem Tag ist MB im Urlaub, daher wird sich SK um die Annahme des Geräts kümmern. Angeschlossen und montiert wird der Kühlschrank von der Lieferfirma.</p>
+    <p><b>TOP 3</b> SB berichtet von einer steigenden Nachfrage der Mitarbeiter der „Gallauf-Logistik“ nach veganen Gerichten. Daher sollen in das Angebot der Kantine zusätzlich zu den täglich angebotenen vegetarischen Speisen auch vegane aufgenommen werden. MB gibt zu bedenken, dass er nicht genug Rezepte und auch wenig Erfahrung in Bezug auf die Zutaten hat. Wenn mehr Ersatzprodukte gekauft werden sollen, würden Mehrkosten entstehen. SB schlägt dennoch vor, probeweise einmal pro Woche ein einfaches veganes Gericht (z. B. Gemüsepasta, Eintöpfe, Suppen) auf den Speiseplan zu setzen. MB willigt ein, im April einen Testdurchlauf zu starten.</p>
+    <p><b>TOP 4</b> SB informiert, dass sich einige Mitarbeiter der Firma bei ihr beschwert haben, weil sie in der vergangenen Woche viel länger als gewohnt an der Essensausgabe warten mussten. MB erklärt, dass Anfang der Woche zwei Mitarbeiter kurzfristig ausgefallen sind. Um zukünftig besser vorbereitet zu sein, will SB Kontakt zum Personaldienstleister Hoffmann aufnehmen. So können im Wiederholungsfall Aushilfskräfte umgehend zur Unterstützung angefordert werden. SB erläutert, dass sie schon seit Längerem versucht, qualifiziertes Küchenpersonal zu finden, dass aber in der gesamten Gastronomiebranche aktuell Arbeitskräftemangel besteht.</p>
+    <p><b>TOP 5</b> SB erwähnt noch, dass Frau Berndt von der Geschäftsleitung äußerst zufrieden mit der Bewirtung der kleinen Feier anlässlich Frau Helmers dreißigjährigem Dienstjubiläum war und sich sehr lobend über das Kantinenteam und die zubereiteten Speisen ausgesprochen hat. Der Personalbedarf für die kommenden Bewirtungsaufträge soll bei der nächsten Teamsitzung abgestimmt werden.</p>
+    <p><b>TOP 6</b> AT meldet einen dringenden Urlaubswunsch für die ersten zwei Maiwochen an, weil ihr Mann eine große Operation hat und sich niemand um ihren Sohn kümmern kann. MT erinnert daran, dass ihm bereits für Mai drei Wochen Urlaub bewilligt wurden. Nach Rücksprache erklärt sich SK bereit, seine geplante Reise zu verschieben, um die Schichten von AT zu übernehmen. SB weist darauf hin, dass die Urlaubsanträge entsprechend geändert und der Personalabteilung vorgelegt werden müssen. Alle anderen Urlaubsanträge bleiben unverändert. Es gibt keinen weiteren Gesprächsbedarf. Die nächste Teambesprechung wird auf den 4. April terminiert. Die Sitzung wird um 16.10 Uhr beendet.</p>
+  </div>
+
+  <p class="frage">14 Die Besprechung der Mitarbeiterinnen und Mitarbeiter der Kantine</p>
+  <ul class="opts"><li><span class="k">a</span>findet einmal pro Monat statt.</li><li><span class="k">b</span>ist am Vormittag.</li><li><span class="k">c</span>wird von Svenja Ballauf protokolliert.</li></ul>
+  <div class="bogen" data-q="14" data-opts="a b c"></div>
+
+  <p class="frage">15 Der neue Kühlschrank</p>
+  <ul class="opts"><li><span class="k">a</span>ist wesentlich größer als der alte.</li><li><span class="k">b</span>wird in vier Wochen geliefert.</li><li><span class="k">c</span>soll von Simon Knoop installiert werden.</li></ul>
+  <div class="bogen" data-q="15" data-opts="a b c"></div>
+
+  <p class="frage">16 Veganes Essen</p>
+  <ul class="opts"><li><span class="k">a</span>möchte der Küchenchef gern anbieten.</li><li><span class="k">b</span>wird ab April jeden Tag angeboten.</li><li><span class="k">c</span>wird von den Mitarbeitern der Firma gewünscht.</li></ul>
+  <div class="bogen" data-q="16" data-opts="a b c"></div>
+
+  <p class="frage">17 In der Kantine</p>
+  <ul class="opts"><li><span class="k">a</span>besteht noch Bedarf an Aushilfskräften.</li><li><span class="k">b</span>dauert die Essensausgabe immer zu lange.</li><li><span class="k">c</span>soll nächsten Monat eine Jubiläumsfeier stattfinden.</li></ul>
+  <div class="bogen" data-q="17" data-opts="a b c"></div>
+
+  <p class="frage">18 Frau Topol möchte</p>
+  <ul class="opts"><li><span class="k">a</span>die Schichten von Herrn Beringer übernehmen.</li><li><span class="k">b</span>im Mai eine mehrwöchige Reise unternehmen.</li><li><span class="k">c</span>Urlaub aus familiären Gründen beantragen.</li></ul>
+  <div class="bogen" data-q="18" data-opts="a b c"></div>
+</div>
+
+<!-- ============ LESEN UND SCHREIBEN ============ -->
+<div class="sheet" id="ls">
+  <p class="eyebrow">Lesen und Schreiben</p>
+  <h2>Aufgaben 19–21</h2>
+  <p class="anweisung">Ihre Teamleitung leitet Ihnen die E-Mail von einer Kundin weiter und bittet Sie zu antworten.</p>
+
+  <div class="txt">
+    <p class="small"><b>Erhalten:</b> heute, 11.20 Uhr · <b>Von:</b> Simone Klausner, Teamleitung Kundenservice · <b>An:</b> Ismail Haji · <b>Betreff:</b> Fw: unvollständige Lieferung</p>
+    <p>Hallo,</p>
+    <p>unten stehende Mail habe ich gerade von Frau Mohamad von „Floralu“ erhalten. Bitte melde dich möglichst schnell bei der Kundin zurück, berichte ihr von den Gründen für die Lieferprobleme der Herstellerfirma und wann wir mit einer Lieferung rechnen.</p>
+    <p>Da sie eine langjährige Kundin von uns ist und wir ihre Situation gut verstehen, könnten wir ihr als Ersatz rote und goldene Töpfe in den gleichen Größen liefern. Biete ihr auch einen großzügigen Rabatt auf diese Bestellung an und versprich ihr die Lieferung Anfang nächster Woche.</p>
+    <p>Gruß<br>Simone</p>
+  </div>
+
+  <div class="txt">
+    <p class="small"><b>Erhalten:</b> heute, 8.30 Uhr · <b>Von:</b> Hiam Mohamad · <b>An:</b> Simone Klausner · <b>Betreff:</b> unvollständige Lieferung</p>
+    <p>Sehr geehrte Damen und Herren,</p>
+    <p>für meinen Blumenladen „Floralu“ bestelle ich seit Jahren regelmäßig Blumenübertöpfe und Dekoartikel für das Weihnachtsgeschäft bei Ihnen.</p>
+    <p>Dieses Mal war die Lieferung der Blumentöpfe mit weihnachtlichen Motiven leider unvollständig. Die Bestellung umfasste 50 große (30 cm) und 60 kleine Töpfe (15 cm), geliefert wurden nur 30 kleine Töpfe. Wir können aus diesem Grund viele unserer Vorbestellungen nicht ausliefern.</p>
+    <p>Wie Ihnen bekannt ist, hat das Weihnachtsgeschäft begonnen. Daher bin ich auf eine schnelle Lieferung der restlichen Ware dringend angewiesen. Bitte teilen Sie mir ein verlässliches Lieferdatum noch in dieser Woche mit oder schlagen Sie eine alternative Lösung vor.</p>
+    <p>Mit freundlichen Grüßen<br>Hiam Mohamad, „Floralu“</p>
+  </div>
+
+  <p class="frage">19 Frau Mohamad</p>
+  <ul class="opts"><li><span class="k">a</span>bestellt zum ersten Mal Dekoartikel.</li><li><span class="k">b</span>hat Ware in der falschen Größe erhalten.</li><li><span class="k">c</span>kann ihre Kunden nicht beliefern.</li></ul>
+  <div class="bogen" data-q="19" data-opts="a b c"></div>
+
+  <p class="frage">20 Simone bittet darum,</p>
+  <ul class="opts"><li><span class="k">a</span>den Hersteller umgehend zu kontaktieren.</li><li><span class="k">b</span>der Kundin Ermäßigung auf zukünftige Bestellungen zuzusichern.</li><li><span class="k">c</span>eine Ersatzlieferung anzubieten.</li></ul>
+  <div class="bogen" data-q="20" data-opts="a b c"></div>
+
+  <h3>21 · E-Mail an die Kundin (wird von Bewertern bewertet)</h3>
+  <p class="small">Schreiben Sie eine E-Mail an die Kundin. Setzen Sie dabei alle Punkte Ihrer Teamleitung um. Achten Sie auf eine angemessene Sprache (Anrede, Höflichkeit, formelle Sprache). Richtwert: ca. 70–100 Wörter.</p>
+  <textarea id="text21" placeholder="Sehr geehrte Frau Mohamad, …"></textarea>
+  <p class="zaehler"><b id="z21">0</b> Wörter</p>
+  <details class="muster"><summary>Musterlösung und Checkliste anzeigen</summary><div class="inner">
+    <ul class="check">
+      <li>Anrede mit Namen: <i>Sehr geehrte Frau Mohamad,</i> · Gruß: <i>Mit freundlichen Grüßen</i></li>
+      <li>Bezug auf ihre E-Mail + Entschuldigung</li>
+      <li>Grund für die Lieferprobleme beim Hersteller (frei erfunden, aber plausibel)</li>
+      <li>Ersatz: rote und goldene Töpfe in den gleichen Größen</li>
+      <li>Rabatt auf diese Bestellung</li>
+      <li>Liefertermin: Anfang nächster Woche</li>
+      <li>Bitte um Rückmeldung / Angebot für Rückfragen</li>
+    </ul>
+    <p><b>Musterlösung</b></p>
+    <p>Sehr geehrte Frau Mohamad,</p>
+    <p>vielen Dank für Ihre Nachricht. Die unvollständige Lieferung tut uns sehr leid.</p>
+    <p>Der Grund dafür ist ein Produktionsausfall bei unserer Herstellerfirma: Wegen eines technischen Defekts konnten die weihnachtlichen Motive nicht rechtzeitig fertiggestellt werden. Da Sie seit Jahren zu unseren Kundinnen zählen, möchten wir Ihnen gern eine Alternative anbieten: Wir liefern Ihnen als Ersatz rote und goldene Töpfe in den gleichen Größen. Auf diese Bestellung gewähren wir Ihnen selbstverständlich einen großzügigen Rabatt. Die Ware erreicht Sie Anfang nächster Woche.</p>
+    <p>Bitte teilen Sie mir kurz mit, ob Sie mit dieser Lösung einverstanden sind. Bei Rückfragen erreichen Sie mich jederzeit.</p>
+    <p>Mit freundlichen Grüßen<br>Ismail Haji, Kundenservice</p>
+  </div></details>
+</div>
+
+<!-- ============ SPRACHBAUSTEINE 1 ============ -->
+<div class="sheet" id="sb1">
+  <p class="eyebrow">Sprachbausteine</p>
+  <h2>Teil 1 · Aufgaben 46–51</h2>
+  <p class="anweisung">Welche Wörter a–j passen am besten in die Lücken? Jedes Wort passt nur einmal, nicht alle Wörter passen in den Text.</p>
+  <div class="txt">
+    <p><b>Betreff: Bewerbung <span class="luecke">46</span> die Ausbildung zum IT-System-Elektroniker bei „FSM“</b></p>
+    <p>Sehr geehrter Herr Dr. Winterhalder,</p>
+    <p>seit Jahren interessiere ich mich nicht nur für die Arbeit mit EDV-Programmen, <span class="luecke">47</span> auch für Elektronik. Dieses Interesse zeigt sich auch in meinen guten Noten in Informatik und Physik.</p>
+    <p>Mein Praktikum zur Berufsorientierung habe ich bei der Holister GmbH in Goslar absolviert, <span class="luecke">48</span> ich zwei Wochen lang die IT-System-Elektroniker des Unternehmens begleiten durfte. Diese Arbeit hat mir gut gefallen und man war mit meiner Leistung sehr zufrieden, <span class="luecke">49</span> Sie dem Praktikumszeugnis entnehmen können.</p>
+    <p>Auf der Job-Messe vergangene Woche habe ich Ihr Unternehmen kennengelernt und das Gespräch mit Ihnen hat mich nachhaltig beeindruckt und in dem Wunsch bestärkt, meine Ausbildung bei „FSM“ zu absolvieren. <span class="luecke">50</span> bewerbe ich mich bei Ihnen.</p>
+    <p>Gern überzeuge ich Sie von meiner Motivation und Eignung persönlich. <span class="luecke">51</span> einen Terminvorschlag zum Bewerbungsgespräch freue ich mich.</p>
+    <p>Mit freundlichen Grüßen<br>Kevin Taylor</p>
+  </div>
+  <div class="wortkasten">
+    <span><b>a</b> DABEI</span><span><b>b</b> DAHER</span><span><b>c</b> FÜR</span><span><b>d</b> INDEM</span><span><b>e</b> JEDOCH</span>
+    <span><b>f</b> SOWOHL</span><span><b>g</b> SONDERN</span><span><b>h</b> ÜBER</span><span><b>i</b> WIE</span><span><b>j</b> WO</span>
+  </div>
+  <div class="bogen" data-q="46" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="47" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="48" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="49" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="50" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="51" data-opts="a b c d e f g h i j"></div>
+</div>
+
+<!-- ============ SPRACHBAUSTEINE 2 ============ -->
+<div class="sheet" id="sb2">
+  <p class="eyebrow">Sprachbausteine</p>
+  <h2>Teil 2 · Aufgaben 52–57</h2>
+  <p class="anweisung">Welcher Ausdruck (a, b oder c) passt am besten in die Lücken 52–57?</p>
+  <div class="txt">
+    <p><b>Betreff: Anfrage: Wanderkleidung</b></p>
+    <p>Sehr geehrte Damen und Herren,</p>
+    <p><span class="luecke">52</span> Herstellern von Funktions- und Sportkleidung sind wir auf der Hannover Messe auf Ihr Unternehmen aufmerksam geworden. Wir sind ein führendes Einzelhandelsgeschäft für Sport- und Freizeitzubehör in Hildesheim. <span class="luecke">53</span> Ihrem Sortiment an Wanderkleidung für Damen und Herren. In diesem Segment verzeichnen wir derzeit eine stark <span class="luecke">54</span> bei unseren Kunden.</p>
+    <p>Uns überzeugt besonders, dass Sie nachhaltig fertigen und auf faire Arbeitsbedingungen, hochwertige Materialien und gleichbleibend <span class="luecke">55</span> Wert legen. Das ist uns ebenfalls sehr wichtig.</p>
+    <p>Wir würden uns sehr freuen, wenn Sie uns unverbindlich entsprechendes Katalogmaterial sowie Textilmuster zukommen lassen würden. Für die Zusendung aktueller Preislisten sowie Ihrer Liefer- und Zahlungsbedingungen <span class="luecke">56</span>.</p>
+    <p><span class="luecke">57</span> wenden Sie sich bitte direkt an mich.</p>
+    <p>Mit freundlichen Grüßen<br>Claudia Brinkmann, Lulea Sport</p>
+  </div>
+
+  <p class="frage">52</p>
+  <ul class="opts"><li><span class="k">a</span>auf der Suche nach</li><li><span class="k">b</span>in der Recherche zu</li><li><span class="k">c</span>mit Interesse von</li></ul>
+  <div class="bogen" data-q="52" data-opts="a b c"></div>
+  <p class="frage">53</p>
+  <ul class="opts"><li><span class="k">a</span>Unsere ganze Aufmerksamkeit schenkt</li><li><span class="k">b</span>Unser besonderes Interesse gilt</li><li><span class="k">c</span>Unser spezieller Wunsch entspricht</li></ul>
+  <div class="bogen" data-q="53" data-opts="a b c"></div>
+  <p class="frage">54</p>
+  <ul class="opts"><li><span class="k">a</span>laufende Frage</li><li><span class="k">b</span>entsprechende Anfrage</li><li><span class="k">c</span>steigende Nachfrage</li></ul>
+  <div class="bogen" data-q="54" data-opts="a b c"></div>
+  <p class="frage">55</p>
+  <ul class="opts"><li><span class="k">a</span>derzeitiges Niveau</li><li><span class="k">b</span>gute Qualität</li><li><span class="k">c</span>internationalen Standard</li></ul>
+  <div class="bogen" data-q="55" data-opts="a b c"></div>
+  <p class="frage">56</p>
+  <ul class="opts"><li><span class="k">a</span>hätten wir natürlich Verständnis</li><li><span class="k">b</span>entscheiden wir uns gern</li><li><span class="k">c</span>wären wir Ihnen dankbar</li></ul>
+  <div class="bogen" data-q="56" data-opts="a b c"></div>
+  <p class="frage">57</p>
+  <ul class="opts"><li><span class="k">a</span>Auf Nachfrage</li><li><span class="k">b</span>Bei Rückfragen</li><li><span class="k">c</span>Mit Antworten</li></ul>
+  <div class="bogen" data-q="57" data-opts="a b c"></div>
+</div>
+
+<!-- ============ SCHREIBEN ============ -->
+<div class="sheet" id="schreiben">
+  <p class="eyebrow">Schreiben</p>
+  <h2>Aufgabe 58 (wird von Bewertern bewertet)</h2>
+  <p class="anweisung">In Ihrer Firma können sich alle Mitarbeiterinnen und Mitarbeiter in einem Forum miteinander über Neuigkeiten austauschen. Schreiben Sie einen Forumsbeitrag zu Thema A oder B. Begründen Sie Ihre Meinung und nennen Sie passende Beispiele. Gliedern Sie Ihren Text in sinnvolle Abschnitte. Richtwert: ca. 150–180 Wörter.</p>
+  <div class="txt"><p><b>Thema A: „Weiterbildung am Wochenende“</b><br>Fachliche Weiterbildungen sollen in Zukunft nicht mehr während der Arbeitszeit, sondern nur noch am Wochenende stattfinden. Dafür werden auch Kosten für nicht verpflichtende Fortbildungen übernommen.</p></div>
+  <div class="txt"><p><b>Thema B: „Aktive Mittagspause“</b><br>Alle Mitarbeiterinnen und Mitarbeiter sollen die Möglichkeit haben, in der Mittagspause Fitnesskurse zu besuchen. Deshalb wird die Pausenzeit um 30 Minuten verlängert, dafür muss man abends 30 Minuten länger arbeiten.</p></div>
+  <textarea id="text58" placeholder="Liebe Kolleginnen und Kollegen, …"></textarea>
+  <p class="zaehler"><b id="z58">0</b> Wörter</p>
+  <details class="muster"><summary>Musterlösung und Checkliste anzeigen</summary><div class="inner">
+    <ul class="check">
+      <li>Einleitung: Bezug auf die Neuigkeit + eigene Position</li>
+      <li>Argument 1 mit Begründung und Beispiel</li>
+      <li>Argument 2 / Gegenargument mit <i>zwar … aber</i>, <i>allerdings</i>, <i>dennoch</i></li>
+      <li>Vorschlag oder Schlussfolgerung</li>
+      <li>Absätze, Anrede an die Kollegen, Frage an das Forum</li>
+    </ul>
+    <p><b>Musterlösung (Thema B)</b></p>
+    <p>Liebe Kolleginnen und Kollegen,</p>
+    <p>ich habe gelesen, dass wir künftig in der Mittagspause Fitnesskurse besuchen können. Die Pause wird dafür um 30 Minuten verlängert und wir arbeiten abends entsprechend länger. Ich finde diesen Vorschlag grundsätzlich sehr gut.</p>
+    <p>Viele von uns sitzen den ganzen Tag am Bildschirm. Bewegung in der Mittagspause tut dem Rücken gut und man kehrt konzentrierter an den Arbeitsplatz zurück. In meinem letzten Unternehmen gab es ein ähnliches Angebot, und die Zahl der krankheitsbedingten Ausfälle ist spürbar zurückgegangen. Außerdem lernt man Kolleginnen und Kollegen aus anderen Abteilungen kennen.</p>
+    <p>Allerdings sollte die Teilnahme freiwillig bleiben. Wer Kinder von der Kita abholt, kann abends nicht einfach eine halbe Stunde länger bleiben. Deshalb schlage ich vor, die verlängerte Pause nur an den Kurstagen anzubieten und die Kurse zusätzlich vor Arbeitsbeginn stattfinden zu lassen.</p>
+    <p>Wie seht ihr das? Würdet ihr ein solches Angebot nutzen?</p>
+    <p>Viele Grüße<br>Dmytro</p>
+  </div></details>
+</div>
+
+<div class="sheet" style="text-align:center">
+  <button class="btn big" id="btnAuswerten">Auswerten</button>
+  <p class="small" style="margin-top:10px">Nach dem Auswerten sehen Sie zu jeder Aufgabe die Lösung mit Begründung.</p>
+</div>
+
+<!-- ============ ERGEBNIS ============ -->
+<div class="sheet" id="ergebnis">
+  <p class="eyebrow">Auswertung</p>
+  <h2>Ihr Ergebnis</h2>
+  <div class="score-top">
+    <div><span class="score-big" id="punkte">0</span><span class="score-big"><small> / 26</small></span></div>
+    <div><span class="verdikt" id="verdikt">–</span></div>
+    <div class="small" id="zeitinfo"></div>
+  </div>
+  <table>
+    <thead><tr><th>Prüfungsteil</th><th>Richtig</th><th style="width:34%">Anteil</th><th class="z">%</th></tr></thead>
+    <tbody id="tabelle"></tbody>
+  </table>
+  <h3>Empfehlungen</h3>
+  <div id="tipps"></div>
+  <div class="aktionen">
+    <button class="btn big" id="btnNachOben">Lösungen im Test ansehen</button>
+    <button class="btn" style="border:1px solid var(--line)" id="btnReset">Test zurücksetzen</button>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Lösungsschlüssel + Begründungen ---------- */
+var KEY = {
+ 1:["f","„Der Interessencheck“: Talente und berufliche Interessen ermitteln – genau die Orientierung, die Carola sucht."],
+ 2:["a","„Gleichwertigkeit“: Anerkennung eines im Heimatland erworbenen Berufsabschlusses."],
+ 3:["d","„Mode bietet Berufschancen“: Gespür für Trends, Design und Verkauf. Text b geht nur um Kleidung im Vorstellungsgespräch."],
+ 4:["h","„Vom Hobby zum Beruf“: Andrea Weiler hat ihre Leidenschaft für Fotografie zum Beruf gemacht."],
+ 5:["c","„Ab ins Ausland!“: ERASMUS für Auszubildende – Praktika und Sprachkurse."],
+ 6:["richtig","„Heute machen wir einen Rundgang … Gemeinsam nehmen wir im Anschluss ein Gruppenbild auf.“ Also am ersten Tag."],
+ 7:["c","Die Präsentation zeigt Vertriebswege im In- und Ausland und die Marken. a ist falsch (Berufsschulzeiten werden erst übermorgen mitgeteilt), b auch (jeder arbeitet nur in seiner Abteilung)."],
+ 8:["richtig","„… bis spätestens 30.09. des laufenden Jahres.“"],
+ 9:["b","„Das Antragsformular ist in der Personalabteilung erhältlich.“ Die Frist beträgt 14 Tage, nicht 5; beantragt wird von der/dem Beschäftigten."],
+ 10:["e","Stormy: Freistellung bis zu sechs Monate bei nachgewiesener Pflegebedürftigkeit – allerdings ohne Lohnfortzahlung."],
+ 11:["a","Nemo: Bei einer Versetzung nach der Elternzeit muss der Betriebsrat eingebunden werden."],
+ 12:["x","Zum Resturlaub nach der Elternzeit gibt es keinen passenden Tipp. Text f geht um die Dauer der Elternzeit, nicht um den Urlaubsanspruch."],
+ 13:["c","Anonym 123: Antrag innerhalb der ersten Woche nach der Geburt, formloses Schreiben – kein besonderes Formular."],
+ 14:["a","„SB eröffnet die monatliche Besprechung.“ Sie beginnt um 15.00 Uhr (nicht vormittags), das Protokoll führt Alessija Topol."],
+ 15:["a","„Dieser hat ein deutlich höheres Volumen.“ Bestellt wurde er vor vier Wochen, Anlieferung am 6. März; montiert wird er von der Lieferfirma, SK nimmt ihn nur an."],
+ 16:["c","„… steigende Nachfrage der Mitarbeiter … nach veganen Gerichten.“ Der Küchenchef hat Bedenken, und getestet wird nur einmal pro Woche ab April."],
+ 17:["a","SB sucht seit Längerem qualifiziertes Personal und will Aushilfen über den Personaldienstleister anfordern. Die lange Wartezeit war ein Einzelfall, die Jubiläumsfeier war bereits."],
+ 18:["c","AT (Frau Topol) will Urlaub in den ersten zwei Maiwochen, weil ihr Mann operiert wird. Die Reise verschiebt SK, die Schichten übernimmt er."],
+ 19:["c","„Wir können aus diesem Grund viele unserer Vorbestellungen nicht ausliefern.“ Sie bestellt seit Jahren (nicht zum ersten Mal), und die Ware fehlt, sie ist nicht falsch."],
+ 20:["c","Als Ersatz sollen rote und goldene Töpfe in den gleichen Größen geliefert werden. Der Rabatt gilt für diese Bestellung, nicht für zukünftige."],
+ 46:["c","Feste Präposition: sich bewerben / die Bewerbung <b>für</b> eine Ausbildung."],
+ 47:["g","Zweiteilige Konjunktion: <b>nicht nur</b> …, <b>sondern</b> auch …"],
+ 48:["j","Relativadverb des Ortes: „… bei der Holister GmbH, <b>wo</b> ich … begleiten durfte.“"],
+ 49:["i","Vergleichs-/Verweissatz: „…, <b>wie</b> Sie dem Praktikumszeugnis entnehmen können.“"],
+ 50:["b","Folge: „<b>Daher</b> bewerbe ich mich bei Ihnen.“ – Konnektor auf Position 1, Verb auf Position 2."],
+ 51:["h","Feste Präposition: sich freuen <b>über</b> + Akkusativ (Vorfeld: „Über einen Terminvorschlag … freue ich mich.“)"],
+ 52:["a","„<b>Auf der Suche nach</b> Herstellern … sind wir auf Ihr Unternehmen aufmerksam geworden.“ – feste Wendung."],
+ 53:["b","„Unser besonderes Interesse <b>gilt</b> Ihrem Sortiment.“ – gelten + Dativ."],
+ 54:["c","„… verzeichnen wir eine stark <b>steigende Nachfrage</b> bei unseren Kunden.“ Nur „Nachfrage“ passt zu „bei unseren Kunden“."],
+ 55:["b","Parallele Aufzählung: faire Arbeitsbedingungen, hochwertige Materialien und gleichbleibend <b>gute Qualität</b> – nach dem Adverb „gleichbleibend“ steht ein Adjektiv."],
+ 56:["c","Standardformel im Geschäftsbrief: „Für die Zusendung … <b>wären wir Ihnen dankbar</b>.“"],
+ 57:["b","Schlussformel: „<b>Bei Rückfragen</b> wenden Sie sich bitte direkt an mich.“"]
+};
+
+var TEILE = [
+ {id:"L1", name:"Lesen Teil 1 · Zuordnung", link:"#l1", qs:[1,2,3,4,5]},
+ {id:"L2", name:"Lesen Teil 2 · richtig/falsch + Detail", link:"#l2", qs:[6,7,8,9]},
+ {id:"L3", name:"Lesen Teil 3 · Forum, Zuordnung", link:"#l3", qs:[10,11,12,13]},
+ {id:"L4", name:"Lesen Teil 4 · Protokoll", link:"#l4", qs:[14,15,16,17,18]},
+ {id:"LS", name:"Lesen und Schreiben · 19–20", link:"#ls", qs:[19,20]},
+ {id:"S1", name:"Sprachbausteine Teil 1 · Grammatik", link:"#sb1", qs:[46,47,48,49,50,51]},
+ {id:"S2", name:"Sprachbausteine Teil 2 · Redemittel", link:"#sb2", qs:[52,53,54,55,56,57]}
+];
+
+var RAT = {
+ L1:{h:"Lesen Teil 1 – Schlüsselwörter statt ganzer Sätze",
+   b:["Lesen Sie zuerst die fünf Personen und unterstreichen Sie <b>ein</b> Schlüsselwort pro Person (Orientierung, Zertifikat aus dem Ausland, Kleidung, fotografieren, Azubi + Sprache).",
+      "Suchen Sie dann in den Artikeln nach Synonymen, nicht nach denselben Wörtern: <i>fotografieren → Umgang mit der Kamera</i>, <i>Zertifikat aus dem Ausland → Berufsabschluss im Heimatland</i>.",
+      "Achtung vor Ablenkern: Text b nennt auch Kleidung, passt aber zum Bewerbungsgespräch, nicht zur Modebranche."]},
+ L2:{h:"Lesen Teil 2 – die Aussage Wort für Wort prüfen",
+   b:["Bei <i>richtig/falsch</i> entscheidet oft ein Detail: eine Zahl, ein Datum, ein Zeitadverb (<i>heute, morgen, übermorgen</i>).",
+      "Markieren Sie im Text die Stelle, die Ihre Antwort beweist. Ohne Belegstelle keine Antwort.",
+      "Trainieren Sie Wortfelder aus Betriebsvereinbarungen: Urlaubsanspruch, genehmigungspflichtig, Antragsformular, Tarifvertrag, Fortbildung."]},
+ L3:{h:"Lesen Teil 3 – das „x“ bewusst einplanen",
+   b:["Eine Frage hat nie eine passende Antwort. Ordnen Sie erst die sicheren Paare zu und vergeben Sie das x am Ende.",
+      "Prüfen Sie, ob der Tipp wirklich <b>die Frage</b> beantwortet: Text f spricht über die Dauer der Elternzeit, Mandy fragt aber nach dem Resturlaub – das ist kein Treffer.",
+      "Wortschatz vorbereiten: Elternzeit, Freistellung, Lohnfortzahlung, Versetzung, Betriebsrat, Pflegebedürftigkeit."]},
+ L4:{h:"Lesen Teil 4 – Protokolle lesen wie eine Tabelle",
+   b:["Notieren Sie beim Lesen die Abkürzungen mit Namen und Funktion (SB, MB, AT, SK, MT). Fragen nutzen den vollen Namen: <i>AT = Frau Topol</i>.",
+      "Achten Sie auf <b>wer macht was</b> und <b>wann</b>: bestellt / geliefert / angenommen / montiert sind vier verschiedene Handlungen.",
+      "Passiv und Nomen-Verb-Verbindungen wiederholen: <i>wird terminiert, wird angerechnet, Bedarf besteht, Rücksprache halten</i>."]},
+ LS:{h:"Lesen und Schreiben – zwei Mails, zwei Perspektiven",
+   b:["Aufgabe 19 bezieht sich auf die Mail der Kundin, Aufgabe 20 auf die Anweisung der Teamleitung. Verwechseln Sie die Quellen nicht.",
+      "Unterstreichen Sie in der Mail der Teamleitung alle Aufträge – das sind gleichzeitig die Pflichtpunkte für Ihre E-Mail in Aufgabe 21.",
+      "Formulierungen sammeln: <i>Das tut uns sehr leid. / Gern bieten wir Ihnen als Ersatz … an. / Die Lieferung erreicht Sie Anfang nächster Woche.</i>"]},
+ S1:{h:"Sprachbausteine Teil 1 – Grammatik in Signalwörtern",
+   b:["Drei Typen entscheiden fast immer: feste Präpositionen (<i>Bewerbung für, sich freuen über</i>), zweiteilige Konnektoren (<i>nicht nur … sondern auch</i>) und Nebensatz-Einleitungen (<i>wo, wie, indem</i>).",
+      "Prüfen Sie die Wortstellung: Nach <i>daher</i> steht das Verb sofort (Position 2), nach <i>indem</i> steht es am Satzende.",
+      "Legen Sie eine Liste mit Verben + Präpositionen an und wiederholen Sie sie täglich fünf Minuten."]},
+ S2:{h:"Sprachbausteine Teil 2 – Redemittel des Geschäftsbriefs",
+   b:["Hier hilft kein Grammatikwissen, sondern feste Wendungen. Lernen Sie Blöcke: <i>Wir sind auf Sie aufmerksam geworden. / Unser Interesse gilt … / Für … wären wir Ihnen dankbar. / Bei Rückfragen wenden Sie sich bitte an …</i>",
+      "Achten Sie auf Kasus nach dem Verb: <i>gelten</i> + Dativ, <i>entsprechen</i> + Dativ, <i>schenken</i> braucht ein Objekt.",
+      "Schreiben Sie eine eigene Anfrage-Mail und bauen Sie bewusst sechs solcher Wendungen ein."]}
+};
+
+/* ---------- Antwortfelder aufbauen ---------- */
+var bogen = Array.prototype.slice.call(document.querySelectorAll(".bogen"));
+bogen.forEach(function(el){
+  var q = el.dataset.q, opts = el.dataset.opts.split(" ");
+  var html = '<span class="num">'+q+'</span>';
+  opts.forEach(function(o){
+    html += '<label class="bub" data-opt="'+o+'"><input type="radio" name="q'+q+'" value="'+o+'" aria-label="Aufgabe '+q+', Antwort '+o+'"><span class="dot"></span><span class="lbl">'+o+'</span></label>';
+  });
+  html += '<span class="num">'+q+'</span>';
+  el.innerHTML = html;
+  var fb = document.createElement("div");
+  fb.className = "fb"; fb.id = "fb"+q;
+  el.parentNode.insertBefore(fb, el.nextSibling);
+});
+
+var alleQ = Object.keys(KEY).map(Number);
+var fortschritt = document.getElementById("fortschritt");
+document.addEventListener("change", function(e){
+  if(e.target && e.target.type === "radio"){ zaehleFortschritt(); }
+});
+function zaehleFortschritt(){
+  var n = alleQ.filter(function(q){ return document.querySelector('input[name="q'+q+'"]:checked'); }).length;
+  fortschritt.textContent = n;
+}
+
+/* ---------- Wörter zählen ---------- */
+function zaehler(taId, outId){
+  var ta = document.getElementById(taId), out = document.getElementById(outId);
+  ta.addEventListener("input", function(){
+    var w = ta.value.trim().split(/\s+/).filter(Boolean).length;
+    out.textContent = w;
+  });
+}
+zaehler("text21","z21"); zaehler("text58","z58");
+
+/* ---------- Timer ---------- */
+var rest = 80*60, laeuft = false, tick = null, gestartet = false, verbraucht = 0, limit = 80*60;
+var uhr = document.getElementById("uhr"),
+    btnStart = document.getElementById("btnStart"),
+    btnPause = document.getElementById("btnPause"),
+    dauer = document.getElementById("dauer");
+
+function zeigeUhr(){
+  if(limit === 0){ uhr.textContent = fmt(verbraucht); uhr.classList.remove("low"); return; }
+  uhr.textContent = fmt(rest);
+  uhr.classList.toggle("low", rest <= 300);
+}
+function fmt(s){
+  var m = Math.floor(s/60), r = s%60;
+  return (m<10?"0":"")+m+":"+(r<10?"0":"")+r;
+}
+dauer.addEventListener("change", function(){
+  if(gestartet) return;
+  limit = parseInt(dauer.value,10)*60; rest = limit; verbraucht = 0; zeigeUhr();
+});
+btnStart.addEventListener("click", function(){
+  if(!gestartet){
+    gestartet = true; dauer.disabled = true;
+    btnStart.textContent = "Auswerten";
+    btnPause.hidden = false;
+    starte();
+  } else { auswerten(); }
+});
+btnPause.addEventListener("click", function(){
+  if(laeuft){ stoppe(); btnPause.textContent = "Weiter"; }
+  else { starte(); btnPause.textContent = "Pause"; }
+});
+function starte(){
+  laeuft = true;
+  tick = setInterval(function(){
+    verbraucht++;
+    if(limit > 0){
+      rest--;
+      if(rest <= 0){ rest = 0; zeigeUhr(); stoppe(); auswerten(true); return; }
+    }
+    zeigeUhr();
+  },1000);
+}
+function stoppe(){ laeuft = false; clearInterval(tick); }
+zeigeUhr();
+
+/* ---------- Auswertung ---------- */
+var ausgewertet = false;
+document.getElementById("btnAuswerten").addEventListener("click", function(){ auswerten(); });
+
+function auswerten(zeitAbgelaufen){
+  stoppe();
+  ausgewertet = true;
+  btnPause.hidden = true;
+  var gesamt = 0;
+
+  alleQ.forEach(function(q){
+    var richtig = KEY[q][0], grund = KEY[q][1];
+    var gew = document.querySelector('input[name="q'+q+'"]:checked');
+    var box = document.querySelector('.bogen[data-q="'+q+'"]');
+    box.querySelectorAll(".bub").forEach(function(b){
+      b.classList.remove("is-correct","is-wrong","is-key");
+      if(b.dataset.opt === richtig) b.classList.add("is-key");
+    });
+    var fb = document.getElementById("fb"+q);
+    if(gew && gew.value === richtig){
+      gesamt++;
+      box.querySelector('.bub[data-opt="'+richtig+'"]').classList.add("is-correct");
+      fb.className = "fb ok show";
+      fb.innerHTML = '<span class="tag">Richtig</span>'+grund;
+    } else {
+      if(gew) box.querySelector('.bub[data-opt="'+gew.value+'"]').classList.add("is-wrong");
+      fb.className = "fb bad show";
+      fb.innerHTML = '<span class="tag">'+(gew ? "Falsch" : "Nicht bearbeitet")+'</span>Lösung: <b>'+richtig+'</b> – '+grund;
+    }
+    box.querySelectorAll("input").forEach(function(i){ i.disabled = true; });
+  });
+
+  document.getElementById("punkte").textContent = gesamt;
+  var prozent = Math.round(gesamt/alleQ.length*100);
+  var v = document.getElementById("verdikt");
+  if(prozent >= 60){ v.className = "verdikt pass"; v.textContent = prozent+" % – bestanden (Richtwert 60 %)"; }
+  else { v.className = "verdikt fail"; v.textContent = prozent+" % – noch unter dem Richtwert von 60 %"; }
+
+  var zi = document.getElementById("zeitinfo");
+  var min = Math.floor(verbraucht/60), sek = verbraucht%60;
+  zi.innerHTML = (gestartet ? "Bearbeitungszeit: <b>"+min+" Min "+sek+" Sek</b>" : "Ohne Timer bearbeitet") +
+    (zeitAbgelaufen ? " · <b>Zeit abgelaufen</b>" : "");
+
+  var tb = document.getElementById("tabelle"); tb.innerHTML = "";
+  var schwach = [];
+  TEILE.forEach(function(t){
+    var r = t.qs.filter(function(q){
+      var g = document.querySelector('input[name="q'+q+'"]:checked');
+      return g && g.value === KEY[q][0];
+    }).length;
+    var p = Math.round(r/t.qs.length*100);
+    if(p < 70) schwach.push(t);
+    var cls = p < 50 ? "low" : (p < 75 ? "mid" : "high");
+    var tr = document.createElement("tr");
+    tr.innerHTML = '<td><a href="'+t.link+'" style="color:var(--navy)">'+t.name+'</a></td>'+
+      '<td class="z">'+r+' / '+t.qs.length+'</td>'+
+      '<td><span class="balken"><i class="'+cls+'" style="width:'+p+'%"></i></span></td>'+
+      '<td class="z">'+p+' %</td>';
+    tb.appendChild(tr);
+  });
+
+  var tipps = document.getElementById("tipps"); tipps.innerHTML = "";
+  if(schwach.length === 0){
+    tipps.innerHTML = '<div class="tipp"><h4>Sehr stabiles Ergebnis</h4><p>Alle Teile liegen bei 70 % oder darüber. Arbeiten Sie jetzt vor allem an Tempo und an den beiden Schreibaufgaben: Schreiben Sie 21 in 20 Minuten und 58 in 30 Minuten und vergleichen Sie mit der Musterlösung.</p></div>';
+  } else {
+    schwach.forEach(function(t){
+      var r = RAT[t.id];
+      var d = document.createElement("div"); d.className = "tipp";
+      d.innerHTML = '<h4>'+r.h+'</h4><ul><li>'+r.b.join('</li><li>')+'</li></ul>';
+      tipps.appendChild(d);
+    });
+  }
+  var extra = document.createElement("div"); extra.className = "tipp";
+  var zeitText;
+  if(!gestartet) zeitText = "Bearbeiten Sie den Test beim nächsten Mal mit Timer – Zeitdruck ist in der Prüfung ein eigener Schwierigkeitsfaktor.";
+  else if(limit > 0 && verbraucht > limit*0.9) zeitText = "Sie haben die Zeit fast vollständig gebraucht. Setzen Sie sich Teilzeiten: Lesen Teil 1–4 in 45 Minuten, Sprachbausteine in 15 Minuten.";
+  else zeitText = "Ihr Tempo ist gut. Nutzen Sie die freie Zeit am Ende zum Prüfen der Aufgaben, bei denen Sie geschwankt haben.";
+  extra.innerHTML = '<h4>Nächste Schritte</h4><ul><li>'+zeitText+'</li>'+
+    '<li>Schreiben Sie jede falsche Aufgabe mit der Belegstelle aus dem Text in ein Fehlerheft – nicht nur die Lösung, sondern <b>warum</b> die anderen Optionen falsch sind.</li>'+
+    '<li>Die Teile Hören 22–45 fehlen hier. Trainieren Sie sie separat mit den Audiodateien des Übungstests.</li>'+
+    '<li>Aufgaben 21 und 58 vergleichen Sie mit der Musterlösung: Sind alle Punkte umgesetzt? Ist die Anrede korrekt? Gibt es Absätze und Konnektoren?</li></ul>';
+  tipps.appendChild(extra);
+
+  var erg = document.getElementById("ergebnis");
+  erg.classList.add("show");
+  erg.scrollIntoView({behavior:"smooth"});
+}
+
+document.getElementById("btnNachOben").addEventListener("click", function(){
+  document.getElementById("l1").scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("btnReset").addEventListener("click", function(){
+  location.reload();
+});
+})();
+</script>
+</body>
+</html>
