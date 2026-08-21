@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprechen Teil 3 · Lösungswege diskutieren – Seniorenwohnheim</title>
+<style>
+:root{
+  --navy:#0d4f7c; --navy-d:#093a5c;
+  --ink:#1b1a18; --muted:#6b6660;
+  --paper:#fff; --bg:#e9e6e0; --line:#d9d3cb;
+  --field:#f7ded1;
+  --p1:#a9670f; --p2:#0d4f7c; --p3:#166b5c; --p4:#7a3a86;
+  --ok:#1c7a4d; --bad:#b8352a;
+  --sans:"Helvetica Neue",Helvetica,Arial,"Segoe UI",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.55}
+.wrap{max-width:900px;margin:0 auto;padding:0 18px 110px}
+button{font-family:var(--sans);cursor:pointer}
+:focus-visible{outline:3px solid #ffb703;outline-offset:2px}
+
+.bar{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;font-family:var(--sans);box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.bar-in{max-width:900px;margin:0 auto;padding:9px 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.brand{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;opacity:.85;width:100%}
+.tab{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:3px;padding:7px 12px;font-size:13px;font-weight:600}
+.tab.on{background:#fff;color:var(--navy);border-color:#fff}
+.tab:hover{background:rgba(255,255,255,.15)} .tab.on:hover{background:#eaf2f8}
+#uaBtn{margin-left:auto;font-size:12px;padding:6px 10px;border-radius:3px;border:1px dashed rgba(255,255,255,.6);background:transparent;color:#fff}
+
+.sheet{background:var(--paper);border:1px solid var(--line);margin:24px 0;padding:24px 26px 28px}
+h1{font-family:var(--sans);font-size:27px;color:var(--navy);margin:.1em 0 .3em;line-height:1.2}
+h2{font-family:var(--sans);font-size:19px;color:var(--navy);margin:0 0 10px}
+h3{font-family:var(--sans);font-size:15.5px;margin:22px 0 6px}
+.eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+p.lead{font-size:16.5px;color:#3b3833}
+.small{font-size:14px;color:var(--muted)}
+.ua{font-family:var(--sans);font-size:13.5px;color:#4a4640;background:#f3f1ec;border-left:3px solid #c9c2b8;padding:6px 10px;margin:8px 0}
+.ua::before{content:"укр. ";font-weight:700;color:var(--muted)}
+body.no-ua .ua{display:none}
+.panel{display:none} .panel.on{display:block}
+
+.situation{border:1px solid var(--line);background:#fcfbf9;padding:16px 18px;margin:12px 0}
+.situation b{font-family:var(--sans);font-size:13px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);display:block;margin-bottom:4px}
+
+/* Gesprächsuhr */
+.uhrbox{display:flex;gap:18px;align-items:center;flex-wrap:wrap;border:1px solid var(--line);background:#fcfbf9;padding:16px 18px}
+.zeit{font-family:var(--sans);font-variant-numeric:tabular-nums;font-size:44px;font-weight:700;color:var(--navy);line-height:1;min-width:120px}
+.zeit.low{color:var(--bad)}
+.uhrbtn{display:flex;gap:8px;flex-wrap:wrap}
+.btn{border:none;border-radius:4px;padding:11px 18px;font-size:14px;font-weight:600;background:var(--navy);color:#fff}
+.btn:hover{background:var(--navy-d)}
+.btn.leise{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.btn.klein{padding:7px 12px;font-size:13px}
+.phasen{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:14px;width:100%}
+.phase{border:1px solid var(--line);border-top:4px solid var(--c);background:#fff;padding:8px 9px;font-family:var(--sans);font-size:12.5px;line-height:1.35;opacity:.5}
+.phase.aktiv{opacity:1;box-shadow:0 0 0 2px var(--c) inset}
+.phase.fertig{opacity:.85;background:#f4f7f4}
+.phase b{display:block;font-size:13px;color:var(--c);margin-bottom:2px}
+.p1{--c:var(--p1)} .p2{--c:var(--p2)} .p3{--c:var(--p3)} .p4{--c:var(--p4)}
+@media (max-width:620px){.phasen{grid-template-columns:1fr 1fr}}
+
+/* Ideenkarten */
+.karte{border:1px solid var(--line);border-top:4px solid var(--c,var(--navy));padding:14px 16px;margin:14px 0;background:#fcfbf9}
+.karte h4{font-family:var(--sans);font-size:15.5px;margin:0 0 6px;color:var(--c,var(--navy))}
+.karte ul{margin:.3em 0;padding-left:20px;font-size:16px}
+.karte li{margin:3px 0}
+.karte .wf{font-family:var(--sans);font-size:13.5px;color:#45413b;background:#fff;border:1px solid var(--line);padding:8px 10px;margin-top:10px}
+textarea{width:100%;min-height:80px;padding:10px 12px;border:1px solid var(--line);background:#fff;font-family:var(--serif);font-size:16px;line-height:1.5;resize:vertical;margin-top:8px}
+
+/* Redemittel */
+.rm{border:1px solid var(--line);margin:12px 0;background:#fcfbf9}
+.rm h4{font-family:var(--sans);font-size:14.5px;margin:0;padding:10px 14px;background:var(--field);color:#5b4034}
+.rm ul{margin:0;padding:10px 14px 12px 32px}
+.rm li{margin:5px 0;font-size:16.5px}
+.rm li span{font-family:var(--sans);font-size:12.5px;color:var(--muted);display:block}
+
+/* Dialog */
+.rollenwahl{display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-family:var(--sans);font-size:14px;margin:10px 0 18px}
+.rollenwahl button{border:1.5px solid var(--line);background:#fff;border-radius:4px;padding:8px 14px;font-size:13.5px;font-weight:600;color:var(--ink)}
+.rollenwahl button.on{background:var(--navy);border-color:var(--navy);color:#fff}
+.turn{display:flex;gap:12px;margin:10px 0}
+.turn .wer{font-family:var(--sans);font-size:12px;font-weight:700;width:28px;height:28px;border-radius:50%;display:flex;align-items:center;justify-content:center;flex:none;color:#fff}
+.turn.a .wer{background:var(--p2)} .turn.b .wer{background:var(--p3)}
+.turn .txt{border:1px solid var(--line);background:#fcfbf9;padding:10px 14px;border-radius:4px;flex:1}
+.turn.meine .txt{background:#fff;border-style:dashed}
+.turn .rmtag{font-family:var(--sans);font-size:11.5px;color:var(--muted);display:block;margin-top:6px}
+.verdeckt{font-family:var(--sans);font-size:13.5px;color:var(--muted);display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.verdeckt button{border:1px solid var(--line);background:#fff;border-radius:4px;padding:5px 10px;font-size:12.5px;color:var(--navy);font-weight:600}
+.phasenmarke{font-family:var(--sans);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--c);border-top:1px solid var(--line);padding-top:10px;margin:22px 0 6px}
+
+/* Aufnahme + Checkliste */
+.aufnahme{border:1px solid var(--line);background:#fcfbf9;padding:14px 16px;margin:14px 0}
+.punkt{display:inline-block;width:10px;height:10px;border-radius:50%;background:var(--bad);margin-right:8px;vertical-align:middle;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.25}}
+audio{width:100%;margin-top:10px}
+.check{list-style:none;padding:0;font-family:var(--sans);font-size:15px}
+.check li{margin:6px 0;display:flex;gap:10px;align-items:flex-start}
+.check input{margin-top:4px;width:17px;height:17px;flex:none;accent-color:var(--navy)}
+.hinweis{font-family:var(--sans);font-size:13.5px;color:var(--muted);border:1px dashed var(--line);padding:10px 12px;margin:14px 0}
+@media (max-width:620px){body{font-size:16px}.sheet{padding:18px 15px 22px}h1{font-size:23px}.zeit{font-size:34px}}
+@media (prefers-reduced-motion:reduce){*{animation:none!important}html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="brand">Deutsch-Test für den Beruf B2 · Mündliche Prüfung Teil 3</span>
+    <button class="tab on" data-p="aufgabe">Aufgabe &amp; Uhr</button>
+    <button class="tab" data-p="ideen">Ideen &amp; Wortschatz</button>
+    <button class="tab" data-p="redemittel">Redemittel</button>
+    <button class="tab" data-p="dialog">Musterdialog</button>
+    <button class="tab" data-p="ueben">Selbst sprechen</button>
+    <button id="uaBtn">UA-Hinweise aus</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ============ AUFGABE ============ -->
+<div class="panel on" id="p-aufgabe">
+<div class="sheet">
+  <p class="eyebrow">Teilnehmer/in A und B · ca. 4 Minuten</p>
+  <h1>Lösungswege diskutieren: Essenslieferdienst fällt aus</h1>
+  <div class="situation">
+    <b>Situation</b>
+    Sie arbeiten in einem Seniorenwohnheim. Der Essenslieferdienst fällt für drei Wochen aus, da mehrere Mitarbeiter erkrankt sind. Nun müssen die Mahlzeiten für die Bewohner vom Personal selbst organisiert werden.
+  </div>
+  <div class="situation">
+    <b>Aufgabe</b>
+    Überlegen Sie zusammen mit Ihrer Gesprächspartnerin oder Ihrem Gesprächspartner, wie Sie in dieser Situation angemessen reagieren. Vier Stichpunkte helfen: Menüplan, Vorbereitung, Bewohner, Personal.
+  </div>
+  <p class="lead">Bewertet wird nicht die beste Idee, sondern das <b>Gespräch</b>: Vorschläge machen, nachfragen, auf den Partner eingehen, widersprechen, sich einigen und am Ende ein Ergebnis festhalten.</p>
+  <p class="ua">Головне в Teil 3 — це діалог, а не монолог. Екзаменатор дивиться, чи ти реагуєш на партнера, ставиш питання, пропонуєш і домовляєшся. Ідеї можуть бути простими.</p>
+</div>
+
+<div class="sheet">
+  <h2>Gesprächsuhr</h2>
+  <p class="small">Vier Minuten, vier Stichpunkte – etwa eine Minute pro Punkt. Die Uhr zeigt Ihnen, wann Sie weitergehen sollten.</p>
+  <div class="uhrbox">
+    <div class="zeit" id="zeit">4:00</div>
+    <div class="uhrbtn">
+      <button class="btn" id="start">Start</button>
+      <button class="btn leise" id="pause" hidden>Pause</button>
+      <button class="btn leise" id="reset">Zurücksetzen</button>
+    </div>
+    <div class="phasen">
+      <div class="phase p1" data-ph="0"><b>0:00 – 1:00</b>Menüplan: welche Gerichte?</div>
+      <div class="phase p2" data-ph="1"><b>1:00 – 2:00</b>Vorbereitung: Lebensmittel, Einkauf</div>
+      <div class="phase p3" data-ph="2"><b>2:00 – 3:00</b>Bewohner: Allergien, Krankheiten</div>
+      <div class="phase p4" data-ph="3"><b>3:00 – 4:00</b>Personal: wer macht was? Ergebnis</div>
+    </div>
+  </div>
+  <p class="hinweis" id="hinweisPhase">Noch nicht gestartet. Tipp: Beginnen Sie mit einem Satz, der das Ziel benennt – „Wir sollten zuerst klären, wie wir die Mahlzeiten in den nächsten drei Wochen organisieren.“</p>
+</div>
+
+<div class="sheet">
+  <h2>Der rote Faden – so ist ein Punkt aufgebaut</h2>
+  <ul class="check" style="list-style:decimal;padding-left:22px">
+    <li style="display:list-item"><b>Vorschlag:</b> Ich würde vorschlagen, dass wir …</li>
+    <li style="display:list-item"><b>Begründung:</b> Das hat den Vorteil, dass …</li>
+    <li style="display:list-item"><b>Frage an den Partner:</b> Wie siehst du das? / Was hältst du davon?</li>
+    <li style="display:list-item"><b>Reaktion auf die Antwort:</b> zustimmen, ergänzen oder höflich widersprechen</li>
+    <li style="display:list-item"><b>Einigung:</b> Gut, dann halten wir fest: … Und der nächste Punkt wäre …</li>
+  </ul>
+  <p class="ua">Ця схема з 5 кроків працює для кожного з чотирьох пунктів. Найважливіше — крок 3: завжди повертай слово партнеру.</p>
+</div>
+</div>
+
+<!-- ============ IDEEN ============ -->
+<div class="panel" id="p-ideen">
+<div class="sheet">
+  <p class="eyebrow">Vorbereitung</p>
+  <h1>Ideen und Wortschatz zu den vier Stichpunkten</h1>
+  <p class="lead">Suchen Sie sich pro Punkt zwei bis drei Ideen aus – mehr brauchen Sie nicht. Notieren Sie Ihre Auswahl in Stichworten, nicht in ganzen Sätzen.</p>
+</div>
+
+<div class="sheet">
+  <div class="karte p1">
+    <h4>1 · Menüplan: welche Gerichte?</h4>
+    <ul>
+      <li>Einfache Gerichte, die in großen Mengen funktionieren: <b>Eintöpfe, Suppen, Nudelauflauf, Kartoffelgratin, Gemüsepfanne</b></li>
+      <li>Fester <b>Wochenplan</b>: montags Suppe, freitags Fisch – das erleichtert den Einkauf</li>
+      <li>Pro Tag <b>ein Hauptgericht plus eine leichte Alternative</b> (vegetarisch, salzarm, weich)</li>
+      <li>Frühstück und Abendessen <b>kalt</b>: Brot, Aufschnitt, Käse, Quark, Obst – das spart Küchenzeit</li>
+      <li><b>Tiefkühlware</b> als Reserve für stressige Tage</li>
+      <li>Wünsche der Bewohner sammeln – vertraute, traditionelle Gerichte kommen gut an</li>
+    </ul>
+    <p class="wf"><b>Wortschatz:</b> die Mahlzeit, das Hauptgericht, die Beilage, der Speiseplan, der Eintopf, die Vollkost, die Schonkost, portionieren, aufwärmen, zubereiten</p>
+    <textarea placeholder="Meine Stichworte zu Punkt 1 …"></textarea>
+  </div>
+
+  <div class="karte p2">
+    <h4>2 · Vorbereitung: welche Lebensmittel? wo einkaufen?</h4>
+    <ul>
+      <li>Zuerst den <b>Vorrat prüfen</b> und eine Einkaufsliste für die ganze Woche schreiben</li>
+      <li><b>Großhandel</b> (z. B. Metro) mit Kundenkarte – große Mengen, Lieferung möglich</li>
+      <li><b>Bäckerei und Metzgerei</b> vor Ort: feste Bestellung, tägliche Lieferung</li>
+      <li>Frisches Obst und Gemüse regional, Grundnahrungsmittel auf Vorrat</li>
+      <li><b>Budget</b> mit der Heimleitung klären, Rechnungen sammeln</li>
+      <li>Auf <b>Lagerung und Hygiene</b> achten: Kühlkapazität, Haltbarkeitsdaten, Kühlkette</li>
+    </ul>
+    <p class="wf"><b>Wortschatz:</b> der Großhandel, der Lieferant, die Bestellung aufgeben, der Vorrat, die Einkaufsliste, das Budget, die Kühlkette, die Haltbarkeit, die Hygienevorschriften</p>
+    <textarea placeholder="Meine Stichworte zu Punkt 2 …"></textarea>
+  </div>
+
+  <div class="karte p3">
+    <h4>3 · Bewohner: worauf achten? welche Allergien / Krankheiten?</h4>
+    <ul>
+      <li><b>Diabetes</b>: zuckerarm, feste Essenszeiten, Nachtisch ohne Zucker</li>
+      <li><b>Bluthochdruck</b>: salzarm würzen, mit Kräutern arbeiten</li>
+      <li><b>Unverträglichkeiten</b>: Laktose, Gluten, Nussallergie – Zutatenlisten aufbewahren</li>
+      <li><b>Schluckbeschwerden</b>: pürierte oder weiche Kost, angedickte Getränke</li>
+      <li>Die <b>Pflegedokumentation</b> auswerten und eine Diätliste in der Küche aushängen</li>
+      <li>Auf <b>ausreichend Trinken</b> achten; religiöse und vegetarische Wünsche berücksichtigen</li>
+      <li>Angehörige und den Hausarzt informieren, wenn sich etwas ändert</li>
+    </ul>
+    <p class="wf"><b>Wortschatz:</b> die Unverträglichkeit, die Allergie, zuckerarm, salzarm, laktosefrei, glutenfrei, die pürierte Kost, die Schluckstörung, die Pflegedokumentation, der Nährwert</p>
+    <textarea placeholder="Meine Stichworte zu Punkt 3 …"></textarea>
+  </div>
+
+  <div class="karte p4">
+    <h4>4 · Personal: wer übernimmt welche Aufgaben?</h4>
+    <ul>
+      <li><b>Dienstplan anpassen</b>: wer kocht, wer kauft ein, wer gibt aus, wer spült</li>
+      <li>Zwei Personen pro Schicht in der Küche, eine Person mit Fahrzeug für den Einkauf</li>
+      <li><b>Überstunden und Zuschläge</b> mit der Heimleitung und dem Betriebsrat klären</li>
+      <li><b>Aushilfen</b> über eine Zeitarbeitsfirma anfordern oder Ehrenamtliche und Angehörige einbinden</li>
+      <li>Kurze <b>Hygienebelehrung</b> für alle, die neu in der Küche arbeiten</li>
+      <li>Tägliche <b>kurze Absprache</b> am Morgen; Aufgaben schriftlich aushängen</li>
+      <li>Am Ende: Ergebnis festhalten und die Leitung informieren</li>
+    </ul>
+    <p class="wf"><b>Wortschatz:</b> der Dienstplan, die Schicht, die Aufgabe übernehmen, einspringen, die Aushilfe, die Absprache, zuständig sein für, entlasten, die Belehrung</p>
+    <textarea placeholder="Meine Stichworte zu Punkt 4 …"></textarea>
+  </div>
+  <p class="hinweis">Die Notizen bleiben nur in diesem Fenster. Wenn Sie die Seite neu laden, sind sie weg – schreiben Sie Wichtiges auf Papier, so wie in der Prüfung.</p>
+</div>
+</div>
+
+<!-- ============ REDEMITTEL ============ -->
+<div class="panel" id="p-redemittel">
+<div class="sheet">
+  <p class="eyebrow">Sprachliche Mittel</p>
+  <h1>Redemittel für die Diskussion</h1>
+  <p class="lead">Nehmen Sie aus jeder Gruppe zwei Wendungen, die Ihnen leicht über die Lippen gehen, und benutzen Sie diese konsequent. Wichtiger als Vielfalt ist Sicherheit.</p>
+  <p class="ua">Обери по 2 фрази з кожної групи й вивчи їх напам'ять. На іспиті краще впевнено використати прості формули, ніж плутатися в складних.</p>
+</div>
+
+<div class="sheet">
+  <div class="rm"><h4>Gespräch eröffnen und strukturieren</h4><ul>
+    <li>Fangen wir doch mit dem Menüplan an, einverstanden?</li>
+    <li>Wir sollten zuerst klären, wie wir die drei Wochen überbrücken.</li>
+    <li>Damit wir alles schaffen: Wollen wir Punkt für Punkt durchgehen?</li>
+    <li>Kommen wir zum nächsten Punkt – die Bewohner.</li>
+  </ul></div>
+
+  <div class="rm"><h4>Vorschläge machen</h4><ul>
+    <li>Ich würde vorschlagen, dass wir einen festen Wochenplan erstellen.</li>
+    <li>Wie wäre es, wenn wir beim Großhandel bestellen?</li>
+    <li>Man könnte auch überlegen, ob Angehörige uns unterstützen.</li>
+    <li>Mein Vorschlag wäre, abends nur kalt zu essen.</li>
+    <li>Wäre es nicht sinnvoll, die Diätliste in der Küche auszuhängen?</li>
+  </ul></div>
+
+  <div class="rm"><h4>Den Partner einbeziehen – das Wichtigste in Teil 3</h4><ul>
+    <li>Wie siehst du das? / Was meinst du dazu?</li>
+    <li>Was hältst du von diesem Vorschlag?</li>
+    <li>Hast du noch eine andere Idee?</li>
+    <li>Habe ich dich richtig verstanden, dass du lieber täglich einkaufen möchtest?</li>
+    <li>Da bin ich mir nicht sicher – wie würdest du das machen?</li>
+  </ul></div>
+
+  <div class="rm"><h4>Zustimmen und ergänzen</h4><ul>
+    <li>Das sehe ich genauso.</li>
+    <li>Guter Punkt, daran hatte ich nicht gedacht.</li>
+    <li>Da stimme ich dir zu, und ich würde noch ergänzen, dass …</li>
+    <li>Genau, das spart uns viel Zeit.</li>
+  </ul></div>
+
+  <div class="rm"><h4>Höflich widersprechen und Bedenken äußern</h4><ul>
+    <li>Das sehe ich etwas anders, weil …</li>
+    <li>Da bin ich nicht ganz deiner Meinung.</li>
+    <li>Grundsätzlich ja, allerdings sehe ich ein Problem: Wir haben zu wenig Kühlraum.</li>
+    <li>Ich gebe zu bedenken, dass nicht alle Kolleginnen kochen können.</li>
+    <li>Das könnte schwierig werden, denn das Budget ist begrenzt.</li>
+  </ul></div>
+
+  <div class="rm"><h4>Alternative und Kompromiss</h4><ul>
+    <li>Dann lass uns einen Kompromiss finden: In der ersten Woche …, danach …</li>
+    <li>Stattdessen könnten wir zweimal pro Woche einkaufen.</li>
+    <li>Wie wäre es, wenn wir beides kombinieren?</li>
+    <li>Einverstanden, aber nur unter der Bedingung, dass die Leitung die Überstunden genehmigt.</li>
+  </ul></div>
+
+  <div class="rm"><h4>Ergebnis festhalten und abschließen</h4><ul>
+    <li>Halten wir also fest: Wir kochen mittags warm, abends gibt es kalte Kost.</li>
+    <li>Dann wären wir uns einig.</li>
+    <li>Fassen wir zusammen: Du übernimmst den Einkauf, ich schreibe den Speiseplan.</li>
+    <li>Ich informiere die Heimleitung, und morgen früh sprechen wir das Team an.</li>
+  </ul></div>
+  <p class="ua">Найчастіша помилка — говорити монологом і не питати партнера. Після кожної пропозиції став коротке питання.</p>
+</div>
+</div>
+
+<!-- ============ DIALOG ============ -->
+<div class="panel" id="p-dialog">
+<div class="sheet">
+  <p class="eyebrow">Rollenspiel</p>
+  <h1>Musterdialog</h1>
+  <p class="lead">Wählen Sie Ihre Rolle. Die Beiträge Ihrer Rolle bleiben zuerst verdeckt: Sprechen Sie selbst laut, und decken Sie erst danach den Vorschlag auf, um zu vergleichen.</p>
+  <div class="rollenwahl">
+    <span>Meine Rolle:</span>
+    <button data-rolle="a" class="on">Teilnehmer A</button>
+    <button data-rolle="b">Teilnehmer B</button>
+    <button data-rolle="k">Nur lesen (alles sichtbar)</button>
+    <button data-rolle="reset" style="margin-left:auto">Wieder verdecken</button>
+  </div>
+  <div id="dialog"></div>
+</div>
+</div>
+
+<!-- ============ ÜBEN ============ -->
+<div class="panel" id="p-ueben">
+<div class="sheet">
+  <p class="eyebrow">Allein trainieren</p>
+  <h1>Selbst sprechen und kontrollieren</h1>
+  <p class="lead">Ohne Gesprächspartner üben Sie am besten so: Uhr auf der ersten Registerkarte starten, beide Rollen sprechen und sich dabei aufnehmen. Beim Anhören merken Sie sofort, wo Sie stocken.</p>
+
+  <div class="aufnahme">
+    <h3 style="margin-top:0">Aufnahme</h3>
+    <p class="small" id="recStatus">Die Aufnahme bleibt nur in diesem Browserfenster und wird nirgendwohin gesendet.</p>
+    <div class="uhrbtn">
+      <button class="btn" id="recStart">Aufnahme starten</button>
+      <button class="btn leise" id="recStop" disabled>Stoppen</button>
+    </div>
+    <audio id="player" controls hidden></audio>
+  </div>
+
+  <h3>Impulskarten – reagieren Sie spontan</h3>
+  <p class="small">Klicken Sie auf „Nächster Einwand“ und antworten Sie sofort laut. So trainieren Sie das Reagieren, das in Teil 3 bewertet wird.</p>
+  <div class="situation" style="min-height:74px"><b>Einwand Ihrer Partnerin / Ihres Partners</b><span id="impuls" style="font-size:17.5px">Klicken Sie auf die Taste, um zu beginnen.</span></div>
+  <button class="btn klein" id="impulsBtn">Nächster Einwand</button>
+
+  <h3>Checkliste nach dem Sprechen</h3>
+  <ul class="check">
+    <li><input type="checkbox" id="c1"><label for="c1">Ich habe alle vier Stichpunkte angesprochen.</label></li>
+    <li><input type="checkbox" id="c2"><label for="c2">Ich habe zu jedem Punkt einen konkreten Vorschlag gemacht und ihn begründet.</label></li>
+    <li><input type="checkbox" id="c3"><label for="c3">Ich habe meiner Partnerin / meinem Partner mindestens vier Fragen gestellt.</label></li>
+    <li><input type="checkbox" id="c4"><label for="c4">Ich habe mindestens einmal höflich widersprochen und einen Kompromiss vorgeschlagen.</label></li>
+    <li><input type="checkbox" id="c5"><label for="c5">Wir haben am Ende ein Ergebnis zusammengefasst: Wer macht was?</label></li>
+    <li><input type="checkbox" id="c6"><label for="c6">Ich habe nicht länger als etwa 30 Sekunden am Stück geredet.</label></li>
+    <li><input type="checkbox" id="c7"><label for="c7">Ich bin im Rahmen der vier Minuten geblieben.</label></li>
+    <li><input type="checkbox" id="c8"><label for="c8">Ich habe Fachwortschatz benutzt: Speiseplan, Unverträglichkeit, Dienstplan, Aushilfe.</label></li>
+  </ul>
+  <p class="hinweis" id="checkFazit">Noch keine Punkte angekreuzt.</p>
+  <p class="ua">Якщо не вистачає пунктів 3 і 4 — це типова проблема: багато змісту, мало взаємодії. Саме за взаємодію дають бали.</p>
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------- Tabs / UA ---------- */
+var tabs = document.querySelectorAll(".tab");
+tabs.forEach(function(t){
+  t.addEventListener("click", function(){
+    tabs.forEach(function(x){ x.classList.remove("on"); });
+    t.classList.add("on");
+    document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("on"); });
+    document.getElementById("p-"+t.dataset.p).classList.add("on");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+var uaBtn = document.getElementById("uaBtn");
+uaBtn.addEventListener("click", function(){
+  document.body.classList.toggle("no-ua");
+  uaBtn.textContent = document.body.classList.contains("no-ua") ? "UA-Hinweise ein" : "UA-Hinweise aus";
+});
+
+/* ---------- Gesprächsuhr ---------- */
+var GESAMT = 240, rest = GESAMT, tick = null, laeuft = false;
+var zeitEl = document.getElementById("zeit"),
+    bStart = document.getElementById("start"),
+    bPause = document.getElementById("pause"),
+    hinweis = document.getElementById("hinweisPhase");
+var PHASENTEXT = [
+  "Punkt 1 – Menüplan. Machen Sie einen konkreten Vorschlag und fragen Sie dann Ihren Partner.",
+  "Punkt 2 – Vorbereitung. Wo kaufen Sie ein, wer bestellt, wie oft?",
+  "Punkt 3 – Bewohner. Allergien, Diabetes, weiche Kost – und wie erfahren Sie davon?",
+  "Punkt 4 – Personal und Ergebnis. Verteilen Sie die Aufgaben und fassen Sie am Ende zusammen."
+];
+function zeige(){
+  var m = Math.floor(rest/60), s = rest%60;
+  zeitEl.textContent = m+":"+(s<10?"0":"")+s;
+  zeitEl.classList.toggle("low", rest <= 30);
+  var ph = Math.min(3, Math.floor((GESAMT-rest)/60));
+  document.querySelectorAll(".phase").forEach(function(p){
+    var i = +p.dataset.ph;
+    p.classList.toggle("aktiv", laeuft && i === ph);
+    p.classList.toggle("fertig", (GESAMT-rest) >= (i+1)*60);
+  });
+  if(laeuft) hinweis.textContent = PHASENTEXT[ph];
+}
+bStart.addEventListener("click", function(){
+  if(laeuft) return;
+  laeuft = true; bPause.hidden = false; bPause.textContent = "Pause";
+  tick = setInterval(function(){
+    rest--;
+    if(rest <= 0){
+      rest = 0; zeige(); stoppen();
+      hinweis.textContent = "Zeit vorbei. Haben Sie das Ergebnis zusammengefasst? Gehen Sie zur Checkliste auf der Registerkarte „Selbst sprechen“.";
+      return;
+    }
+    zeige();
+  },1000);
+  zeige();
+});
+bPause.addEventListener("click", function(){
+  if(laeuft){ stoppen(); bPause.textContent = "Weiter"; }
+  else { bStart.click(); }
+});
+function stoppen(){ laeuft = false; clearInterval(tick);
+  document.querySelectorAll(".phase").forEach(function(p){ p.classList.remove("aktiv"); }); }
+document.getElementById("reset").addEventListener("click", function(){
+  stoppen(); rest = GESAMT; bPause.hidden = true;
+  document.querySelectorAll(".phase").forEach(function(p){ p.classList.remove("fertig","aktiv"); });
+  hinweis.textContent = "Zurückgesetzt. Beginnen Sie mit einem Satz, der das Ziel benennt.";
+  zeige();
+});
+zeige();
+
+/* ---------- Musterdialog ---------- */
+var D = [
+ {ph:"Einstieg", c:"p1"},
+ {w:"a", t:"Hast du schon gehört, dass der Essenslieferdienst drei Wochen ausfällt? Wir müssen die Mahlzeiten jetzt selbst organisieren. Sollen wir die vier Punkte gemeinsam durchgehen?", r:"Gespräch eröffnen"},
+ {w:"b", t:"Ja, das habe ich heute Morgen erfahren. Gute Idee – fangen wir mit dem Menüplan an. Was schwebt dir vor?", r:"zustimmen + Frage"},
+ {w:"a", t:"Ich würde vorschlagen, dass wir einen festen Wochenplan schreiben, mit einfachen Gerichten in großen Mengen: Eintöpfe, Suppen, Aufläufe. Das hat den Vorteil, dass wir alles gut vorbereiten können. Wie siehst du das?", r:"Vorschlag + Begründung + Frage"},
+ {w:"b", t:"Da stimme ich dir zu. Ich würde nur ergänzen, dass wir jeden Tag eine leichte Alternative anbieten – vegetarisch oder weich. Und abends könnten wir kalt essen: Brot, Käse, Quark, Obst.", r:"zustimmen + ergänzen"},
+ {w:"a", t:"Einverstanden, das entlastet die Küche am Abend. Halten wir fest: mittags warm, abends kalt, dazu ein fester Wochenplan.", r:"Zwischenergebnis"},
+
+ {ph:"Punkt 2 · Vorbereitung", c:"p2"},
+ {w:"b", t:"Dann zur Vorbereitung. Wo kaufen wir ein? Für sechzig Bewohner brauchen wir große Mengen.", r:"Themenwechsel + Frage"},
+ {w:"a", t:"Mein Vorschlag wäre der Großhandel. Wir haben eine Kundenkarte, und man kann liefern lassen. Brot und Wurst würde ich beim Bäcker und beim Metzger im Ort bestellen, täglich frisch.", r:"Vorschlag"},
+ {w:"b", t:"Grundsätzlich ja, allerdings sehe ich ein Problem: Unser Kühlraum ist ziemlich klein. Wenn wir für die ganze Woche einkaufen, bekommen wir das nicht untergebracht.", r:"höflich widersprechen"},
+ {w:"a", t:"Guter Punkt, daran hatte ich nicht gedacht. Dann lass uns einen Kompromiss finden: Trockenware und Tiefkühlkost einmal pro Woche, Frisches zweimal – dienstags und freitags. Wäre das machbar?", r:"Kompromiss + Frage"},
+ {w:"b", t:"Ja, so geht es. Ich schreibe die Einkaufsliste und kläre das Budget mit der Heimleitung.", r:"Einigung + Aufgabe übernehmen"},
+
+ {ph:"Punkt 3 · Bewohner", c:"p3"},
+ {w:"a", t:"Bevor wir kochen, müssen wir aber unbedingt die Bewohner durchgehen. Bei uns gibt es mehrere Diabetiker, und Frau Sander verträgt keine Laktose. Weißt du, ob es noch andere Unverträglichkeiten gibt?", r:"neues Thema + Frage"},
+ {w:"b", t:"Das steht alles in der Pflegedokumentation. Ich gehe sie heute Nachmittag durch und hänge eine Diätliste in der Küche aus. Wichtig sind auch die Bewohner mit Schluckbeschwerden – die brauchen pürierte Kost.", r:"Lösung anbieten"},
+ {w:"a", t:"Sehr gut. Dann sollten wir salzarm würzen und lieber Kräuter nehmen, wegen des Bluthochdrucks. Und wir müssen darauf achten, dass alle genug trinken.", r:"ergänzen"},
+ {w:"b", t:"Einverstanden. Ich gebe nur zu bedenken, dass die Kolleginnen aus der Betreuung die Diäten kennen müssen. Sollen wir das morgen früh kurz besprechen?", r:"Bedenken + Vorschlag"},
+ {w:"a", t:"Ja, machen wir. Fünf Minuten in der Übergabe reichen.", r:"zustimmen"},
+
+ {ph:"Punkt 4 · Personal und Ergebnis", c:"p4"},
+ {w:"b", t:"Bleibt die Frage, wer welche Aufgaben übernimmt. Wir sind ohnehin knapp besetzt.", r:"Problem benennen"},
+ {w:"a", t:"Ich würde vorschlagen, dass immer zwei Kolleginnen pro Schicht in der Küche stehen und eine Person den Einkauf mit dem Dienstwagen übernimmt. Könntest du den Dienstplan anpassen?", r:"Vorschlag + Bitte"},
+ {w:"b", t:"Das mache ich, aber nur unter der Bedingung, dass die Leitung die Überstunden genehmigt. Sonst müssen wir Aushilfen über eine Zeitarbeitsfirma anfordern.", r:"Bedingung + Alternative"},
+ {w:"a", t:"Klar, ich spreche heute noch mit der Heimleitung. Fassen wir zusammen: fester Wochenplan mit warmem Mittagessen, Großhandel plus Bäcker, Diätliste in der Küche, angepasster Dienstplan. Du übernimmst Einkaufsliste und Dienstplan, ich die Absprache mit der Leitung und den Speiseplan.", r:"Ergebnis zusammenfassen"},
+ {w:"b", t:"Perfekt, dann wären wir uns einig. Morgen früh informieren wir gemeinsam das Team.", r:"abschließen"}
+];
+var meineRolle = "a";
+var dlg = document.getElementById("dialog");
+function baueDialog(){
+  dlg.innerHTML = "";
+  D.forEach(function(t,i){
+    if(t.ph){
+      var h = document.createElement("p");
+      h.className = "phasenmarke " + t.c;
+      h.textContent = t.ph;
+      dlg.appendChild(h);
+      return;
+    }
+    var d = document.createElement("div");
+    var meins = (t.w === meineRolle);
+    d.className = "turn " + t.w + (meins ? " meine" : "");
+    var inhalt = meins
+      ? '<div class="verdeckt">Ihr Beitrag – sprechen Sie zuerst selbst. <button data-zeig="'+i+'">Vorschlag anzeigen</button></div>'
+      : t.t + '<span class="rmtag">' + t.r + '</span>';
+    d.innerHTML = '<span class="wer">'+t.w.toUpperCase()+'</span><div class="txt" id="t'+i+'">'+inhalt+'</div>';
+    dlg.appendChild(d);
+  });
+}
+dlg.addEventListener("click", function(e){
+  var b = e.target.closest("[data-zeig]"); if(!b) return;
+  var i = +b.dataset.zeig;
+  document.getElementById("t"+i).innerHTML = D[i].t + '<span class="rmtag">'+D[i].r+'</span>';
+});
+document.querySelectorAll("[data-rolle]").forEach(function(b){
+  b.addEventListener("click", function(){
+    var r = b.dataset.rolle;
+    if(r !== "reset"){
+      meineRolle = (r === "k") ? "-" : r;
+      document.querySelectorAll("[data-rolle]").forEach(function(x){
+        if(x.dataset.rolle !== "reset") x.classList.toggle("on", x === b);
+      });
+    }
+    baueDialog();
+  });
+});
+baueDialog();
+
+/* ---------- Aufnahme ---------- */
+var recStart = document.getElementById("recStart"), recStop = document.getElementById("recStop"),
+    recStatus = document.getElementById("recStatus"), player = document.getElementById("player");
+var recorder = null, teile = [];
+if(!navigator.mediaDevices || typeof MediaRecorder === "undefined"){
+  recStart.disabled = true;
+  recStatus.textContent = "Dieser Browser unterstützt die Aufnahme nicht. Nehmen Sie ersatzweise mit der Sprachmemo-App Ihres Handys auf.";
+}
+recStart.addEventListener("click", function(){
+  navigator.mediaDevices.getUserMedia({audio:true}).then(function(stream){
+    teile = [];
+    recorder = new MediaRecorder(stream);
+    recorder.ondataavailable = function(e){ if(e.data.size) teile.push(e.data); };
+    recorder.onstop = function(){
+      var blob = new Blob(teile, {type: recorder.mimeType || "audio/webm"});
+      player.src = URL.createObjectURL(blob);
+      player.hidden = false;
+      stream.getTracks().forEach(function(t){ t.stop(); });
+      recStatus.innerHTML = "Aufnahme beendet. Hören Sie sich an: Sprechen Sie flüssig? Stellen Sie genug Fragen?";
+    };
+    recorder.start();
+    recStart.disabled = true; recStop.disabled = false;
+    recStatus.innerHTML = '<span class="punkt"></span>Aufnahme läuft – sprechen Sie jetzt beide Rollen.';
+  }).catch(function(){
+    recStatus.textContent = "Kein Zugriff auf das Mikrofon. Erlauben Sie den Zugriff in den Browsereinstellungen oder nehmen Sie mit dem Handy auf.";
+  });
+});
+recStop.addEventListener("click", function(){
+  if(recorder && recorder.state !== "inactive") recorder.stop();
+  recStart.disabled = false; recStop.disabled = true;
+});
+
+/* ---------- Impulskarten ---------- */
+var IMP = [
+ "Ich glaube nicht, dass wir das mit unserem Personal schaffen. Wir sind doch jetzt schon überlastet.",
+ "Kochen für sechzig Personen? Das hat bei uns noch nie jemand gemacht.",
+ "Das Budget gibt so viele frische Lebensmittel gar nicht her.",
+ "Ich habe keine Zeit, jeden Tag einkaufen zu fahren.",
+ "Und was ist mit den Bewohnern, die nur weiche Kost essen dürfen?",
+ "Meiner Meinung nach sollten wir einfach Tiefkühlgerichte kaufen – das ist am einfachsten.",
+ "Die Heimleitung wird die Überstunden bestimmt nicht genehmigen.",
+ "Können wir nicht ein Restaurant im Ort fragen, ob sie liefern?",
+ "Ich weiß gar nicht, welche Bewohner Allergien haben. Wer soll das herausfinden?",
+ "Am Wochenende ist kaum jemand da. Wer kocht dann?",
+ "Wir haben viel zu wenig Platz im Kühlraum für so große Mengen.",
+ "Das mit dem festen Wochenplan finde ich zu unflexibel."
+];
+var impulsIdx = -1;
+document.getElementById("impulsBtn").addEventListener("click", function(){
+  var n;
+  do { n = Math.floor(Math.random()*IMP.length); } while(n === impulsIdx && IMP.length > 1);
+  impulsIdx = n;
+  document.getElementById("impuls").textContent = "„" + IMP[n] + "“";
+});
+
+/* ---------- Checkliste ---------- */
+var boxen = document.querySelectorAll(".check input");
+var fazit = document.getElementById("checkFazit");
+boxen.forEach(function(b){
+  b.addEventListener("change", function(){
+    var n = Array.prototype.filter.call(boxen, function(x){ return x.checked; }).length;
+    if(n === 0) fazit.textContent = "Noch keine Punkte angekreuzt.";
+    else if(n < 5) fazit.textContent = n + " von 8 Punkten. Achten Sie beim nächsten Durchgang besonders auf Fragen an den Partner und auf das Ergebnis am Schluss.";
+    else if(n < 8) fazit.textContent = n + " von 8 Punkten. Das trägt schon. Nehmen Sie sich einen der offenen Punkte für den nächsten Durchgang vor.";
+    else fazit.textContent = "Alle 8 Punkte. Wiederholen Sie die Aufgabe in ein paar Tagen mit einer anderen Situation – Kantine, Umzug, Betriebsfeier.";
+  });
+});
+})();
+</script>
+</body>
+</html>

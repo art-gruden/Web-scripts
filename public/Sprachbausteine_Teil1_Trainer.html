@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Sprachbausteine Teil 1 · Konnektoren, Verbstellung, Kasus</title>
+<style>
+:root{
+  --navy:#0d4f7c; --navy-d:#093a5c;
+  --ink:#1b1a18; --muted:#6b6660;
+  --paper:#fff; --bg:#e9e6e0; --line:#d9d3cb;
+  --field:#f7ded1;
+  --g0:#a9670f;   /* Position 0 – Konjunktion */
+  --g1:#0d4f7c;   /* Position 1 – Verbindungsadverb */
+  --g2:#166b5c;   /* Verb am Ende – Subjunktion */
+  --g3:#7a3a86;   /* zweiteilig */
+  --g4:#8a3b30;   /* Präposition */
+  --ok:#1c7a4d; --bad:#b8352a;
+  --sans:"Helvetica Neue",Helvetica,Arial,"Segoe UI",sans-serif;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,serif;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--serif);font-size:17px;line-height:1.55}
+.wrap{max-width:920px;margin:0 auto;padding:0 18px 110px}
+button{font-family:var(--sans);cursor:pointer}
+:focus-visible{outline:3px solid #ffb703;outline-offset:2px}
+
+.bar{position:sticky;top:0;z-index:40;background:var(--navy);color:#fff;font-family:var(--sans);box-shadow:0 2px 0 rgba(0,0,0,.15)}
+.bar-in{max-width:920px;margin:0 auto;padding:9px 18px;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.brand{font-size:11.5px;letter-spacing:.16em;text-transform:uppercase;font-weight:700;opacity:.85;width:100%}
+.tab{background:transparent;border:1px solid rgba(255,255,255,.4);color:#fff;border-radius:3px;padding:7px 12px;font-size:13px;font-weight:600}
+.tab.on{background:#fff;color:var(--navy);border-color:#fff}
+.tab:hover{background:rgba(255,255,255,.15)}
+.tab.on:hover{background:#eaf2f8}
+#uaBtn{margin-left:auto;font-size:12px;padding:6px 10px;border-radius:3px;border:1px dashed rgba(255,255,255,.6);background:transparent;color:#fff}
+
+.sheet{background:var(--paper);border:1px solid var(--line);margin:24px 0;padding:24px 26px 28px}
+h1{font-family:var(--sans);font-size:27px;color:var(--navy);margin:.1em 0 .3em;line-height:1.2}
+h2{font-family:var(--sans);font-size:19px;color:var(--navy);margin:0 0 10px}
+h3{font-family:var(--sans);font-size:15.5px;margin:22px 0 6px}
+.eyebrow{font-family:var(--sans);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);margin:0 0 2px}
+p.lead{font-size:16.5px;color:#3b3833}
+.small{font-size:14px;color:var(--muted)}
+.ua{font-family:var(--sans);font-size:13.5px;color:#4a4640;background:#f3f1ec;border-left:3px solid #c9c2b8;padding:6px 10px;margin:8px 0}
+.ua::before{content:"укр. ";font-weight:700;color:var(--muted)}
+body.no-ua .ua{display:none}
+
+/* Farbcodierung der Gruppen */
+.g0{--c:var(--g0)} .g1{--c:var(--g1)} .g2{--c:var(--g2)} .g3{--c:var(--g3)} .g4{--c:var(--g4)}
+.karte{border:1px solid var(--line);border-top:4px solid var(--c,var(--navy));padding:14px 16px;margin:14px 0;background:#fcfbf9}
+.karte h4{font-family:var(--sans);font-size:15px;margin:0 0 4px;color:var(--c,var(--navy))}
+.karte .wl{font-family:var(--sans);font-size:14px;font-weight:600;margin:6px 0}
+.karte .wl span{display:inline-block;background:#fff;border:1px solid var(--line);border-radius:3px;padding:2px 7px;margin:2px 4px 2px 0}
+
+/* Satzschiene / Felderdiagramm */
+.schiene{display:grid;grid-template-columns:1.1fr .8fr 1.6fr .9fr;gap:3px;margin:10px 0;font-family:var(--sans);font-size:13px}
+.schiene .kopf{background:#efece7;color:var(--muted);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:4px 6px;text-align:center}
+.schiene .zelle{background:#fff;border:1px solid var(--line);padding:8px 8px;min-height:42px;display:flex;align-items:center}
+.schiene .zelle.verb{background:var(--c,var(--navy));color:#fff;font-weight:700;justify-content:center}
+.schiene .zelle.leer{background:repeating-linear-gradient(135deg,#f6f4f1,#f6f4f1 6px,#eeeae5 6px,#eeeae5 12px)}
+.schiene .zelle.konn{background:#fff;border-color:var(--c);color:var(--c);font-weight:700}
+@media (max-width:620px){.schiene{grid-template-columns:1fr 1fr}.schiene .kopf{font-size:9.5px}}
+
+/* Detektor */
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0 16px}
+.chip{font-family:var(--sans);font-size:13.5px;padding:6px 11px;border-radius:16px;border:1.5px solid var(--line);background:#fff;color:var(--ink)}
+.chip:hover{border-color:var(--navy)}
+.chip.on{color:#fff}
+.chip[data-g="0"].on{background:var(--g0);border-color:var(--g0)}
+.chip[data-g="1"].on{background:var(--g1);border-color:var(--g1)}
+.chip[data-g="2"].on{background:var(--g2);border-color:var(--g2)}
+.chip[data-g="3"].on{background:var(--g3);border-color:var(--g3)}
+.chip[data-g="4"].on{background:var(--g4);border-color:var(--g4)}
+#detBox{border:1px solid var(--line);border-left:5px solid var(--c,var(--navy));padding:14px 16px;background:#fcfbf9;min-height:120px}
+#detBox .typ{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--c);font-weight:700}
+#detBox .wort{font-family:var(--sans);font-size:24px;font-weight:700;margin:2px 0 6px}
+#detBox .bsp{font-size:17px;margin:8px 0 4px}
+#detBox .bsp b{background:var(--c);color:#fff;padding:1px 6px;border-radius:3px}
+#detBox .note{font-family:var(--sans);font-size:13.5px;color:#45413b;margin-top:6px}
+
+table{width:100%;border-collapse:collapse;font-size:15px;margin-top:8px}
+th,td{text-align:left;padding:7px 8px;border-bottom:1px solid var(--line);vertical-align:top}
+th{font-family:var(--sans);font-size:11px;letter-spacing:.11em;text-transform:uppercase;color:var(--muted)}
+td.w{font-family:var(--sans);font-weight:700;white-space:nowrap}
+td.w i{display:block;font-size:11px;font-weight:600;font-style:normal;letter-spacing:.06em;text-transform:uppercase}
+
+/* Schnelltraining */
+.item{border:1px solid var(--line);padding:14px 16px;margin:12px 0;background:#fcfbf9}
+.item .nr{font-family:var(--sans);font-size:11px;letter-spacing:.12em;color:var(--muted);text-transform:uppercase}
+.item .satz{font-size:17.5px;margin:4px 0 10px}
+.item .satz u{text-decoration:none;border-bottom:2px solid var(--navy);padding:0 20px;color:var(--navy);font-weight:700}
+.wahl{display:flex;gap:8px;flex-wrap:wrap}
+.wahl button{font-size:14.5px;padding:8px 14px;border:1.5px solid var(--line);background:#fff;border-radius:4px;color:var(--ink)}
+.wahl button:hover:not(:disabled){border-color:var(--navy)}
+.wahl button:disabled{cursor:default}
+.wahl button.richtig{background:#e2f2e9;border-color:var(--ok);color:var(--ok);font-weight:700}
+.wahl button.falsch{background:#fbe7e4;border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.erk{display:none;font-family:var(--sans);font-size:14px;line-height:1.5;margin-top:10px;padding:9px 12px;background:#f3f1ec;border-left:3px solid var(--line)}
+.erk.show{display:block}
+.erk .tag{display:inline-block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;font-weight:700;padding:1px 6px;border-radius:2px;margin-right:8px;color:#fff;background:var(--navy)}
+.punktestand{position:sticky;top:56px;z-index:30;background:var(--field);border:1px solid #e2bda6;font-family:var(--sans);font-size:14px;padding:8px 14px;display:flex;gap:16px;flex-wrap:wrap;align-items:center}
+.punktestand b{font-size:17px}
+.punktestand button{margin-left:auto;font-size:12.5px;padding:6px 11px;border:1px solid #c39a86;background:#fff;border-radius:3px;color:#5b4034}
+
+/* Prüfungstraining */
+.txt{border:1px solid var(--line);padding:16px 18px;margin:12px 0;background:#fcfbf9}
+.txt p{margin:.55em 0}
+.luecke{display:inline-block;min-width:58px;text-align:center;border-bottom:2px solid var(--navy);font-family:var(--sans);font-weight:700;color:var(--navy)}
+.kasten{display:flex;flex-wrap:wrap;gap:6px 20px;border:1px solid var(--line);padding:12px 14px;background:#fff;font-family:var(--sans);font-size:14px}
+.kasten b{color:var(--navy)}
+.bogen{display:flex;align-items:center;gap:3px;flex-wrap:wrap;background:var(--field);border-radius:22px;padding:6px 12px;margin:8px 0 2px;width:fit-content;max-width:100%}
+.bogen .num{font-family:var(--sans);font-size:13px;font-weight:700;color:#5b4034;padding:0 6px}
+.bub{display:flex;flex-direction:column;align-items:center;gap:1px;padding:2px 5px;border-radius:6px;cursor:pointer}
+.bub input{position:absolute;opacity:0;width:0;height:0}
+.bub .dot{width:17px;height:17px;border-radius:50%;border:1.5px solid #8d6a58;background:#fff;display:block}
+.bub .lbl{font-family:var(--sans);font-size:10px;color:#5b4034}
+.bub:hover .dot{border-color:var(--navy)}
+.bub input:checked + .dot{background:var(--navy);border-color:var(--navy);box-shadow:inset 0 0 0 2px #fff}
+.bub input:focus-visible + .dot{outline:3px solid #ffb703;outline-offset:2px}
+.bub.is-correct input:checked + .dot{background:var(--ok);border-color:var(--ok)}
+.bub.is-wrong input:checked + .dot{background:var(--bad);border-color:var(--bad)}
+.bub.is-key .dot{border:2.5px solid var(--ok)}
+.bub.is-key .lbl{color:var(--ok);font-weight:700}
+.fb{display:none;font-family:var(--sans);font-size:13.5px;line-height:1.5;padding:8px 12px;margin:4px 0 8px;border-left:3px solid var(--line);background:#f6f5f2}
+.fb.show{display:block}
+.fb .tag{font-weight:700;text-transform:uppercase;font-size:11px;letter-spacing:.05em;margin-right:8px}
+.fb.ok{border-left-color:var(--ok)} .fb.ok .tag{color:var(--ok)}
+.fb.bad{border-left-color:var(--bad)} .fb.bad .tag{color:var(--bad)}
+.btn{border:none;border-radius:4px;padding:11px 20px;font-size:14.5px;font-weight:600;background:var(--navy);color:#fff}
+.btn:hover{background:var(--navy-d)}
+.btn.leise{background:#fff;color:var(--navy);border:1px solid var(--line)}
+.ergebnis{font-family:var(--sans);font-size:15px;font-weight:700;margin-left:12px}
+.warnung{font-family:var(--sans);font-size:13px;color:var(--bad);margin-top:8px;display:none}
+.warnung.show{display:block}
+
+.panel{display:none}
+.panel.on{display:block}
+ol.schritte{counter-reset:s;list-style:none;padding:0;margin:10px 0}
+ol.schritte li{counter-increment:s;position:relative;padding:10px 0 10px 52px;border-bottom:1px solid var(--line)}
+ol.schritte li::before{content:counter(s);position:absolute;left:0;top:10px;width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;font-family:var(--sans);font-weight:700;display:flex;align-items:center;justify-content:center}
+ol.schritte b{font-family:var(--sans);font-size:15px}
+.beispielsatz{font-size:16.5px;background:#fff;border:1px solid var(--line);padding:8px 12px;margin:6px 0}
+.beispielsatz em{color:var(--navy);font-style:normal;font-weight:700}
+/* Valenz-Spiel */
+.kasus-n{color:#a9670f} .kasus-a{color:#0d4f7c} .kasus-d{color:#166b5c}
+.verbbuehne{border:1px solid var(--line);background:#fcfbf9;padding:22px 18px;text-align:center}
+.verbbuehne .zaehl{font-family:var(--sans);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--muted)}
+.verbbuehne .verb{font-family:var(--sans);font-size:38px;font-weight:700;color:var(--navy);margin:6px 0 4px;letter-spacing:-.01em}
+.verbbuehne .frage{font-family:var(--sans);font-size:13.5px;color:var(--muted)}
+.katz{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:16px 0 0}
+.katz button{padding:12px 10px;border:1.5px solid var(--line);background:#fff;border-radius:5px;font-size:14px;font-weight:600;line-height:1.35;color:var(--ink)}
+.katz button small{display:block;font-weight:400;font-size:12px;color:var(--muted);margin-top:2px}
+.katz button:hover:not(:disabled){border-color:var(--navy)}
+.katz button.richtig{background:#e2f2e9;border-color:var(--ok);color:var(--ok)}
+.katz button.falsch{background:#fbe7e4;border-color:var(--bad);color:var(--bad)}
+.vfb{display:none;font-family:var(--sans);font-size:14px;line-height:1.5;margin-top:14px;padding:10px 12px;background:#f3f1ec;border-left:3px solid var(--line);text-align:left}
+.vfb.show{display:block}
+.vfb .bsp{font-family:var(--serif);font-size:16.5px;margin:6px 0 0}
+.leiste{height:6px;background:#eee9e3;border-radius:3px;overflow:hidden;margin-top:14px}
+.leiste i{display:block;height:100%;background:var(--navy);width:0}
+.bilanz{font-family:var(--sans);font-size:15px;margin-top:14px;display:none}
+.bilanz.show{display:block}
+.bilanz ul{padding-left:18px;font-size:14px}
+/* Satzbau */
+.bauzone{border:1px dashed #b9b1a6;background:#fff;min-height:56px;padding:10px;display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-family:var(--serif);font-size:17px}
+.bauzone:empty::before{content:"Wörter anklicken – hier entsteht Ihr Satz";color:var(--muted);font-family:var(--sans);font-size:13px}
+.teil{display:flex;flex-wrap:wrap;gap:6px;margin:10px 0}
+.teil button,.bauzone button{font-family:var(--serif);font-size:16px;padding:6px 12px;border:1.5px solid var(--line);background:#fff;border-radius:4px;color:var(--ink)}
+.teil button:hover,.bauzone button:hover{border-color:var(--navy)}
+.teil button:disabled{opacity:.35;cursor:default}
+.bauzone button{background:var(--field);border-color:#dcb9a4}
+.satzitem{border:1px solid var(--line);padding:14px 16px;margin:14px 0;background:#fcfbf9}
+.satzitem .vorgabe{font-family:var(--sans);font-size:13px;color:var(--muted);margin:0 0 8px}
+.satzitem .aktion{display:flex;gap:8px;align-items:center;margin-top:10px;flex-wrap:wrap}
+.satzitem .aktion button{font-size:13.5px;padding:7px 14px;border-radius:4px;border:1px solid var(--line);background:#fff;color:var(--navy);font-weight:600}
+.satzitem .aktion button.prim{background:var(--navy);color:#fff;border-color:var(--navy)}
+.regelbox{display:grid;grid-template-columns:auto 1fr;gap:8px 14px;font-family:var(--sans);font-size:14.5px;margin:10px 0}
+.regelbox .fall{font-weight:700;color:var(--navy);white-space:nowrap}
+@media (max-width:620px){body{font-size:16px}.sheet{padding:18px 15px 22px}h1{font-size:23px}.katz{grid-template-columns:1fr}.verbbuehne .verb{font-size:30px}.regelbox{grid-template-columns:1fr;gap:2px 0}.regelbox .fall{margin-top:8px}}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style>
+</head>
+<body>
+
+<div class="bar">
+  <div class="bar-in">
+    <span class="brand">Deutsch für den Beruf B2 · Sprachbausteine Teil 1</span>
+    <button class="tab on" data-p="regeln">Regeln</button>
+    <button class="tab" data-p="lexikon">Konnektoren-Detektor</button>
+    <button class="tab" data-p="drill">Schnelltraining</button>
+    <button class="tab" data-p="pruefung">Prüfungstraining</button>
+    <button class="tab" data-p="valenz">Verbergänzungen</button>
+    <button id="uaBtn">UA-Hinweise aus</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+<!-- ================= REGELN ================= -->
+<div class="panel on" id="p-regeln">
+
+<div class="sheet">
+  <p class="eyebrow">Grundlage</p>
+  <h1>Wo steht das Verb? Und welcher Kasus kommt nach der Lücke?</h1>
+  <p class="lead">In Sprachbausteine Teil 1 entscheiden fast immer drei Dinge: die <b>Stellung des Verbs</b> hinter der Lücke, der <b>Kasus</b> des folgenden Nomens und die <b>Bedeutung</b> (Grund, Folge, Gegensatz, Art und Weise). Wer die Verbstellung liest, hat die Hälfte der Antworten schon.</p>
+  <p class="ua">Дивись не на значення першим, а на позицію дієслова після пропуску. Дієслово в кінці → сполучник підрядного речення. Дієслово одразу після пропуску → прислівник (Position 1). Підмет + дієслово на 2 місці → сполучник сурядності.</p>
+</div>
+
+<div class="sheet">
+  <h2>Die drei Gruppen – an der Verbstellung erkennbar</h2>
+
+  <div class="karte g0">
+    <h4>Gruppe 1 · Konjunktion auf Position 0 – der Satz ändert sich nicht</h4>
+    <p class="wl"><span>und</span><span>aber</span><span>oder</span><span>denn</span><span>sondern</span></p>
+    <p>Die Konjunktion steht <b>vor</b> dem Satz und zählt nicht mit. Danach folgt der normale Hauptsatz: Subjekt, dann Verb.</p>
+    <div class="schiene">
+      <div class="kopf">Position 0</div><div class="kopf">Vorfeld</div><div class="kopf">Verb Pos. 2</div><div class="kopf">Rest</div>
+      <div class="zelle konn">denn</div><div class="zelle">wir</div><div class="zelle verb">brauchen</div><div class="zelle">die Ware dringend.</div>
+    </div>
+    <p class="small">Test: Wenn direkt nach der Lücke das <b>Subjekt</b> steht und das Verb erst danach – dann ist es eine Konjunktion (Position 0).</p>
+    <p class="ua">Після und, aber, oder, denn, sondern порядок слів звичайний: підмет → дієслово.</p>
+  </div>
+
+  <div class="karte g1">
+    <h4>Gruppe 2 · Verbindungsadverb auf Position 1 – Inversion</h4>
+    <p class="wl"><span>daher</span><span>deshalb</span><span>deswegen</span><span>darum</span><span>also</span><span>folglich</span><span>somit</span><span>trotzdem</span><span>dennoch</span><span>allerdings</span><span>jedoch</span><span>außerdem</span><span>zudem</span><span>dabei</span><span>dann</span><span>danach</span><span>sonst</span><span>stattdessen</span></p>
+    <p>Das Adverb besetzt selbst das Vorfeld. Deshalb rutscht das Subjekt hinter das Verb: <b>Adverb – Verb – Subjekt</b>.</p>
+    <div class="schiene">
+      <div class="kopf">Vorfeld</div><div class="kopf">Verb Pos. 2</div><div class="kopf">Subjekt + Rest</div><div class="kopf">Satzende</div>
+      <div class="zelle konn">Daher</div><div class="zelle verb">bewerbe</div><div class="zelle">ich mich bei Ihnen</div><div class="zelle leer"></div>
+    </div>
+    <p class="small">Test: Steht direkt nach der Lücke ein <b>konjugiertes Verb</b>, kann es keine Subjunktion und keine Konjunktion sein.</p>
+    <p class="ua">Це прислівники, а не сполучники: вони самі займають перше місце, тому дієслово одразу після них, а підмет — після дієслова.</p>
+  </div>
+
+  <div class="karte g2">
+    <h4>Gruppe 3 · Subjunktion – Verb ganz ans Ende</h4>
+    <p class="wl"><span>weil</span><span>da</span><span>obwohl</span><span>indem</span><span>damit</span><span>dass</span><span>ob</span><span>wenn</span><span>falls</span><span>als</span><span>während</span><span>bevor</span><span>nachdem</span><span>sobald</span><span>seitdem</span><span>sodass</span><span>wie</span><span>wo</span><span>wobei</span></p>
+    <p>Die Subjunktion eröffnet einen Nebensatz. Das konjugierte Verb steht <b>am Satzende</b>, nach Komma.</p>
+    <div class="schiene">
+      <div class="kopf">Subjunktion</div><div class="kopf">Subjekt</div><div class="kopf">Mittelfeld</div><div class="kopf">Verb am Ende</div>
+      <div class="zelle konn">indem</div><div class="zelle">ich</div><div class="zelle">die Überwachung</div><div class="zelle verb">automatisiert habe.</div>
+    </div>
+    <p class="small">Test: Suchen Sie das konjugierte Verb. Steht es hinter allen anderen Wörtern des Teilsatzes, brauchen Sie eine Subjunktion.</p>
+    <p class="ua">Підрядний сполучник → дієслово в самий кінець. Якщо в кінці стоїть „…gemacht hat“ або „…arbeiten kann“ — це точно ця група.</p>
+  </div>
+
+  <div class="karte g3">
+    <h4>Gruppe 4 · Zweiteilige Konnektoren – suchen Sie den Partner</h4>
+    <table>
+      <tr><td class="w">nicht nur … <b>sondern auch</b></td><td>Hinzufügung. Signal im Text: das Wort <i>auch</i> nach der Lücke.</td></tr>
+      <tr><td class="w"><b>sowohl</b> … als auch</td><td>Signal: <i>als auch</i> steht schon da, die Lücke ist am Anfang.</td></tr>
+      <tr><td class="w"><b>entweder</b> … oder</td><td>zwei Alternativen, nur eine gilt.</td></tr>
+      <tr><td class="w"><b>weder</b> … noch</td><td>doppelte Verneinung, kein <i>nicht</i> mehr nötig.</td></tr>
+      <tr><td class="w"><b>zwar</b> … aber</td><td>Einräumung: erst zugeben, dann einschränken.</td></tr>
+      <tr><td class="w">je … <b>desto/umso</b></td><td>je + Komparativ + Verb am Ende, danach desto + Komparativ + Verb.</td></tr>
+    </table>
+    <p class="ua">Якщо в реченні вже є друга частина (auch, als auch, oder, noch, aber, desto) — відповідь визначається автоматично.</p>
+  </div>
+
+  <div class="karte g4">
+    <h4>Gruppe 5 · Präposition in der Lücke – dann entscheidet der Kasus</h4>
+    <p>Steht nach der Lücke ein <b>Nomen mit Artikel</b> (kein Verb, kein Subjekt-Verb-Paar), suchen Sie keine Konnektorbedeutung, sondern eine Präposition. Prüfen Sie den Artikel: <i>dem/der/den+n</i> → Dativ, <i>den/die/das</i> → Akkusativ, <i>des/der</i> → Genitiv.</p>
+    <div class="beispielsatz">Wir bitten Sie <em>um</em> ein Angebot. → <i>um</i> + Akkusativ (ein Angebot)</div>
+    <div class="beispielsatz"><em>Gemäß</em> dem Tarifvertrag steht jedem Urlaubsgeld zu. → <i>gemäß</i> + Dativ (dem Vertrag)</div>
+    <div class="beispielsatz"><em>Während</em> des Umbaus arbeiten wir im Homeoffice. → <i>während</i> als Präposition + Genitiv</div>
+  </div>
+</div>
+
+<div class="sheet">
+  <h2>Dativ oder Akkusativ? Vier Prüffragen</h2>
+
+  <h3>1 · Das Verb regiert den Kasus</h3>
+  <table>
+    <tr><th>Nur Dativ</th><th>Nur Akkusativ</th><th>Dativ + Akkusativ</th></tr>
+    <tr>
+      <td>helfen, danken, gefallen, gehören, entsprechen, <b>gelten</b>, zustimmen, antworten, folgen, dienen, gratulieren, begegnen, vertrauen, zusagen, widersprechen</td>
+      <td>betreffen, benötigen, brauchen, unterstützen, kontaktieren, anrufen, <b>bitten</b>, fragen, kosten, erhalten, prüfen</td>
+      <td>geben, schicken, <b>zusenden</b>, anbieten, mitteilen, empfehlen, gewähren, bestätigen, erklären<br><span class="small">Person = Dativ, Sache = Akkusativ</span></td>
+    </tr>
+  </table>
+  <div class="beispielsatz">Unser Interesse <em>gilt</em> Ihrem Sortiment. (gelten + D) · Wir <em>bitten</em> Sie um Geduld. (bitten + A)</div>
+  <div class="beispielsatz">Bitte senden Sie <em>mir</em> (D) <em>die Preisliste</em> (A) zu.</div>
+  <p class="ua">Питання: <b>кому?</b> → Dativ, <b>кого/що?</b> → Akkusativ. Дієслова з Dativ треба вчити списком — їх небагато.</p>
+
+  <h3>2 · Die Präposition regiert den Kasus</h3>
+  <table>
+    <tr><th>Immer Dativ</th><th>Immer Akkusativ</th><th>Genitiv</th></tr>
+    <tr>
+      <td>mit, nach, aus, zu, von, bei, seit, außer, gegenüber, entgegen, gemäß, laut, entsprechend, dank</td>
+      <td>für, gegen, ohne, um, durch, bis, entlang</td>
+      <td>wegen, trotz, während, aufgrund, innerhalb, außerhalb, anlässlich, hinsichtlich</td>
+    </tr>
+  </table>
+
+  <h3>3 · Wechselpräpositionen: Wohin? oder Wo?</h3>
+  <p>an, auf, hinter, in, neben, über, unter, vor, zwischen</p>
+  <div class="beispielsatz">Wohin? Bewegung mit Ziel → <b>Akkusativ</b>: Legen Sie den Antrag <em>auf den</em> Tisch.</div>
+  <div class="beispielsatz">Wo? Ort ohne Ziel → <b>Dativ</b>: Der Antrag liegt <em>auf dem</em> Tisch.</div>
+  <p class="ua">Рух до цілі (куди?) → Akkusativ. Місце (де?) → Dativ. Це працює лише для цих дев'яти прийменників.</p>
+
+  <h3>4 · Feste Verb-Präposition-Verbindungen – der häufigste Fall im Geschäftsbrief</h3>
+  <table>
+    <tr><th>Mit Akkusativ</th><th>Mit Dativ</th></tr>
+    <tr>
+      <td>sich bewerben um / auf, sich freuen über, sich interessieren für, aufmerksam werden auf, Wert legen auf, bitten um, danken für, sich wenden an, sich beziehen auf, verfügen über, achten auf, angewiesen sein auf, verantwortlich sein für, zuständig sein für, sich kümmern um, sich entscheiden für</td>
+      <td>teilnehmen an, sich beteiligen an, arbeiten an, gehören zu, führen zu, rechnen mit, sich beschäftigen mit, sich treffen mit, einverstanden sein mit, bestehen aus, sprechen von, profitieren von, beginnen mit</td>
+    </tr>
+  </table>
+  <div class="beispielsatz">Wir sind <em>auf</em> Ihr Unternehmen aufmerksam geworden. (A) · Ich nehme <em>an der</em> Fortbildung teil. (D)</div>
+  <p class="ua">Ці зв'язки не виводяться логікою — вчи їх парами разом із відмінком: <i>teilnehmen an + D</i>, <i>bitten um + A</i>.</p>
+</div>
+
+<div class="sheet">
+  <h2>So bestimmen Sie die Antwort – fünf Schritte</h2>
+  <ol class="schritte">
+    <li><b>Text einmal ohne Lücken lesen.</b> Worum geht es? Bewerbung, Anfrage, Beschwerde, interne Mitteilung? Das Register hilft später bei den festen Wendungen.</li>
+    <li><b>Auf die Verbstellung schauen.</b> Verb am Ende → Subjunktion. Verb direkt nach der Lücke → Adverb. Subjekt + Verb → Konjunktion. Kein Verb, sondern Artikel + Nomen → Präposition.</li>
+    <li><b>Partnerwörter suchen.</b> <i>auch, als auch, oder, noch, aber, desto</i> im Satz? Dann ist es ein zweiteiliger Konnektor und die Antwort steht fest.</li>
+    <li><b>Bedeutung prüfen.</b> Grund (weil, da) – Folge (daher, deshalb, sodass) – Gegensatz (obwohl, trotzdem, allerdings) – Art und Weise (indem, dadurch) – Ziel (damit, um … zu) – Zeit (bevor, nachdem, sobald).</li>
+    <li><b>Ausschlussverfahren und Gegenprobe.</b> Jedes Wort passt nur einmal. Setzen Sie zuerst die sicheren Wörter, lesen Sie den Satz am Ende laut mit Ihrer Lösung – falsche Verbstellung hört man.</li>
+  </ol>
+  <p class="ua">Порядок дій важливіший за словниковий запас: спочатку граматична форма (позиція дієслова / відмінок), і лише потім значення.</p>
+</div>
+</div>
+
+<!-- ================= LEXIKON ================= -->
+<div class="panel" id="p-lexikon">
+<div class="sheet">
+  <p class="eyebrow">Nachschlagen</p>
+  <h1>Konnektoren-Detektor</h1>
+  <p class="lead">Klicken Sie ein Wort an: Sie sehen die Gruppe, die Verbstellung, die Bedeutung und einen Beispielsatz. Die Farbe zeigt die Gruppe – so erkennen Sie das Muster schneller als über eine Liste.</p>
+  <div class="chips" id="chips"></div>
+  <div id="detBox" class="g1">
+    <p class="typ">Wählen Sie ein Wort</p>
+    <p class="wort">—</p>
+    <p class="small">Die Farben: <b style="color:var(--g0)">Konjunktion (Position 0)</b> · <b style="color:var(--g1)">Adverb (Position 1, Inversion)</b> · <b style="color:var(--g2)">Subjunktion (Verb am Ende)</b> · <b style="color:var(--g3)">zweiteilig</b> · <b style="color:var(--g4)">Präposition</b></p>
+  </div>
+</div>
+
+<div class="sheet">
+  <h2>Die Verwechslungspaare</h2>
+  <table>
+    <tr><th>Paar</th><th>Unterschied</th><th>Beispiel</th></tr>
+    <tr><td class="w">dabei<i style="color:var(--g1)">Adverb</i></td><td>„bei dieser Tätigkeit / gleichzeitig“, oft auch leicht einschränkend („und das, obwohl“). Kein Grund, keine Folge.</td><td>Ich betreue drei Standorte. <b>Dabei</b> ist Englisch meine Arbeitssprache.</td></tr>
+    <tr><td class="w">daher<i style="color:var(--g1)">Adverb</i></td><td>Folge aus dem Vorsatz, gleichbedeutend mit deshalb, deswegen, darum. Verb sofort danach.</td><td>Der Termin passt mir nicht. <b>Daher</b> schlage ich Donnerstag vor.</td></tr>
+    <tr><td class="w">indem<i style="color:var(--g2)">Subjunktion</i></td><td>Art und Weise, Mittel: <i>wodurch?</i> Beide Teilsätze haben dasselbe Subjekt.</td><td>Ich senke die Kosten, <b>indem</b> ich die Prozesse automatisiere.</td></tr>
+    <tr><td class="w">damit<i style="color:var(--g2)">Subjunktion</i></td><td>Ziel: <i>wozu?</i> Bei gleichem Subjekt meist besser <i>um … zu</i>.</td><td>Ich schicke die Datei früher, <b>damit</b> das Team sie prüfen kann.</td></tr>
+    <tr><td class="w">jedoch<i style="color:var(--g1)">Adverb</i></td><td>Gegensatz, wie <i>allerdings</i>. Steht auf Position 1 (dann Inversion) oder im Mittelfeld nach dem Verb.</td><td>Die Ware ist da. Die Rechnung fehlt <b>jedoch</b> noch.</td></tr>
+    <tr><td class="w">obwohl<i style="color:var(--g2)">Subjunktion</i></td><td>Gegensatz mit Verb am Ende. Nicht verwechseln mit <i>trotzdem</i> (Adverb) und <i>trotz</i> (Präposition + Genitiv).</td><td><b>Obwohl</b> er neu ist, arbeitet er selbstständig.</td></tr>
+    <tr><td class="w">denn<i style="color:var(--g0)">Konjunktion</i></td><td>Grund, aber Hauptsatzstellung: danach Subjekt + Verb. <i>weil</i> = Verb am Ende.</td><td>Wir liefern später, <b>denn</b> der Hersteller hat Probleme.</td></tr>
+    <tr><td class="w">wie<i style="color:var(--g2)">Subjunktion</i></td><td>Verweis auf eine Quelle oder Vergleich; Verb am Ende.</td><td>…, <b>wie</b> Sie dem Zeugnis entnehmen können.</td></tr>
+    <tr><td class="w">wo / wobei<i style="color:var(--g2)">Relativadverb</i></td><td><i>wo</i> = Ort, <i>wobei</i> = „und dabei / wobei einschränkend“. Verb am Ende.</td><td>…bei einer Firma, <b>wo</b> ich viel gelernt habe.</td></tr>
+    <tr><td class="w">sondern<i style="color:var(--g0)">Konjunktion</i></td><td>Korrektur nach einer Verneinung. Ohne <i>nicht/kein</i> davor ist <i>sondern</i> falsch – dann <i>aber</i>.</td><td>Nicht der Preis zählt, <b>sondern</b> die Qualität.</td></tr>
+    <tr><td class="w">sowohl<i style="color:var(--g3)">zweiteilig</i></td><td>Immer mit <i>als auch</i>. Nie allein, nie mit <i>und</i>.</td><td><b>Sowohl</b> Server als auch Netzwerke gehören dazu.</td></tr>
+    <tr><td class="w">während<i style="color:var(--g2)">Subjunktion / Präposition</i></td><td>Als Subjunktion: Zeit oder Gegensatz, Verb am Ende. Als Präposition: + Genitiv.</td><td><b>Während</b> die Technik läuft, packen wir. · <b>Während</b> des Umbaus …</td></tr>
+  </table>
+  <p class="ua">Найчастіші пастки на іспиті: <i>trotzdem / obwohl / trotz</i>, <i>deshalb / weil / denn</i>, <i>indem / damit</i>, <i>dabei / daher</i>. Розрізняй їх не за перекладом, а за позицією дієслова.</p>
+</div>
+</div>
+
+<!-- ================= SCHNELLTRAINING ================= -->
+<div class="panel" id="p-drill">
+<div class="sheet" style="padding-bottom:12px">
+  <p class="eyebrow">Übung</p>
+  <h1>Schnelltraining</h1>
+  <p class="lead">30 Einzelsätze. Klicken Sie eine Antwort an – die Begründung erscheint sofort. Die Farbe der Begründung zeigt, um welche Regel es ging.</p>
+</div>
+<div class="punktestand">
+  <span>Richtig: <b id="dRichtig">0</b></span>
+  <span>Falsch: <b id="dFalsch">0</b></span>
+  <span>Bearbeitet: <b id="dGesamt">0</b> / 30</span>
+  <button id="dReset">Neu beginnen</button>
+</div>
+<div class="sheet" id="drillListe"></div>
+</div>
+
+<!-- ================= PRÜFUNGSTRAINING ================= -->
+<div class="panel" id="p-pruefung">
+<div class="sheet" style="padding-bottom:14px">
+  <p class="eyebrow">Prüfungsformat</p>
+  <h1>Prüfungstraining · drei Texte im Format Teil 1</h1>
+  <p class="lead">Jeder Text hat sechs Lücken und einen Kasten mit zehn Wörtern a–j. Jedes Wort passt nur einmal, nicht alle Wörter passen. Richtwert: 5 Minuten pro Text.</p>
+</div>
+
+<!-- Text A -->
+<div class="sheet" id="textA">
+  <h2>Text A · Bewerbung</h2>
+  <div class="txt">
+    <p><b>Betreff: Bewerbung <span class="luecke">46</span> die ausgeschriebene Stelle als IT-Administratorin</b></p>
+    <p>Sehr geehrte Frau Bergmann,</p>
+    <p>auf Ihrer Website habe ich gelesen, dass Sie Verstärkung für Ihr IT-Team suchen. <span class="luecke">47</span> Serverbetreuung als auch Netzwerktechnik gehören seit sechs Jahren zu meinem Arbeitsalltag.</p>
+    <p>In meiner jetzigen Position betreue ich nicht nur die Systeme unserer Zentrale, <span class="luecke">48</span> auch die Standorte in Polen und Tschechien. Die Ausfallzeiten konnte ich deutlich senken, <span class="luecke">49</span> ich die Überwachung der Server automatisiert habe.</p>
+    <p>Ihre Stellenanzeige beschreibt genau die Aufgaben, die mich seit Jahren begeistern. <span class="luecke">50</span> bewerbe ich mich bei Ihnen.</p>
+    <p><span class="luecke">51</span> eine Einladung zu einem persönlichen Gespräch freue ich mich sehr.</p>
+    <p>Mit freundlichen Grüßen<br>Olena Kovalenko</p>
+  </div>
+  <div class="kasten">
+    <span><b>a</b> ALS</span><span><b>b</b> AUF</span><span><b>c</b> DABEI</span><span><b>d</b> DAHER</span><span><b>e</b> INDEM</span>
+    <span><b>f</b> JEDOCH</span><span><b>g</b> SONDERN</span><span><b>h</b> SOWOHL</span><span><b>i</b> ÜBER</span><span><b>j</b> WEIL</span>
+  </div>
+  <div class="bogen" data-q="46" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="47" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="48" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="49" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="50" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="51" data-opts="a b c d e f g h i j"></div>
+  <p class="warnung" id="warnA">Achtung: Sie haben einen Buchstaben mehrfach markiert. Jedes Wort passt nur einmal.</p>
+  <p><button class="btn" data-check="A">Text A auswerten</button><span class="ergebnis" id="ergA"></span></p>
+</div>
+
+<!-- Text B -->
+<div class="sheet" id="textB">
+  <h2>Text B · Anfrage</h2>
+  <div class="txt">
+    <p><b>Betreff: Anfrage Schulungsräume im Oktober</b></p>
+    <p>Sehr geehrte Damen und Herren,</p>
+    <p>wir planen im Oktober eine zweitägige Schulung <span class="luecke">52</span> 25 Mitarbeitende und suchen dafür passende Räume.</p>
+    <p>Ihr Haus wurde uns von einem Geschäftspartner empfohlen, <span class="luecke">53</span> kennen wir es bisher nicht persönlich. Bitte teilen Sie uns mit, welche Räume <span class="luecke">54</span> des genannten Zeitraums noch frei sind.</p>
+    <p><span class="luecke">55</span> wir die Anreise der Teilnehmenden rechtzeitig organisieren können, benötigen wir Ihre Rückmeldung bis Ende dieser Woche.</p>
+    <p>Wir bitten Sie außerdem <span class="luecke">56</span> ein Angebot für Mittagessen und Pausengetränke.</p>
+    <p><span class="luecke">57</span> Rückfragen erreichen Sie mich jederzeit unter der unten stehenden Nummer.</p>
+    <p>Mit freundlichen Grüßen<br>Thomas Reinhardt</p>
+  </div>
+  <div class="kasten">
+    <span><b>a</b> ALLERDINGS</span><span><b>b</b> BEI</span><span><b>c</b> DAMIT</span><span><b>d</b> DENN</span><span><b>e</b> FÜR</span>
+    <span><b>f</b> MIT</span><span><b>g</b> OBWOHL</span><span><b>h</b> TROTZDEM</span><span><b>i</b> UM</span><span><b>j</b> WÄHREND</span>
+  </div>
+  <div class="bogen" data-q="52" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="53" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="54" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="55" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="56" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="57" data-opts="a b c d e f g h i j"></div>
+  <p class="warnung" id="warnB">Achtung: Sie haben einen Buchstaben mehrfach markiert. Jedes Wort passt nur einmal.</p>
+  <p><button class="btn" data-check="B">Text B auswerten</button><span class="ergebnis" id="ergB"></span></p>
+</div>
+
+<!-- Text C -->
+<div class="sheet" id="textC">
+  <h2>Text C · Interne Mitteilung</h2>
+  <div class="txt">
+    <p><b>Betreff: Umzug in das neue Bürogebäude</b></p>
+    <p>Liebe Kolleginnen und Kollegen,</p>
+    <p><span class="luecke">58</span> die Umbauarbeiten abgeschlossen sind, ziehen wir in das Gebäude in der Ritterstraße um. Der Umzug ist <span class="luecke">59</span> für November geplant, ein genauer Termin steht aber noch nicht fest.</p>
+    <p><span class="luecke">60</span> die Technik installiert worden ist, richten wir gemeinsam die Arbeitsplätze ein. Bitte wenden Sie sich <span class="luecke">61</span> Frau Wolf, wenn Sie einen höhenverstellbaren Schreibtisch benötigen.</p>
+    <p>Alle Kartons müssen beschriftet werden, <span class="luecke">62</span> die Spedition sie den richtigen Räumen zuordnen kann.</p>
+    <p><span class="luecke">63</span> Sie mit dem Packen beginnen, sortieren Sie bitte alte Unterlagen aus.</p>
+    <p>Viele Grüße<br>Die Standortleitung</p>
+  </div>
+  <div class="kasten">
+    <span><b>a</b> AN</span><span><b>b</b> AUF</span><span><b>c</b> BEVOR</span><span><b>d</b> DENNOCH</span><span><b>e</b> NACHDEM</span>
+    <span><b>f</b> SOBALD</span><span><b>g</b> SODASS</span><span><b>h</b> WO</span><span><b>i</b> ZU</span><span><b>j</b> ZWAR</span>
+  </div>
+  <div class="bogen" data-q="58" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="59" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="60" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="61" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="62" data-opts="a b c d e f g h i j"></div>
+  <div class="bogen" data-q="63" data-opts="a b c d e f g h i j"></div>
+  <p class="warnung" id="warnC">Achtung: Sie haben einen Buchstaben mehrfach markiert. Jedes Wort passt nur einmal.</p>
+  <p><button class="btn" data-check="C">Text C auswerten</button>
+     <button class="btn leise" id="allesZurueck">Alle Texte zurücksetzen</button>
+     <span class="ergebnis" id="ergC"></span></p>
+</div>
+</div>
+
+<!-- ================= VERBERGÄNZUNGEN ================= -->
+<div class="panel" id="p-valenz">
+
+<div class="sheet">
+  <p class="eyebrow">Satzbaupläne</p>
+  <h1>Verben brauchen Ergänzungen</h1>
+  <p class="lead">Jedes Verb bestimmt selbst, welche Ergänzungen im Satz stehen müssen. Wer weiß, ob ein Verb einen Akkusativ, einen Dativ oder beides verlangt, macht in Sprachbausteinen und beim Schreiben kaum noch Kasusfehler.</p>
+  <p class="ua">Дієслово керує реченням: воно диктує, які відмінки обов'язкові. Це називають валентністю. Вчи дієслово завжди разом із його відмінком — як одну одиницю.</p>
+
+  <h3>Die vier Satzbaupläne</h3>
+  <table>
+    <tr><th>Plan</th><th>Prüffrage</th><th>Beispiel</th></tr>
+    <tr><td class="w"><span class="kasus-n">nur Nominativ</span></td><td>Wer oder was?</td><td>Die Firma <b>arbeitet</b> seit 2010 international.</td></tr>
+    <tr><td class="w"><span class="kasus-n">Nominativ</span> + <span class="kasus-a">Akkusativ</span></td><td>Wer? – Wen oder was?</td><td>Der Techniker <b>repariert</b> die Anlage.</td></tr>
+    <tr><td class="w"><span class="kasus-n">Nominativ</span> + <span class="kasus-a">Akkusativ</span> + <span class="kasus-d">Dativ</span></td><td>Wer? – Wen/was? – Wem?</td><td>Ich <b>schicke</b> Ihnen die Preisliste.</td></tr>
+    <tr><td class="w"><span class="kasus-n">Nominativ</span> + <span class="kasus-d">Dativ</span></td><td>Wer? – Wem?</td><td>Das Angebot <b>gefällt</b> dem Kunden.</td></tr>
+  </table>
+  <p class="small"><b>Sonderfall:</b> <i>sein, werden, heißen, bleiben</i> haben eine zweite Nominativergänzung: <i>Er ist <b>Systemadministrator</b>.</i> Sie brauchen also weder Akkusativ noch Dativ.</p>
+  <p class="small"><b>Freier Dativ:</b> Bei Verben wie <i>kaufen, bestellen, kopieren, reservieren</i> ist der Dativ möglich, aber nicht nötig: <i>Ich kaufe (dir) einen Kaffee.</i> Der Grundplan bleibt Nominativ + Akkusativ.</p>
+  <p class="ua">sein / werden / heißen — після них теж називний: <i>Er wird Techniker</i> (не «Techniker-a»). А в дієслів kaufen, bestellen давальний можливий, але не обов'язковий.</p>
+</div>
+
+<div class="sheet">
+  <h2>Sortierspiel · 32 Verben</h2>
+  <p class="small">Zu welchem Satzbauplan gehört das Verb? Klicken Sie eine der vier Karten an – Sie sehen sofort einen Beispielsatz.</p>
+  <div class="verbbuehne">
+    <p class="zaehl">Verb <span id="vNr">1</span> von <span id="vGes">32</span> · richtig: <b id="vRichtig">0</b></p>
+    <p class="verb" id="vWort">—</p>
+    <p class="frage" id="vFrage">Welche Ergänzungen verlangt dieses Verb?</p>
+    <div class="katz" id="vKatz">
+      <button data-k="0">nur Nominativ<small>Wer oder was?</small></button>
+      <button data-k="1">Nominativ + Akkusativ<small>Wen oder was?</small></button>
+      <button data-k="2">Nominativ + Akkusativ + Dativ<small>Wem? – Wen oder was?</small></button>
+      <button data-k="3">Nominativ + Dativ<small>Wem?</small></button>
+    </div>
+    <div class="vfb" id="vFb"></div>
+    <div class="leiste"><i id="vLeiste"></i></div>
+    <div class="satzitem aktion" style="border:none;background:none;padding:0;margin:14px 0 0;display:flex;gap:8px;justify-content:center">
+      <button class="btn" id="vWeiter" style="display:none">Nächstes Verb</button>
+      <button class="btn leise" id="vNeu">Neu mischen</button>
+    </div>
+    <div class="bilanz" id="vBilanz"></div>
+  </div>
+  <details class="muster" style="margin-top:16px;border:1px solid var(--line);background:#fcfbf9">
+    <summary style="font-family:var(--sans);font-size:14px;font-weight:600;padding:10px 14px;cursor:pointer;color:var(--navy)">Alle 32 Verben sortiert anzeigen</summary>
+    <div style="padding:0 16px 14px" id="vListe"></div>
+  </details>
+</div>
+
+<div class="sheet">
+  <h2>Dativ- und Akkusativergänzung im Satz: Wer steht zuerst?</h2>
+  <div class="regelbox">
+    <span class="fall">Nomen + Nomen</span><span><b>Dativ vor Akkusativ.</b><br>Der Marketingleiter hat <span class="kasus-d">seinen Mitarbeitenden</span> <span class="kasus-a">die Kampagne</span> vorgestellt.</span>
+    <span class="fall">Pronomen + Nomen</span><span><b>Das Pronomen steht immer zuerst</b> – egal, welcher Kasus.<br>Der Marketingleiter hat <span class="kasus-a">sie</span> <span class="kasus-d">seinen Mitarbeitenden</span> vorgestellt.<br>Der Marketingleiter hat <span class="kasus-d">ihnen</span> <span class="kasus-a">die Kampagne</span> vorgestellt.</span>
+    <span class="fall">Pronomen + Pronomen</span><span><b>Akkusativ vor Dativ.</b><br>Der Marketingleiter hat <span class="kasus-a">sie</span> <span class="kasus-d">ihnen</span> vorgestellt.</span>
+  </div>
+  <p class="small">Merksatz: <b>Kurz vor lang.</b> Pronomen sind kurz und bekannt, deshalb rücken sie nach vorn. Neue Information steht hinten – deshalb kommt bei zwei Nomen der Akkusativ (die Sache) zuletzt.</p>
+  <p class="ua">Два іменники → Dativ перший. Займенник + іменник → займенник завжди перший. Два займенники → Akkusativ перший. Коротке й відоме — вперед, нове — в кінець.</p>
+</div>
+
+<div class="sheet">
+  <h2>Satzbau-Training</h2>
+  <p class="small">Klicken Sie die Wörter in der richtigen Reihenfolge an. Ein Klick im Satzfeld nimmt ein Wort zurück.</p>
+  <div id="satzListe"></div>
+</div>
+</div>
+
+</div>
+
+<script>
+(function(){
+"use strict";
+
+/* ---------------- Tabs ---------------- */
+var tabs = document.querySelectorAll(".tab");
+tabs.forEach(function(t){
+  t.addEventListener("click", function(){
+    tabs.forEach(function(x){ x.classList.remove("on"); });
+    t.classList.add("on");
+    document.querySelectorAll(".panel").forEach(function(p){ p.classList.remove("on"); });
+    document.getElementById("p"+"-"+t.dataset.p).classList.add("on");
+    window.scrollTo({top:0,behavior:"smooth"});
+  });
+});
+var uaBtn = document.getElementById("uaBtn");
+uaBtn.addEventListener("click", function(){
+  document.body.classList.toggle("no-ua");
+  uaBtn.textContent = document.body.classList.contains("no-ua") ? "UA-Hinweise ein" : "UA-Hinweise aus";
+});
+
+/* ---------------- Konnektoren-Detektor ---------------- */
+var GRUPPE = ["Konjunktion · Position 0","Verbindungsadverb · Position 1","Subjunktion · Verb am Ende","Zweiteiliger Konnektor","Präposition"];
+var STELLUNG = [
+  "Der Konnektor zählt nicht mit: danach Subjekt, dann Verb.",
+  "Der Konnektor steht im Vorfeld: Verb sofort danach, Subjekt erst nach dem Verb.",
+  "Nebensatz: das konjugierte Verb steht ganz am Ende.",
+  "Der zweite Teil steht schon im Satz – er verrät die Lösung.",
+  "Kein Verb danach, sondern Artikel + Nomen. Der Kasus entscheidet."
+];
+var K = [
+ {w:"und",g:0,b:"Aufzählung",s:"Ich prüfe das Angebot <b>und</b> melde mich danach."},
+ {w:"aber",g:0,b:"Gegensatz",s:"Der Preis ist hoch, <b>aber</b> die Qualität stimmt."},
+ {w:"denn",g:0,b:"Grund",s:"Wir liefern später, <b>denn</b> der Hersteller hat Probleme.",n:"Wie weil, aber mit Hauptsatzstellung: denn + Subjekt + Verb."},
+ {w:"sondern",g:0,b:"Korrektur nach Verneinung",s:"Nicht der Preis zählt, <b>sondern</b> die Qualität.",n:"Nur nach nicht / kein. Sonst aber."},
+ {w:"daher",g:1,b:"Folge",s:"Der Termin passt nicht. <b>Daher</b> schlage ich Donnerstag vor.",n:"= deshalb, deswegen, darum, folglich, somit."},
+ {w:"deshalb",g:1,b:"Folge",s:"Die Ware fehlt, <b>deshalb</b> können wir nicht ausliefern."},
+ {w:"folglich",g:1,b:"Folge, formell",s:"Die Frist ist abgelaufen, <b>folglich</b> verfällt der Anspruch."},
+ {w:"trotzdem",g:1,b:"Gegensatz",s:"Er ist neu, <b>trotzdem</b> arbeitet er selbstständig.",n:"Nebensatzvariante: obwohl. Präposition: trotz + Genitiv."},
+ {w:"dennoch",g:1,b:"Gegensatz, formell",s:"Die Kosten steigen. <b>Dennoch</b> halten wir am Projekt fest."},
+ {w:"allerdings",g:1,b:"Einschränkung",s:"Das Haus wurde empfohlen, <b>allerdings</b> kennen wir es nicht."},
+ {w:"jedoch",g:1,b:"Gegensatz",s:"Die Ware ist da. Die Rechnung fehlt <b>jedoch</b> noch.",n:"Kann auf Position 1 oder im Mittelfeld stehen."},
+ {w:"außerdem",g:1,b:"Hinzufügung",s:"<b>Außerdem</b> benötigen wir ein Angebot für das Catering.",n:"= zudem, darüber hinaus."},
+ {w:"dabei",g:1,b:"gleichzeitig / bei dieser Tätigkeit",s:"Ich betreue drei Standorte. <b>Dabei</b> ist Englisch meine Arbeitssprache.",n:"Nennt keinen Grund und keine Folge – das unterscheidet dabei von daher."},
+ {w:"dann",g:1,b:"Zeitfolge",s:"Zuerst prüfen wir das Angebot, <b>dann</b> entscheiden wir."},
+ {w:"sonst",g:1,b:"negative Folge",s:"Bitte antworten Sie heute, <b>sonst</b> verfällt die Reservierung."},
+ {w:"stattdessen",g:1,b:"Ersatz",s:"Die Töpfe sind vergriffen. <b>Stattdessen</b> liefern wir rote Modelle."},
+ {w:"weil",g:2,b:"Grund",s:"Wir liefern später, <b>weil</b> der Hersteller Probleme hat.",n:"da = weil, steht aber gern am Satzanfang mit bekanntem Grund."},
+ {w:"da",g:2,b:"Grund (bekannt)",s:"<b>Da</b> Sie langjährige Kundin sind, gewähren wir einen Rabatt."},
+ {w:"obwohl",g:2,b:"Gegensatz",s:"<b>Obwohl</b> er neu ist, arbeitet er selbstständig."},
+ {w:"indem",g:2,b:"Art und Weise · wodurch?",s:"Ich senke die Kosten, <b>indem</b> ich die Prozesse automatisiere.",n:"Beide Teile haben dasselbe Subjekt. Nicht mit damit (Ziel) verwechseln."},
+ {w:"damit",g:2,b:"Ziel · wozu?",s:"Ich schicke die Datei früher, <b>damit</b> das Team sie prüfen kann.",n:"Bei gleichem Subjekt besser: um … zu."},
+ {w:"sodass",g:2,b:"Folge",s:"Die Kartons sind beschriftet, <b>sodass</b> die Spedition sie zuordnen kann."},
+ {w:"falls",g:2,b:"Bedingung",s:"<b>Falls</b> Sie den Termin nicht einhalten können, informieren Sie mich bitte."},
+ {w:"bevor",g:2,b:"Zeit · vorher",s:"<b>Bevor</b> Sie mit dem Packen beginnen, sortieren Sie alte Unterlagen aus."},
+ {w:"nachdem",g:2,b:"Zeit · danach",s:"<b>Nachdem</b> die Technik installiert worden ist, richten wir die Plätze ein.",n:"Zeitenfolge: Nebensatz eine Stufe früher (Perfekt / Plusquamperfekt)."},
+ {w:"sobald",g:2,b:"Zeit · unmittelbar danach",s:"<b>Sobald</b> die Arbeiten fertig sind, ziehen wir um."},
+ {w:"während",g:2,b:"Zeit / Gegensatz",s:"<b>Während</b> die Technik läuft, packen wir die Kartons.",n:"Als Präposition: während + Genitiv (während des Umbaus)."},
+ {w:"wie",g:2,b:"Verweis / Vergleich",s:"…, <b>wie</b> Sie dem Praktikumszeugnis entnehmen können."},
+ {w:"wo",g:2,b:"Ort (Relativadverb)",s:"Ich war bei einer Firma, <b>wo</b> ich viel gelernt habe."},
+ {w:"wobei",g:2,b:"Einschränkung / gleichzeitig",s:"Wir starten im April, <b>wobei</b> zunächst nur ein Gericht getestet wird."},
+ {w:"sowohl … als auch",g:3,b:"beides",s:"<b>Sowohl</b> Server als auch Netzwerke gehören dazu."},
+ {w:"nicht nur … sondern auch",g:3,b:"Hinzufügung",s:"Ich betreue nicht nur die Zentrale, <b>sondern auch</b> die Standorte."},
+ {w:"entweder … oder",g:3,b:"Alternative",s:"<b>Entweder</b> liefern wir Ersatz <b>oder</b> wir erstatten den Betrag."},
+ {w:"weder … noch",g:3,b:"doppelte Verneinung",s:"Wir haben <b>weder</b> eine Bestätigung <b>noch</b> eine Rechnung erhalten."},
+ {w:"zwar … aber",g:3,b:"Einräumung",s:"Der Umzug ist <b>zwar</b> für November geplant, <b>aber</b> der Termin steht nicht fest."},
+ {w:"je … desto",g:3,b:"Proportion",s:"<b>Je</b> mehr Erfahrung man hat, <b>desto</b> leichter findet man eine Stelle.",n:"je + Komparativ + Verb am Ende, dann desto + Komparativ + Verb."},
+ {w:"für",g:4,b:"Zweck · + Akkusativ",s:"Wir suchen Räume <b>für</b> 25 Mitarbeitende."},
+ {w:"um",g:4,b:"+ Akkusativ (bitten um)",s:"Wir bitten Sie <b>um</b> ein Angebot."},
+ {w:"auf",g:4,b:"Wechselpräposition",s:"Wir sind <b>auf</b> Ihr Unternehmen aufmerksam geworden.",n:"Wohin? Akkusativ. Wo? Dativ. In festen Wendungen zählt die Wendung."},
+ {w:"an",g:4,b:"Wechselpräposition",s:"Bitte wenden Sie sich <b>an</b> Frau Wolf.",n:"sich wenden an + A, aber teilnehmen an + D."},
+ {w:"bei",g:4,b:"+ Dativ",s:"<b>Bei</b> Rückfragen erreichen Sie mich jederzeit."},
+ {w:"gemäß",g:4,b:"+ Dativ, formell",s:"<b>Gemäß</b> dem Tarifvertrag steht jedem Urlaubsgeld zu.",n:"Ebenso: laut, entsprechend, dank + Dativ."},
+ {w:"trotz",g:4,b:"+ Genitiv",s:"<b>Trotz</b> des schlechten Wetters fand die Messe statt."},
+ {w:"wegen",g:4,b:"+ Genitiv",s:"<b>Wegen</b> der Krankheit konnte er nicht kommen.",n:"Ebenso: aufgrund, während, innerhalb + Genitiv."}
+];
+var chips = document.getElementById("chips"), det = document.getElementById("detBox");
+K.forEach(function(k,i){
+  var b = document.createElement("button");
+  b.className = "chip"; b.dataset.g = k.g; b.dataset.i = i; b.textContent = k.w;
+  chips.appendChild(b);
+});
+chips.addEventListener("click", function(e){
+  var b = e.target.closest(".chip"); if(!b) return;
+  chips.querySelectorAll(".chip").forEach(function(c){ c.classList.remove("on"); });
+  b.classList.add("on");
+  var k = K[+b.dataset.i];
+  det.className = "g"+k.g;
+  det.innerHTML = '<p class="typ">'+GRUPPE[k.g]+'</p>'+
+    '<p class="wort">'+k.w+'</p>'+
+    '<p class="note"><b>Bedeutung:</b> '+k.b+'</p>'+
+    '<p class="note"><b>Verbstellung:</b> '+STELLUNG[k.g]+'</p>'+
+    '<p class="bsp">'+k.s+'</p>'+
+    (k.n ? '<p class="note">'+k.n+'</p>' : '');
+});
+
+/* ---------------- Schnelltraining ---------------- */
+var TAGS = {V:["Verbstellung","var(--g1)"], K:["Kasus","var(--g4)"], B:["Bedeutung","var(--g2)"], Z:["Zweiteilig","var(--g3)"]};
+var D = [
+ {s:"Die Lieferung war unvollständig, ___ konnten wir viele Bestellungen nicht ausliefern.",o:["deshalb","weil","obwohl"],r:0,t:"V",
+  e:"Direkt nach der Lücke steht das Verb <b>konnten</b>. Nur ein Adverb der Gruppe „Position 1“ erlaubt das. Mit weil/obwohl müsste das Verb ans Ende: „…, weil wir … nicht ausliefern konnten.“"},
+ {s:"Wir konnten nicht liefern, ___ die Ware nicht rechtzeitig ankam.",o:["darum","da","trotzdem"],r:1,t:"V",
+  e:"Das Verb <b>ankam</b> steht am Ende → Subjunktion. <i>da</i> = weil. Nach darum/trotzdem müsste es heißen: „…, darum kam die Ware nicht an.“"},
+ {s:"Er verbessert seine Aussprache, ___ er jeden Tag laut liest.",o:["indem","dadurch","damit"],r:0,t:"B",
+  e:"Gefragt ist das <b>Mittel</b> (wodurch?) → indem. <i>damit</i> wäre ein Ziel (wozu?), <i>dadurch</i> ist ein Adverb und verlangt Verb an Position 2."},
+ {s:"Ich betreue drei Standorte. ___ ist Englisch meine tägliche Arbeitssprache.",o:["Dabei","Deshalb","Damit"],r:0,t:"B",
+  e:"<b>Dabei</b> = bei dieser Tätigkeit, gleichzeitig. Der erste Satz nennt keinen Grund, also passt deshalb nicht; damit hieße „mit diesem Mittel“."},
+ {s:"Der Kollege ist neu, ___ arbeitet er sehr selbstständig.",o:["dennoch","obwohl","sondern"],r:0,t:"V",
+  e:"Verb <b>arbeitet</b> direkt nach der Lücke, Subjekt danach → Adverb mit Inversion. obwohl bräuchte Endstellung, sondern eine Verneinung davor."},
+ {s:"___ er noch neu ist, arbeitet er sehr selbstständig.",o:["Trotzdem","Obwohl","Jedoch"],r:1,t:"V",
+  e:"Das Verb <b>ist</b> steht am Ende des ersten Teilsatzes → Subjunktion. Merken Sie sich das Paar: obwohl (Nebensatz) ↔ trotzdem (Adverb) ↔ trotz + Genitiv (Präposition)."},
+ {s:"Wir bieten nicht nur Beratung an, ___ auch Schulungen.",o:["aber","sondern","außerdem"],r:1,t:"Z",
+  e:"Signalwörter: <b>nicht nur … sondern auch</b>. Das <i>auch</i> hinter der Lücke ist der Beweis."},
+ {s:"___ die Kolleginnen als auch die Kunden waren mit dem Ergebnis zufrieden.",o:["Sowohl","Entweder","Weder"],r:0,t:"Z",
+  e:"<b>als auch</b> steht bereits im Satz und gehört fest zu <b>sowohl</b>. entweder verlangt oder, weder verlangt noch."},
+ {s:"Bitte informieren Sie mich, ___ Sie den Termin nicht einhalten können.",o:["falls","sonst","trotzdem"],r:0,t:"V",
+  e:"Verb <b>können</b> am Ende → Subjunktion, hier Bedingung: falls = wenn. sonst und trotzdem sind Adverbien."},
+ {s:"Das Hotel wurde uns empfohlen, ___ kennen wir es bisher nicht persönlich.",o:["allerdings","obwohl","denn"],r:0,t:"V",
+  e:"Nach der Lücke steht sofort <b>kennen</b>, danach das Subjekt <i>wir</i> → Adverb auf Position 1. <i>allerdings</i> drückt die Einschränkung aus."},
+ {s:"Man war mit meiner Leistung sehr zufrieden, ___ Sie dem Zeugnis entnehmen können.",o:["wie","was","wobei"],r:0,t:"B",
+  e:"Verweis auf eine Quelle: <b>wie</b> Sie … entnehmen können. Standardformel in Bewerbungen."},
+ {s:"Ich habe mein Praktikum bei einer Firma absolviert, ___ ich viel über Netzwerke gelernt habe.",o:["wo","wohin","wie"],r:0,t:"B",
+  e:"Bezug auf einen <b>Ort</b> (die Firma) ohne Bewegung → wo. wohin bräuchte eine Bewegung dorthin."},
+ {s:"___ des schlechten Wetters fand die Messe wie geplant statt.",o:["Trotz","Obwohl","Dennoch"],r:0,t:"K",
+  e:"Nach der Lücke steht kein Verb, sondern <b>des Wetters</b> im Genitiv → Präposition trotz. obwohl bräuchte einen Nebensatz, dennoch ein Verb."},
+ {s:"Zuerst prüfen wir das Angebot, ___ entscheiden wir gemeinsam.",o:["danach","nachdem","bevor"],r:0,t:"V",
+  e:"Verb <b>entscheiden</b> direkt hinter der Lücke → Adverb. Mit nachdem/bevor stünde das Verb am Ende."},
+ {s:"___ wir das Angebot geprüft hatten, entschieden wir uns für die zweite Variante.",o:["Nachdem","Danach","Bevor"],r:0,t:"B",
+  e:"Verb am Ende → Subjunktion. Die Zeitenfolge (Plusquamperfekt <i>hatten geprüft</i> vor Präteritum) zeigt: das Prüfen war zuerst → nachdem."},
+ {s:"Je besser die Vorbereitung ist, ___ ruhiger bleibt man in der Prüfung.",o:["desto","als","dann"],r:0,t:"Z",
+  e:"Zweiteilig: <b>je</b> + Komparativ (Verb am Ende) … <b>desto</b> + Komparativ (Verb direkt danach)."},
+ {s:"Unser besonderes Interesse gilt ___ Sortiment an Wanderkleidung.",o:["Ihr","Ihrem","Ihres"],r:1,t:"K",
+  e:"<b>gelten</b> verlangt den Dativ: wem gilt das Interesse? → Ihrem Sortiment. Zu dieser Gruppe gehören auch helfen, danken, gefallen, entsprechen."},
+ {s:"Für Ihre schnelle Antwort danke ich ___ herzlich.",o:["Sie","Ihnen","Ihrer"],r:1,t:"K",
+  e:"<b>danken</b> + Dativ (jemandem danken) und gleichzeitig <b>für</b> + Akkusativ (für etwas)."},
+ {s:"Wir bitten ___ um Verständnis für die Verzögerung.",o:["Sie","Ihnen","Ihrer"],r:0,t:"K",
+  e:"<b>bitten</b> + Akkusativ der Person + <b>um</b> + Akkusativ der Sache. Verwechslungsgefahr mit danken (+ Dativ)."},
+ {s:"Auf der Hannover Messe sind wir auf ___ Unternehmen aufmerksam geworden.",o:["Ihr","Ihrem","Ihres"],r:0,t:"K",
+  e:"Feste Wendung <b>aufmerksam werden auf</b> + Akkusativ. Hier ist <i>auf</i> keine Ortsangabe, deshalb hilft die Wohin/Wo-Frage nicht."},
+ {s:"Wir legen großen Wert auf ___ Qualität.",o:["gute","guter","guten"],r:0,t:"K",
+  e:"<b>Wert legen auf</b> + Akkusativ. Femininum ohne Artikel im Akkusativ: gut<b>e</b> Qualität."},
+ {s:"Die Unterlagen liegen ___ Personalabteilung.",o:["in die","in der","in den"],r:1,t:"K",
+  e:"Frage <b>Wo?</b> → Wechselpräposition mit Dativ: in der Personalabteilung. Das Verb <i>liegen</i> beschreibt keinen Ortswechsel."},
+ {s:"Bitte legen Sie den unterschriebenen Antrag ___ Schreibtisch.",o:["auf den","auf dem","auf das"],r:0,t:"K",
+  e:"Frage <b>Wohin?</b> → Akkusativ: auf den Schreibtisch. Verben wie legen, stellen, hängen zeigen eine Bewegung mit Ziel."},
+ {s:"Ich nehme regelmäßig ___ internen Fortbildungen teil.",o:["an den","an die","auf den"],r:0,t:"K",
+  e:"<b>teilnehmen an</b> + Dativ. Plural Dativ: an den Fortbildungen."},
+ {s:"Der Abteilungsleiter muss ___ Antrag spätestens 14 Tage vorher unterschreiben.",o:["dem","den","des"],r:1,t:"K",
+  e:"<b>unterschreiben</b> hat ein Akkusativobjekt: Wen oder was? → den Antrag."},
+ {s:"Könnten Sie ___ bitte die aktuelle Preisliste zusenden?",o:["mich","mir","meiner"],r:1,t:"K",
+  e:"<b>zusenden</b> hat zwei Objekte: Person im Dativ (mir), Sache im Akkusativ (die Preisliste). Genauso: geben, schicken, anbieten, mitteilen."},
+ {s:"___ dem gültigen Tarifvertrag steht jedem Mitarbeiter Urlaubsgeld zu.",o:["Gemäß","Wegen","Für"],r:0,t:"K",
+  e:"<b>gemäß</b> + Dativ (dem Tarifvertrag). wegen verlangt Genitiv, für den Akkusativ."},
+ {s:"___ der Krankheit seiner Tochter konnte er den Termin nicht wahrnehmen.",o:["Wegen","Weil","Denn"],r:0,t:"K",
+  e:"Nach der Lücke folgt eine Nominalgruppe im Genitiv (<b>der Krankheit</b>) → Präposition wegen. weil und denn bräuchten einen ganzen Satz."},
+ {s:"Wir automatisieren die Überwachung, ___ die Ausfallzeiten sinken.",o:["sodass","indem","damit"],r:0,t:"B",
+  e:"Hier steht die <b>Folge</b>, die sich von selbst ergibt → sodass. indem wäre das Mittel, damit eine bewusste Absicht (dann meist mit <i>können/sollen</i>)."},
+ {s:"Der Umzug ist ___ für November geplant, ein genauer Termin steht aber noch nicht fest.",o:["zwar","sowohl","weder"],r:0,t:"Z",
+  e:"Das <b>aber</b> im zweiten Teil verlangt <b>zwar</b>: erst zugeben, dann einschränken."}
+];
+
+var liste = document.getElementById("drillListe");
+var stand = {r:0,f:0,n:0};
+function baueDrill(){
+  liste.innerHTML = "";
+  stand = {r:0,f:0,n:0}; zeigeStand();
+  D.forEach(function(it,i){
+    var d = document.createElement("div"); d.className = "item";
+    var satz = it.s.replace("___","<u>&nbsp;</u>");
+    var btns = it.o.map(function(o,j){ return '<button data-i="'+i+'" data-j="'+j+'">'+o+'</button>'; }).join("");
+    d.innerHTML = '<p class="nr">Aufgabe '+(i+1)+'</p><p class="satz">'+satz+'</p>'+
+      '<div class="wahl">'+btns+'</div>'+
+      '<div class="erk" id="e'+i+'"><span class="tag" style="background:'+TAGS[it.t][1]+'">'+TAGS[it.t][0]+'</span>'+it.e+'</div>';
+    liste.appendChild(d);
+  });
+}
+liste.addEventListener("click", function(e){
+  var b = e.target.closest(".wahl button"); if(!b || b.disabled) return;
+  var i = +b.dataset.i, j = +b.dataset.j, it = D[i];
+  var wahl = b.parentNode;
+  wahl.querySelectorAll("button").forEach(function(x){ x.disabled = true; });
+  wahl.querySelectorAll("button")[it.r].classList.add("richtig");
+  if(j !== it.r){ b.classList.add("falsch"); stand.f++; } else { stand.r++; }
+  stand.n++;
+  document.getElementById("e"+i).classList.add("show");
+  zeigeStand();
+});
+function zeigeStand(){
+  document.getElementById("dRichtig").textContent = stand.r;
+  document.getElementById("dFalsch").textContent = stand.f;
+  document.getElementById("dGesamt").textContent = stand.n;
+}
+document.getElementById("dReset").addEventListener("click", baueDrill);
+baueDrill();
+
+/* ---------------- Prüfungstraining ---------------- */
+var LOES = {
+ 46:["b","<b>Bewerbung auf</b> die ausgeschriebene Stelle – feste Verbindung. Nach der Lücke steht kein Verb, sondern eine Nominalgruppe: Sie brauchen eine Präposition."],
+ 47:["h","<b>als auch</b> steht schon im Satz → sowohl … als auch. Zweiteiliger Konnektor."],
+ 48:["g","<b>nicht nur … sondern auch</b>: das <i>nicht nur</i> davor und das <i>auch</i> danach sind die Signale."],
+ 49:["e","Das Verb <b>automatisiert habe</b> steht am Ende → Subjunktion. Inhalt: Mittel/Methode (wodurch?) → indem."],
+ 50:["d","Nach der Lücke folgt sofort das Verb <b>bewerbe</b> → Adverb auf Position 1. Inhalt: Folge aus dem Vorsatz → daher."],
+ 51:["i","<b>sich freuen über</b> + Akkusativ. Das Objekt steht hier im Vorfeld: „Über eine Einladung … freue ich mich.“"],
+ 52:["e","Zweck: Schulung <b>für</b> 25 Mitarbeitende – für + Akkusativ. Nach der Lücke steht eine Nominalgruppe, kein Verb."],
+ 53:["a","Direkt nach der Lücke steht <b>kennen</b>, danach das Subjekt <i>wir</i> → Adverb mit Inversion. Bedeutung: Einschränkung → allerdings. (denn und obwohl verlangen eine andere Wortstellung.)"],
+ 54:["j","<b>während</b> als Präposition + Genitiv: während des genannten Zeitraums. Verwechslungsgefahr mit bei + Dativ – hier steht aber <i>des Zeitraums</i>."],
+ 55:["c","Verb <b>können</b> am Ende → Subjunktion. Inhalt: Absicht/Ziel (wozu?) → damit."],
+ 56:["i","<b>bitten um</b> + Akkusativ: Wir bitten Sie um ein Angebot."],
+ 57:["b","<b>Bei Rückfragen</b> erreichen Sie mich – feste Schlussformel im Geschäftsbrief, bei + Dativ."],
+ 58:["f","Verb <b>sind</b> am Ende → Subjunktion. Zeit: unmittelbar danach → sobald. (nachdem wird für 60 gebraucht.)"],
+ 59:["j","Das <b>aber</b> im zweiten Teilsatz verlangt <b>zwar</b>: zwar … aber."],
+ 60:["e","Verb <b>installiert worden ist</b> am Ende → Subjunktion. Das Perfekt vor dem Präsens zeigt: erst installieren, dann einrichten → nachdem."],
+ 61:["a","<b>sich wenden an</b> + Akkusativ (an Frau Wolf). Nicht mit <i>sich melden bei</i> verwechseln."],
+ 62:["g","Verb <b>kann</b> am Ende → Subjunktion. Inhalt: Folge → sodass."],
+ 63:["c","Verb <b>beginnen</b> am Ende → Subjunktion. Das Aussortieren passiert vorher → bevor."]
+};
+var TEXTE = {A:[46,47,48,49,50,51], B:[52,53,54,55,56,57], C:[58,59,60,61,62,63]};
+
+document.querySelectorAll(".bogen").forEach(function(el){
+  var q = el.dataset.q, opts = el.dataset.opts.split(" ");
+  var h = '<span class="num">'+q+'</span>';
+  opts.forEach(function(o){
+    h += '<label class="bub" data-opt="'+o+'"><input type="radio" name="q'+q+'" value="'+o+'" aria-label="Lücke '+q+', Antwort '+o+'"><span class="dot"></span><span class="lbl">'+o+'</span></label>';
+  });
+  h += '<span class="num">'+q+'</span>';
+  el.innerHTML = h;
+  var fb = document.createElement("div"); fb.className = "fb"; fb.id = "fb"+q;
+  el.parentNode.insertBefore(fb, el.nextSibling);
+});
+
+document.addEventListener("change", function(e){
+  if(e.target && e.target.type === "radio") pruefeDoppelt();
+});
+function pruefeDoppelt(){
+  Object.keys(TEXTE).forEach(function(t){
+    var werte = TEXTE[t].map(function(q){
+      var g = document.querySelector('input[name="q'+q+'"]:checked'); return g ? g.value : null;
+    }).filter(Boolean);
+    var doppelt = werte.length !== new Set(werte).size;
+    document.getElementById("warn"+t).classList.toggle("show", doppelt);
+  });
+}
+
+document.querySelectorAll("[data-check]").forEach(function(btn){
+  btn.addEventListener("click", function(){
+    var t = btn.dataset.check, p = 0;
+    TEXTE[t].forEach(function(q){
+      var richtig = LOES[q][0], grund = LOES[q][1];
+      var gew = document.querySelector('input[name="q'+q+'"]:checked');
+      var box = document.querySelector('.bogen[data-q="'+q+'"]');
+      box.querySelectorAll(".bub").forEach(function(b){
+        b.classList.remove("is-correct","is-wrong","is-key");
+        if(b.dataset.opt === richtig) b.classList.add("is-key");
+      });
+      var fb = document.getElementById("fb"+q);
+      if(gew && gew.value === richtig){
+        p++;
+        box.querySelector('.bub[data-opt="'+richtig+'"]').classList.add("is-correct");
+        fb.className = "fb ok show";
+        fb.innerHTML = '<span class="tag">Richtig</span>'+grund;
+      } else {
+        if(gew) box.querySelector('.bub[data-opt="'+gew.value+'"]').classList.add("is-wrong");
+        fb.className = "fb bad show";
+        fb.innerHTML = '<span class="tag">'+(gew ? "Falsch" : "Nicht bearbeitet")+'</span>Lösung: <b>'+richtig+'</b> – '+grund;
+      }
+    });
+    document.getElementById("erg"+t).textContent = p + " von 6 richtig";
+    document.getElementById("erg"+t).style.color = p >= 4 ? "var(--ok)" : "var(--bad)";
+  });
+});
+/* ---------------- Verbergänzungen: Sortierspiel ---------------- */
+var KAT = ["nur Nominativ","Nominativ + Akkusativ","Nominativ + Akkusativ + Dativ","Nominativ + Dativ"];
+var V = [
+ {v:"arbeiten",k:0,b:"Meine Kollegin <b>arbeitet</b> seit Januar im Homeoffice."},
+ {v:"blühen",k:0,b:"Vor dem Bürogebäude <b>blühen</b> die Rosen."},
+ {v:"scheinen",k:0,b:"Die Lösung <b>scheint</b> einfach.",n:"Auch: Es scheint, dass … – nie mit Akkusativ."},
+ {v:"sein",k:0,b:"Er <b>ist</b> Systemadministrator.",n:"Zweite Ergänzung im Nominativ, nicht im Akkusativ."},
+ {v:"werden",k:0,b:"Sie <b>wird</b> Teamleiterin.",n:"Wie sein und heißen: Nominativ + Nominativ."},
+ {v:"heißen",k:0,b:"Der neue Kollege <b>heißt</b> Herr Vogel.",n:"Nominativ + Nominativ."},
+ {v:"sprechen",k:0,b:"Ich <b>spreche</b> morgen mit dem Abteilungsleiter.",n:"Grundplan: nur Nominativ + Präposition (mit/über). Mit Sprachen auch Akkusativ: Ich spreche Deutsch."},
+ {v:"bearbeiten",k:1,b:"Ich <b>bearbeite</b> die Reklamation noch heute."},
+ {v:"reparieren",k:1,b:"Der Techniker <b>repariert</b> den Kühlschrank."},
+ {v:"kopieren",k:1,b:"Bitte <b>kopieren</b> Sie den Vertrag.",n:"Freier Dativ möglich: Kopieren Sie mir den Vertrag."},
+ {v:"lesen",k:1,b:"Sie <b>liest</b> das Protokoll."},
+ {v:"treffen",k:1,b:"Wir <b>treffen</b> den Kunden um 14 Uhr."},
+ {v:"kaufen",k:1,b:"Die Firma <b>kauft</b> neue Geräte.",n:"Freier Dativ möglich: Ich kaufe dir einen Kaffee."},
+ {v:"suchen",k:1,b:"Wir <b>suchen</b> qualifiziertes Küchenpersonal."},
+ {v:"brauchen",k:1,b:"Ich <b>brauche</b> Ihre Rückmeldung bis Freitag."},
+ {v:"bestellen",k:1,b:"Er hat einen neuen Kühlschrank <b>bestellt</b>.",n:"Freier Dativ möglich: Er bestellt uns die Ware."},
+ {v:"haben",k:1,b:"Jeder Mitarbeiter <b>hat</b> Anspruch auf 25 Urlaubstage."},
+ {v:"nehmen",k:1,b:"<b>Nehmen</b> Sie bitte den Antrag mit."},
+ {v:"gründen",k:1,b:"Sie hat vor zwei Jahren eine eigene Firma <b>gegründet</b>."},
+ {v:"leihen",k:2,b:"Können Sie <b>mir</b> (D) <b>Ihr Ladekabel</b> (A) leihen?"},
+ {v:"bringen",k:2,b:"Der Lieferant bringt <b>uns</b> (D) <b>die Ersatzteile</b> (A)."},
+ {v:"erklären",k:2,b:"Ich erkläre <b>Ihnen</b> (D) <b>die Arbeitsabläufe</b> (A)."},
+ {v:"schicken",k:2,b:"Wir schicken <b>Ihnen</b> (D) <b>das Angebot</b> (A) noch heute."},
+ {v:"wünschen",k:2,b:"Wir wünschen <b>euch</b> (D) <b>einen guten Start</b> (A)."},
+ {v:"erzählen",k:2,b:"Er erzählt <b>den Azubis</b> (D) <b>die Firmengeschichte</b> (A)."},
+ {v:"helfen",k:3,b:"Ich <b>helfe dem neuen Kollegen</b> bei der Einarbeitung.",n:"Nie „ich helfe den Kollegen“ im Singular-Akkusativ – helfen verlangt Dativ."},
+ {v:"danken",k:3,b:"Ich <b>danke Ihnen</b> für die schnelle Antwort.",n:"danken + Dativ (Person) + für + Akkusativ (Sache)."},
+ {v:"gratulieren",k:3,b:"Wir <b>gratulieren Frau Helmer</b> zum Dienstjubiläum."},
+ {v:"schmecken",k:3,b:"Das vegane Gericht <b>schmeckt den Mitarbeitenden</b> sehr gut."},
+ {v:"glauben",k:3,b:"Ich <b>glaube dir</b>.",n:"Person im Dativ. Eine Sache steht im Akkusativ: Ich glaube das nicht."},
+ {v:"wehtun",k:3,b:"Nach acht Stunden am Bildschirm <b>tut mir</b> der Rücken <b>weh</b>."},
+ {v:"gehören",k:3,b:"Der Laptop <b>gehört der Firma</b>.",n:"gehören zu + Dativ = Teil von etwas sein."}
+];
+var reihe = [], pos = 0, vRichtig = 0, fehler = [];
+var vWort = document.getElementById("vWort"), vFb = document.getElementById("vFb"),
+    vKatz = document.getElementById("vKatz"), vWeiter = document.getElementById("vWeiter"),
+    vBilanz = document.getElementById("vBilanz");
+document.getElementById("vGes").textContent = V.length;
+
+function mischen(a){
+  a = a.slice();
+  for(var i=a.length-1;i>0;i--){ var j = Math.floor(Math.random()*(i+1)); var t=a[i]; a[i]=a[j]; a[j]=t; }
+  return a;
+}
+function neuesSpiel(){
+  reihe = mischen(V); pos = 0; vRichtig = 0; fehler = [];
+  vBilanz.classList.remove("show"); vBilanz.innerHTML = "";
+  zeigeVerb();
+}
+function zeigeVerb(){
+  if(pos >= reihe.length){ bilanz(); return; }
+  document.getElementById("vNr").textContent = pos+1;
+  document.getElementById("vRichtig").textContent = vRichtig;
+  vWort.textContent = reihe[pos].v;
+  vFb.className = "vfb"; vFb.innerHTML = "";
+  vWeiter.style.display = "none";
+  vKatz.querySelectorAll("button").forEach(function(b){ b.disabled = false; b.className = ""; });
+  document.getElementById("vLeiste").style.width = Math.round(pos/reihe.length*100)+"%";
+}
+vKatz.addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b || b.disabled) return;
+  var gewaehlt = +b.dataset.k, it = reihe[pos];
+  vKatz.querySelectorAll("button").forEach(function(x){ x.disabled = true; });
+  vKatz.querySelector('button[data-k="'+it.k+'"]').classList.add("richtig");
+  if(gewaehlt === it.k){ vRichtig++; }
+  else { b.classList.add("falsch"); fehler.push(it); }
+  vFb.className = "vfb show";
+  vFb.innerHTML = '<b>'+it.v+'</b> → '+KAT[it.k]+'<p class="bsp">'+it.b+'</p>'+(it.n ? '<p style="margin:6px 0 0">'+it.n+'</p>' : '');
+  document.getElementById("vRichtig").textContent = vRichtig;
+  vWeiter.style.display = "inline-block";
+  vWeiter.textContent = (pos === reihe.length-1) ? "Ergebnis anzeigen" : "Nächstes Verb";
+});
+vWeiter.addEventListener("click", function(){ pos++; zeigeVerb(); });
+document.getElementById("vNeu").addEventListener("click", neuesSpiel);
+function bilanz(){
+  document.getElementById("vLeiste").style.width = "100%";
+  vWort.textContent = vRichtig + " / " + V.length;
+  document.getElementById("vFrage").textContent = "Durchgang beendet";
+  vFb.className = "vfb"; vWeiter.style.display = "none";
+  vKatz.querySelectorAll("button").forEach(function(b){ b.disabled = true; b.className = ""; });
+  var h = fehler.length
+    ? "<p>Diese Verben noch einmal ansehen:</p><ul><li>"+fehler.map(function(f){ return "<b>"+f.v+"</b> – "+KAT[f.k]; }).join("</li><li>")+"</li></ul>"
+    : "<p>Alle Verben richtig zugeordnet. Wiederholen Sie das Spiel in ein paar Tagen zur Sicherung.</p>";
+  vBilanz.innerHTML = h; vBilanz.classList.add("show");
+}
+neuesSpiel();
+
+var vListe = document.getElementById("vListe");
+vListe.innerHTML = KAT.map(function(name,i){
+  var w = V.filter(function(x){ return x.k === i; }).map(function(x){ return x.v; }).join(", ");
+  return '<p style="margin:10px 0 0"><b style="font-family:var(--sans);font-size:14px;color:var(--navy)">'+name+'</b><br>'+w+'</p>';
+}).join("");
+
+/* ---------------- Satzbau-Training ---------------- */
+var S = [
+ {vorgabe:"der Marketingleiter – hat vorgestellt – die Marketingkampagne – seine Mitarbeitenden",
+  l:["Der Marketingleiter","hat","seinen Mitarbeitenden","die Marketingkampagne","vorgestellt"],
+  r:"Zwei Nomen: Dativ vor Akkusativ. Wem? seinen Mitarbeitenden – Was? die Marketingkampagne. Das Partizip schließt die Satzklammer."},
+ {vorgabe:"der Marketingleiter – hat vorgestellt – sie (die Kampagne) – seine Mitarbeitenden",
+  l:["Der Marketingleiter","hat","sie","seinen Mitarbeitenden","vorgestellt"],
+  r:"Pronomen vor Nomen: das Akkusativpronomen sie steht vor dem Dativnomen."},
+ {vorgabe:"der Marketingleiter – hat vorgestellt – die Marketingkampagne – ihnen",
+  l:["Der Marketingleiter","hat","ihnen","die Marketingkampagne","vorgestellt"],
+  r:"Pronomen vor Nomen: hier steht das Dativpronomen ihnen zuerst."},
+ {vorgabe:"der Marketingleiter – hat vorgestellt – sie – ihnen",
+  l:["Der Marketingleiter","hat","sie","ihnen","vorgestellt"],
+  r:"Zwei Pronomen: Akkusativ vor Dativ – sie ihnen, nicht ihnen sie."},
+ {vorgabe:"die Kollegin – hat geschickt – das Formular – ich",
+  l:["Die Kollegin","hat","mir","das Formular","geschickt"],
+  r:"Pronomen mir (Dativ) vor dem Nomen im Akkusativ."},
+ {vorgabe:"die Kollegin – hat geschickt – es – ich",
+  l:["Die Kollegin","hat","es","mir","geschickt"],
+  r:"Zwei Pronomen: es (Akkusativ) vor mir (Dativ)."},
+ {vorgabe:"ich – habe erklärt – der Bericht – mein Chef",
+  l:["Ich","habe","meinem Chef","den Bericht","erklärt"],
+  r:"Zwei Nomen: Dativ (meinem Chef) vor Akkusativ (den Bericht)."},
+ {vorgabe:"ich – habe erklärt – er (der Bericht) – er (mein Chef)",
+  l:["Ich","habe","ihn","ihm","erklärt"],
+  r:"Zwei Pronomen: ihn (Akkusativ) vor ihm (Dativ)."},
+ {vorgabe:"wir – haben angeboten – ein Rabatt – der Kunde",
+  l:["Wir","haben","dem Kunden","einen Rabatt","angeboten"],
+  r:"Zwei Nomen: Dativ vor Akkusativ."},
+ {vorgabe:"bitte – senden Sie zu – die aktuelle Preisliste – ich",
+  l:["Bitte","senden Sie","mir","die aktuelle Preisliste","zu"],
+  r:"Pronomen mir zuerst, danach das Akkusativobjekt. Das trennbare Präfix zu steht am Ende."}
+];
+var satzListe = document.getElementById("satzListe");
+S.forEach(function(it,i){
+  var d = document.createElement("div"); d.className = "satzitem";
+  d.innerHTML = '<p class="vorgabe">'+(i+1)+' · '+it.vorgabe+'</p>'+
+    '<div class="bauzone" id="bz'+i+'"></div>'+
+    '<div class="teil" id="tl'+i+'"></div>'+
+    '<div class="aktion"><button class="prim" data-pruefe="'+i+'">Prüfen</button><button data-leeren="'+i+'">Zurücksetzen</button></div>'+
+    '<div class="erk" id="se'+i+'"></div>';
+  satzListe.appendChild(d);
+  fuelleTeile(i);
+});
+function fuelleTeile(i){
+  var tl = document.getElementById("tl"+i);
+  tl.innerHTML = mischen(S[i].l.map(function(w,j){ return {w:w,j:j}; }))
+    .map(function(o){ return '<button data-i="'+i+'" data-j="'+o.j+'">'+o.w+'</button>'; }).join("");
+  document.getElementById("bz"+i).innerHTML = "";
+  var e = document.getElementById("se"+i); e.className = "erk"; e.innerHTML = "";
+}
+satzListe.addEventListener("click", function(e){
+  var b = e.target.closest("button"); if(!b) return;
+  if(b.dataset.pruefe !== undefined){ pruefeSatz(+b.dataset.pruefe); return; }
+  if(b.dataset.leeren !== undefined){ fuelleTeile(+b.dataset.leeren); return; }
+  if(b.parentNode.classList.contains("teil") && !b.disabled){
+    var i = +b.dataset.i;
+    b.disabled = true;
+    var neu = document.createElement("button");
+    neu.textContent = b.textContent; neu.dataset.zurueck = b.dataset.j; neu.dataset.i = i;
+    document.getElementById("bz"+i).appendChild(neu);
+    return;
+  }
+  if(b.parentNode.classList.contains("bauzone")){
+    var k = +b.dataset.i;
+    document.querySelector('#tl'+k+' button[data-j="'+b.dataset.zurueck+'"]').disabled = false;
+    b.remove();
+  }
+});
+function pruefeSatz(i){
+  var gebaut = Array.prototype.map.call(document.querySelectorAll("#bz"+i+" button"), function(b){ return b.textContent; });
+  var e = document.getElementById("se"+i);
+  if(gebaut.length === 0){ e.className = "erk show"; e.innerHTML = '<span class="tag" style="background:var(--muted)">Leer</span>Bauen Sie den Satz zuerst aus den Wörtern.'; return; }
+  var loesung = S[i].l;
+  var ok = gebaut.length === loesung.length && gebaut.every(function(w,j){ return w === loesung[j]; });
+  e.className = "erk show";
+  e.innerHTML = ok
+    ? '<span class="tag" style="background:var(--ok)">Richtig</span>'+S[i].r
+    : '<span class="tag" style="background:var(--bad)">Noch nicht</span>Richtig ist: <b>'+loesung.join(" ")+'.</b><br>'+S[i].r;
+}
+
+document.getElementById("allesZurueck").addEventListener("click", function(){
+  document.querySelectorAll('.bogen input').forEach(function(i){ i.checked = false; });
+  document.querySelectorAll(".bub").forEach(function(b){ b.classList.remove("is-correct","is-wrong","is-key"); });
+  document.querySelectorAll(".fb").forEach(function(f){ f.className = "fb"; f.innerHTML = ""; });
+  ["A","B","C"].forEach(function(t){
+    document.getElementById("erg"+t).textContent = "";
+    document.getElementById("warn"+t).classList.remove("show");
+  });
+  window.scrollTo({top:0,behavior:"smooth"});
+});
+})();
+</script>
+</body>
+</html>
