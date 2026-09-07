@@ -1,0 +1,283 @@
+<title>Практики Шляху до істини</title>
+<style>
+  :root{
+    --bg:#ECE7DC; --surface:#FFFDF8; --surface-2:#F5F0E4;
+    --ink:#2B2620; --ink-soft:#5B5648; --line:#DCD4C2;
+    --accent:#5B3E8C; --accent-ink:#FFFFFF; --accent-soft:#EDE4FA;
+    --accent-2:#A8792B; --accent-2-soft:#F6ECD8;
+    --done:#3F7D4C; --done-soft:#E4F0E6;
+    --shadow: 0 1px 2px rgba(43,38,32,.06), 0 8px 24px -12px rgba(43,38,32,.18);
+    --radius: 14px;
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#17141D; --surface:#201C29; --surface-2:#252030;
+      --ink:#EDE8F5; --ink-soft:#B6AFC7; --line:#38324A;
+      --accent:#B79CF0; --accent-ink:#1B1626; --accent-soft:#2C2540;
+      --accent-2:#E0B15C; --accent-2-soft:#332A1C;
+      --done:#7FD79A; --done-soft:#1E2E22;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#17141D; --surface:#201C29; --surface-2:#252030;
+    --ink:#EDE8F5; --ink-soft:#B6AFC7; --line:#38324A;
+    --accent:#B79CF0; --accent-ink:#1B1626; --accent-soft:#2C2540;
+    --accent-2:#E0B15C; --accent-2-soft:#332A1C;
+    --done:#7FD79A; --done-soft:#1E2E22;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 12px 28px -14px rgba(0,0,0,.6);
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg); color:var(--ink); margin:0;
+    font-family:"PT Sans", "Segoe UI", Arial, sans-serif;
+    font-size:16px; line-height:1.55;}
+  h1,h2,h3{font-family:"Literata","Georgia",serif; font-weight:600; text-wrap:balance; margin:0;}
+
+  .shell{max-width:900px; margin:0 auto; padding:32px 20px 80px;}
+
+  header.page-header{margin-bottom:28px;}
+  .eyebrow{display:inline-block; font-size:.72rem; letter-spacing:.09em; text-transform:uppercase;
+    color:var(--accent-2); font-weight:700; margin-bottom:8px;}
+  h1{font-size:clamp(1.7rem, 1.3rem + 1.6vw, 2.3rem); color:var(--ink);}
+  .subtitle{color:var(--ink-soft); margin-top:8px; max-width:60ch; font-size:.98rem;}
+  .source-note{color:var(--ink-soft); font-size:.82rem; margin-top:10px;}
+
+  .progress-panel{margin-top:22px; background:var(--surface); border:1px solid var(--line);
+    border-radius:var(--radius); padding:16px 18px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; gap:10px;}
+  .progress-row{display:flex; justify-content:space-between; align-items:baseline; gap:12px; font-size:.9rem;}
+  .progress-row strong{font-variant-numeric:tabular-nums; color:var(--ink);}
+  .progress-track{height:8px; border-radius:999px; background:var(--surface-2); overflow:hidden;}
+  .progress-fill{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent-2));
+    transition:width .3s ease; border-radius:999px;}
+  .panel-actions{display:flex; justify-content:flex-end;}
+  #reset-btn{font-family:inherit; font-size:.78rem; color:var(--ink-soft); background:none;
+    border:1px solid var(--line); border-radius:999px; padding:5px 12px; cursor:pointer;}
+  #reset-btn:hover{color:var(--ink); border-color:var(--accent);}
+  #reset-btn[data-armed="true"]{color:#B5473F; border-color:#B5473F;}
+
+  nav.legend{display:flex; flex-wrap:wrap; gap:8px 14px; margin-top:18px; font-size:.82rem; color:var(--ink-soft);}
+  nav.legend a{color:inherit; text-decoration:none; border-bottom:1px dotted var(--line); padding-bottom:1px;}
+  nav.legend a:hover{color:var(--accent);}
+
+  section.group{margin-top:34px;}
+  .group-header{display:flex; align-items:baseline; justify-content:space-between; gap:12px;
+    border-bottom:1px solid var(--line); padding-bottom:8px; margin-bottom:14px;}
+  .group-header h2{font-size:1.15rem;}
+  .group-badge{font-size:.76rem; color:var(--ink-soft); white-space:nowrap; font-variant-numeric:tabular-nums;
+    background:var(--surface-2); border-radius:999px; padding:3px 10px;}
+
+  .item-list{display:flex; flex-direction:column; gap:10px;}
+  label.item{display:flex; gap:12px; align-items:flex-start; background:var(--surface);
+    border:1px solid var(--line); border-radius:var(--radius); padding:12px 14px;
+    box-shadow:var(--shadow); cursor:pointer; transition:border-color .15s ease, background .15s ease;}
+  label.item:hover{border-color:var(--accent);}
+  label.item input[type="checkbox"]{appearance:none; -webkit-appearance:none; width:20px; height:20px;
+    min-width:20px; border:2px solid var(--line); border-radius:6px; margin-top:2px; cursor:pointer;
+    background:var(--surface-2); position:relative; transition:border-color .15s, background .15s;}
+  label.item input[type="checkbox"]:checked{background:var(--done); border-color:var(--done);}
+  label.item input[type="checkbox"]:checked::after{content:""; position:absolute; left:5px; top:1px;
+    width:5px; height:10px; border:solid var(--surface); border-width:0 2px 2px 0; transform:rotate(40deg);}
+  label.item:has(input:checked){background:var(--done-soft); border-color:var(--done);}
+  .item-body{display:flex; flex-direction:column; gap:4px; flex:1;}
+  .item-top{display:flex; flex-wrap:wrap; gap:8px; align-items:center;}
+  .date-badge{font-size:.72rem; font-variant-numeric:tabular-nums; font-weight:700; color:var(--accent);
+    background:var(--accent-soft); border-radius:6px; padding:2px 7px; white-space:nowrap;}
+  .theme-badge{font-size:.72rem; color:var(--accent-2); background:var(--accent-2-soft); border-radius:6px;
+    padding:2px 7px; white-space:nowrap;}
+  .item-desc{color:var(--ink); font-size:.93rem;}
+  label.item:has(input:checked) .item-desc{color:var(--ink-soft); text-decoration:line-through; text-decoration-color:var(--line);}
+
+  footer{margin-top:48px; padding-top:18px; border-top:1px solid var(--line); color:var(--ink-soft); font-size:.8rem;}
+
+  @media (max-width:600px){
+    .shell{padding:24px 14px 60px;}
+  }
+</style>
+
+<div class="shell">
+  <header class="page-header">
+    <span class="eyebrow">Шлях до істини · додатковий матеріал</span>
+    <h1>Практики для повторного виконання</h1>
+    <p class="subtitle">Зведений перелік технік і медитацій із занять курсу — щоб було зручно вибирати, що переслухати й повторити, і відмічати виконане.</p>
+    <p class="source-note">Дата у бейджі — коли практику вперше почуто на занятті (за назвою файлу запису). Без бейджа — практики, що повторюються на кількох заняттях, чи для яких точна дата першої появи не встановлена.</p>
+
+    <div class="progress-panel">
+      <div class="progress-row"><span>Виконано / повторено</span><strong id="overall-label">0 / 0</strong></div>
+      <div class="progress-track"><div class="progress-fill" id="overall-bar"></div></div>
+      <div class="panel-actions"><button id="reset-btn" type="button">Скинути прогрес</button></div>
+    </div>
+
+    <nav class="legend">
+      <a href="#g-osnova">Заземлення й намір</a>
+      <a href="#g-diagnostyka">Діагностика тіл</a>
+      <a href="#g-emocii">Емоції та его</a>
+      <a href="#g-karma">Кармічна робота</a>
+      <a href="#g-subosob">Субособистості</a>
+      <a href="#g-rid">Рід і предки</a>
+      <a href="#g-vyshchi">Вдячність, ангели, наставники</a>
+      <a href="#g-dyhannia">Дихальні техніки</a>
+      <a href="#g-vyshchi-tila">Буддхічне й атмічне тіло</a>
+    </nav>
+  </header>
+
+  <main>
+
+    <section class="group" id="g-osnova">
+      <div class="group-header"><h2>Заземлення й намір</h2><span class="group-badge" data-badge-group="osnova">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-1" data-group="osnova"><div class="item-body"><div class="item-top"><span class="theme-badge">база</span></div><div class="item-desc">Заземлення — базова практика перед кожним заняттям і кожною технікою.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-2" data-group="osnova"><div class="item-body"><div class="item-top"><span class="theme-badge">база</span></div><div class="item-desc">Формулювання «твердого, чистого, свідомого наміру» із запрошенням вищого Я, душі, ангелів-охоронців і наставників — стандартний вступ до будь-якої практики.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-diagnostyka">
+      <div class="group-header"><h2>Діагностика та відчуття тонких тіл</h2><span class="group-badge" data-badge-group="diagnostyka">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-3" data-group="diagnostyka"><div class="item-body"><div class="item-top"><span class="theme-badge">ментальне тіло</span></div><div class="item-desc">Спостереження за думками (3–5 хв мовчазного сидіння) — діагностика ментального тіла.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-4" data-group="diagnostyka"><div class="item-body"><div class="item-top"><span class="theme-badge">ментальне тіло</span></div><div class="item-desc">Візуалізація «будиночок + підвал» — очищення ментального тіла від небажаних думок і переконань.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-5" data-group="diagnostyka"><div class="item-body"><div class="item-top"><span class="theme-badge">чакри</span></div><div class="item-desc">Скан чакр рукою — базова діагностика стану чакральної системи.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-12" data-group="diagnostyka"><div class="item-body"><div class="item-top"><span class="theme-badge">ефірне тіло</span></div><div class="item-desc">Потирання долонь до тепла і відчуття «кулі» ефірної енергії між ними — відчуття ефірного тіла.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-21" data-group="diagnostyka"><div class="item-body"><div class="item-top"><span class="date-badge">26.09.2025</span><span class="theme-badge">Вішудха</span></div><div class="item-desc">Діагностика горлової чакри — 15 так/ні-питань (щирість, самовираження, вміння відпочивати тощо) + візуалізація «блакитної піраміди» від підборіддя до сонячного сплетіння для балансування.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-emocii">
+      <div class="group-header"><h2>Трансформація емоцій та его</h2><span class="group-badge" data-badge-group="emocii">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-7" data-group="emocii"><div class="item-body"><div class="item-top"><span class="theme-badge">страх</span></div><div class="item-desc">Трансформація страху/невпевненості через образ «сфери» і «вогню».</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-16" data-group="emocii"><div class="item-body"><div class="item-top"><span class="date-badge">16.01.2026</span><span class="theme-badge">гординя</span></div><div class="item-desc">Тест на гординю — опитувальник із проявів (образа, зверхність, потреба уваги, критика інших тощо), підрахунок «одиничок» — чим більше, тим сильніше проявлена гординя.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-17" data-group="emocii"><div class="item-body"><div class="item-top"><span class="date-badge">30.01.2026</span><span class="theme-badge">его</span></div><div class="item-desc">Медитація трансмутації его через серцеву зірку — почергове «спалювання» деструктивних якостей (страх, лінь, заздрість, гнів, образа, жадібність, самовпевненість, лицемірство тощо) пучком енергії, спрямованим у сферу над головою.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-18" data-group="emocii"><div class="item-body"><div class="item-top"><span class="date-badge">09.01.2026</span><span class="theme-badge">страхи</span></div><div class="item-desc">Трансформація страхів у «басейні» фіолетового полум'я — послідовне звільнення по сферах життя (гроші/кар'єра, успіх/лідерство, стосунки, самовираження, навчання, матеріальні блага, влада) із залишенням «голографічної копії» на 7 днів для завершення процесу.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-24" data-group="emocii"><div class="item-body"><div class="item-top"><span class="date-badge">27.02.2026</span><span class="theme-badge">субособистості</span></div><div class="item-desc">Зняття енергетичного блокування через тему «правоти» — опрацювання програми доведення своєї правоти на конкретній ситуації з дитинства чи теперішнього життя.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-karma">
+      <div class="group-header"><h2>Кармічна робота</h2><span class="group-badge" data-badge-group="karma">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-9" data-group="karma"><div class="item-body"><div class="item-top"><span class="theme-badge">кармічний партнер</span></div><div class="item-desc">Робота з кармічним партнером: візуалізація діалогу, «повернення» і «віддача» енергії через два енергетичні канали (серце і сонячне сплетіння).</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-13" data-group="karma"><div class="item-body"><div class="item-top"><span class="theme-badge">кармічне тіло</span></div><div class="item-desc">Практика прощення й «звільнення» кармічних боргів — робота з кармічним/каузальним тілом.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-19" data-group="karma"><div class="item-body"><div class="item-top"><span class="date-badge">21.06.2025</span><span class="theme-badge">Хроніки Акаші</span></div><div class="item-desc">Подорож у Хроніки Акаші: намір і запрошення ієрархії, підйом свідомості через хмари й космос до білого храму, воротар-старець, вхід у бібліотеку, мантра «Ом Акаша Сатья Онг» (×3), формулювання запиту (обов'язково: «які мої завдання в цьому втіленні», «чи виконую я їх зараз», таланти й здібності), закриття хронік і повернення.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-22" data-group="karma"><div class="item-body"><div class="item-top"><span class="date-badge">07.06.2025</span><span class="theme-badge">кармічні партнери</span></div><div class="item-desc">Проробка карми з конкретною людиною — уявити її перед собою на відстані ~2 м, спостерігати відчуття й «повідомлення» від образу, працювати над трансформацією стосунків.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-subosob">
+      <div class="group-header"><h2>Субособистості</h2><span class="group-badge" data-badge-group="subosob">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-23" data-group="subosob"><div class="item-body"><div class="item-top"><span class="date-badge">20.02.2026</span><span class="theme-badge">внутрішня дитина</span></div><div class="item-desc">Робота з внутрішньою дитиною — виклик образу дитини, що потребує уваги на конкретний момент (образи, страху, радості тощо), взаємодія з нею.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-rid">
+      <div class="group-header"><h2>Рід і предки</h2><span class="group-badge" data-badge-group="rid">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-25" data-group="rid"><div class="item-body"><div class="item-top"><span class="date-badge">10.04.2026</span><span class="theme-badge">родова система</span></div><div class="item-desc">Подорож по лінії роду — уявне проходження по черзі предків (від батьків до сотень поколінь назад), спостереження, як зникає спільна мова й впізнаваність, усвідомлення безперервності роду й вдячності йому.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-vyshchi">
+      <div class="group-header"><h2>Вдячність, ангели, наставники</h2><span class="group-badge" data-badge-group="vyshchi">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-8" data-group="vyshchi"><div class="item-body"><div class="item-top"><span class="theme-badge">наставники</span></div><div class="item-desc">Зв'язок із радою наставників/мудреців — медитативна подорож, символічний подарунок, отримання медальйона.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-10" data-group="vyshchi"><div class="item-body"><div class="item-top"><span class="theme-badge">контракт душі</span></div><div class="item-desc">Намір про продовження контракту/втілення — робота з клітинною пам'яттю.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-20" data-group="vyshchi"><div class="item-body"><div class="item-top"><span class="date-badge">26.06.2025</span><span class="theme-badge">подяка</span></div><div class="item-desc">Активація кристалу подяки Ан-Ана-Ша — розділити аркуш паперу навпіл, намалювати на обох частинах символ (чотири сфери, що перетинаються).</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-26" data-group="vyshchi"><div class="item-body"><div class="item-top"><span class="date-badge">15.03.2025</span><span class="theme-badge">ангел-охоронець</span></div><div class="item-desc">Ангел-охоронець: три аркуші «Ангел» / «Всесвіт» / «Послання» з вільними асоціаціями під кожним, далі — формула-запрошення ангела-охоронця в ауру.</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-dyhannia">
+      <div class="group-header"><h2>Дихальні техніки</h2><span class="group-badge" data-badge-group="dyhannia">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-6" data-group="dyhannia"><div class="item-body"><div class="item-top"><span class="theme-badge">баланс</span></div><div class="item-desc">Дихальна практика балансування потоків «зверху» (космос) і «знизу» (земля) через конкретний енергоцентр (серце, живіт, спину тощо).</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-11" data-group="dyhannia"><div class="item-body"><div class="item-top"><span class="theme-badge">швидке відновлення</span></div><div class="item-desc">Почергове дихання ніздрями (іда/пінгала) — швидке відновлення сил і ясності розуму (2–5 хв).</div></div></label>
+      </div>
+    </section>
+
+    <section class="group" id="g-vyshchi-tila">
+      <div class="group-header"><h2>Буддхічне й атмічне тіло</h2><span class="group-badge" data-badge-group="vyshchi-tila">0/0</span></div>
+      <div class="item-list">
+        <label class="item"><input type="checkbox" data-key="pr-14" data-group="vyshchi-tila"><div class="item-body"><div class="item-top"><span class="theme-badge">буддхічне тіло</span></div><div class="item-desc">Спалення чужорідних енергетичних підключень до буддхічного тіла — візуалізація «плям» та їх трансформація світлом.</div></div></label>
+        <label class="item"><input type="checkbox" data-key="pr-15" data-group="vyshchi-tila"><div class="item-body"><div class="item-top"><span class="theme-badge">атмічне тіло</span></div><div class="item-desc">«Збірка» всіх 7 тіл через фрази-твердження («моє фізичне тіло на місці» … «мої вищі тіла на місці») з перевіркою дихання на кожному рівні.</div></div></label>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    Складено на основі записів занять курсу «Шлях до істини». Дати вказані там, де встановлено з назви файлу запису; частина практик ще уточнюється в міру дочитування решти матеріалів.
+  </footer>
+</div>
+
+<script>
+(function(){
+  var STORAGE_KEY = "shlyah-praktyky-progress-v1";
+  var state = {};
+  try{
+    var raw = localStorage.getItem(STORAGE_KEY);
+    if(raw) state = JSON.parse(raw) || {};
+  }catch(e){ state = {}; }
+
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('input[type="checkbox"][data-key]'));
+
+  boxes.forEach(function(box){
+    var key = box.getAttribute('data-key');
+    if(state[key]) box.checked = true;
+    box.addEventListener('change', function(){
+      state[key] = box.checked;
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+      recalc();
+    });
+  });
+
+  function recalc(){
+    var overallChecked = 0, overallTotal = boxes.length;
+    var groups = {};
+    boxes.forEach(function(box){
+      var g = box.getAttribute('data-group');
+      if(!groups[g]) groups[g] = {checked:0, total:0};
+      groups[g].total++;
+      if(box.checked){ groups[g].checked++; overallChecked++; }
+    });
+    document.querySelectorAll('[data-badge-group]').forEach(function(el){
+      var g = el.getAttribute('data-badge-group');
+      var d = groups[g] || {checked:0,total:0};
+      el.textContent = d.checked + '/' + d.total;
+    });
+    document.getElementById('overall-label').textContent = overallChecked + ' / ' + overallTotal;
+    var pct = overallTotal ? Math.round((overallChecked/overallTotal)*100) : 0;
+    document.getElementById('overall-bar').style.width = pct + '%';
+  }
+
+  var resetBtn = document.getElementById('reset-btn');
+  var armed = false, armTimer = null;
+  resetBtn.addEventListener('click', function(){
+    if(!armed){
+      armed = true;
+      resetBtn.setAttribute('data-armed','true');
+      resetBtn.textContent = 'Підтвердити скидання?';
+      armTimer = setTimeout(function(){
+        armed = false;
+        resetBtn.removeAttribute('data-armed');
+        resetBtn.textContent = 'Скинути прогрес';
+      }, 3000);
+    } else {
+      clearTimeout(armTimer);
+      state = {};
+      try{ localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }catch(e){}
+      boxes.forEach(function(box){ box.checked = false; });
+      armed = false;
+      resetBtn.removeAttribute('data-armed');
+      resetBtn.textContent = 'Скинути прогрес';
+      recalc();
+    }
+  });
+
+  recalc();
+})();
+</script>
+
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,500;7..72,600;7..72,700&family=PT+Sans:wght@400;700&display=swap">
