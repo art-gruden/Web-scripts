@@ -1,0 +1,316 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sprechen Teil 3 — Dialoge mit Konjunktiv II und Infinitiv mit zu</title>
+<style>
+:root{
+  --navy:#1f3864;--accent:#2e5c8a;--grey:#5a5a5a;--line:#c5d2e5;
+  --k2:#0b4f9e;--k2bg:#e4eefb;--k2br:#7fb0e8;
+  --zu:#136b3c;--zubg:#e3f4e9;--zubr:#79c095;
+  --ph:#9a4f00;--phbg:#fdeedd;
+}
+*{box-sizing:border-box}
+body{margin:0;font-family:"Segoe UI",Calibri,Arial,sans-serif;color:#1a1a1a;line-height:1.6;font-size:16px;background:#fff}
+.wrap{max-width:1000px;margin:0 auto;padding:30px 26px 90px}
+header.doc{border-bottom:3px solid var(--navy);padding-bottom:14px;margin-bottom:22px}
+header.doc h1{margin:0;font-size:29px;color:var(--navy)}
+header.doc .sub{color:var(--accent);font-style:italic;margin-top:6px}
+h2{font-size:21px;color:var(--accent);border-bottom:1px solid var(--line);padding-bottom:5px;margin:38px 0 14px}
+h3{font-size:17px;color:#333;margin:24px 0 8px}
+p{margin:8px 0}
+.note{background:#fbf3e7;border-left:4px solid #d9a441;color:#8a5200;font-style:italic;padding:9px 14px;margin:12px 0;font-size:.94em;border-radius:0 4px 4px 0}
+.task{background:#f1f3f6;border:1px solid #c9d2de;border-radius:5px;padding:12px 16px;margin:14px 0}
+.task b{color:var(--navy)}
+
+/* --- Farbschema --- */
+.k2{background:var(--k2bg);color:var(--k2);border-bottom:2px solid var(--k2br);padding:0 2px;border-radius:3px;font-weight:600}
+.zu{background:var(--zubg);color:var(--zu);border-bottom:2px solid var(--zubr);padding:0 2px;border-radius:3px;font-weight:600}
+.zu b,.k2 b{font-weight:800}
+.legend{display:flex;flex-wrap:wrap;gap:14px;margin:16px 0 8px}
+.legend div{border:1px solid var(--line);border-radius:6px;padding:10px 14px;flex:1 1 260px;font-size:14px;background:#fafbfd}
+.legend .t{font-weight:700;margin-bottom:4px}
+
+/* --- Dialog --- */
+.dlg{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin:16px 0 28px}
+.turn{display:grid;grid-template-columns:112px 1fr;gap:0;border-top:1px solid #e6ecf5}
+.turn:first-child{border-top:0}
+.turn:nth-child(odd) .say{background:#fcfdff}
+.phase{background:var(--phbg);color:var(--ph);font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.4px;padding:12px 8px 12px 14px;border-right:1px solid #f0dcc3;line-height:1.35}
+.say{padding:11px 16px}
+.sp{display:inline-block;min-width:24px;font-weight:800;color:var(--navy)}
+.de{margin:0}
+.ua{margin:4px 0 0;color:var(--grey);font-style:italic;font-size:14px}
+
+/* --- Tabellen --- */
+table{border-collapse:collapse;width:100%;margin:12px 0 22px;font-size:14.5px}
+th{background:#dce3ef;color:var(--navy);text-align:left}
+th,td{border:1px solid #c9d2de;padding:7px 10px;vertical-align:top}
+tbody tr:nth-child(even){background:#f7f9fc}
+td.ua{color:var(--grey);font-style:italic;font-size:13.5px;margin:0}
+ul{margin:8px 0;padding-left:24px}
+li{margin:5px 0}
+.wrong{color:#b3261e;font-weight:600}
+.right{color:#136b3c;font-weight:600}
+@media print{body{font-size:11pt}.dlg{break-inside:auto}h2{break-after:avoid}}
+@media(max-width:640px){.turn{grid-template-columns:1fr}.phase{border-right:0;border-bottom:1px solid #f0dcc3;padding:6px 12px}}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="doc">
+  <h1>Sprechen Teil 3 — Lösungswege finden</h1>
+  <div class="sub">Dialoge mit Konjunktiv II und Infinitiv mit <b>zu</b> · кольорова схема з українським перекладом</div>
+</header>
+
+<div class="note">Мета цього файлу — не вивчити діалоги напам'ять, а побачити, ДЕ саме в діалозі природно з'являються Konjunktiv II та Infinitiv mit zu. Саме ці дві структури відрізняють відповідь рівня B2 від рівня B1.</div>
+
+<h2>Легенда кольорів</h2>
+<div class="legend">
+  <div><div class="t" style="color:var(--k2)">Konjunktiv II</div><span class="k2">könnten wir</span>, <span class="k2">wäre es</span>, <span class="k2">würde ich</span> — ввічливість, пропозиція, припущення, обережна незгода.</div>
+  <div><div class="t" style="color:var(--zu)">Infinitiv mit zu</div><span class="zu">zu finden</span>, <span class="zu">an<b>zu</b>rufen</span>, <span class="zu">um … zu …</span> — після прикметників, іменників та певних дієслів.</div>
+  <div><div class="t" style="color:var(--ph)">Фаза діалогу</div>Ліва колонка показує, який крок структури ти виконуєш саме зараз.</div>
+</div>
+
+<h2>Aufgabe (Beispielsituation)</h2>
+<div class="task">
+<b>Situation:</b> Sie arbeiten in einem großen Hotel. Manche Gäste haben sich beschwert, dass der Zimmerservice seine Arbeit nicht gut macht: schmutzige Handtücher werden nicht ausgetauscht, die Betten sind nicht ordentlich hergerichtet.<br>
+<b>Aufgabe:</b> Sprechen Sie mit Ihrer Kollegin / Ihrem Kollegen über das Problem, überlegen Sie gemeinsam Lösungen, verteilen Sie die Aufgaben und vereinbaren Sie einen Termin.
+</div>
+
+<h2>Dialog 1 — ausführliche Version</h2>
+
+<div class="dlg">
+
+<div class="turn"><div class="phase">Problem benennen</div><div class="say">
+<p class="de"><span class="sp">A:</span> Hast du schon gehört? Mehrere Gäste haben sich über den Zimmerservice beschwert. Die schmutzigen Handtücher werden nicht ausgetauscht und die Betten sind nicht ordentlich hergerichtet.</p>
+<p class="ua">Ти вже чув? Кілька гостей поскаржилися на обслуговування номерів. Брудні рушники не міняють, а ліжка не застелені як слід.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Reaktion + Dringlichkeit</div><div class="say">
+<p class="de"><span class="sp">B:</span> Ja, davon habe ich auch gehört. Ich <span class="k2">hätte</span> nicht gedacht, dass es so schlimm ist. Wir sollten so schnell wie möglich versuchen, eine Lösung <span class="zu">zu finden</span>, <span class="zu">um</span> unseren guten Ruf nicht <span class="zu">zu verlieren</span>.</p>
+<p class="ua">Так, я теж про це чув. Я б не подумав, що все так погано. Нам слід якнайшвидше спробувати знайти рішення, щоб не втратити нашу добру репутацію.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Ursache klären</div><div class="say">
+<p class="de"><span class="sp">A:</span> Das sehe ich genauso. Zuerst <span class="k2">wäre</span> es wichtig <span class="zu">zu klären</span>, woran das eigentlich liegt. <span class="k2">Hättest</span> du eine Idee?</p>
+<p class="ua">Я бачу це так само. Спершу було б важливо з'ясувати, у чому, власне, причина. Чи є в тебе якась ідея?</p>
+</div></div>
+
+<div class="turn"><div class="phase">Vermutung</div><div class="say">
+<p class="de"><span class="sp">B:</span> Ich <span class="k2">könnte</span> mir gut vorstellen, dass wir einfach unterbesetzt sind. Seit zwei Monaten versuchen wir, dieselbe Zahl von Zimmern mit weniger Personal <span class="zu">zu schaffen</span>. Vielleicht hat auch die neue Kollegin noch nicht genug Erfahrung.</p>
+<p class="ua">Я цілком міг би уявити, що нам просто бракує персоналу. Уже два місяці ми намагаємося встигати з тією ж кількістю номерів меншими силами. Можливо, і нова колега ще не має достатньо досвіду.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Einwand (höflich)</div><div class="say">
+<p class="de"><span class="sp">A:</span> Das <span class="k2">wäre</span> natürlich eine Erklärung. Trotzdem <span class="k2">müssten</span> wir zuerst kontrollieren, ob die Kolleginnen die Checkliste überhaupt benutzen. Es reicht nämlich nicht, nur über das Personal <span class="zu">zu sprechen</span>.</p>
+<p class="ua">Це, звісно, було б поясненням. Та все ж нам спершу слід було б перевірити, чи колеги взагалі користуються чек-листом. Бо недостатньо говорити лише про персонал.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Vorschlag 1</div><div class="say">
+<p class="de"><span class="sp">B:</span> Da hast du recht. Ich schlage vor, für jedes Zimmer eine kurze Checkliste <span class="zu">ein<b>zu</b>führen</span>: Handtücher, Bettwäsche, Bad, Minibar. Wer das Zimmer fertig hat, <span class="k2">müsste</span> nur noch unterschreiben.</p>
+<p class="ua">Тут ти маєш рацію. Пропоную запровадити для кожного номера короткий чек-лист: рушники, постільна білизна, ванна, мінібар. Хто закінчив номер, мав би лише поставити підпис.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Zustimmung + Vorschlag 2</div><div class="say">
+<p class="de"><span class="sp">A:</span> Das finde ich eine sehr gute Idee. Außerdem <span class="k2">könnten</span> wir stichprobenartig kontrollieren, zum Beispiel jeden Tag fünf Zimmer. <span class="k2">Wäre</span> es möglich, dass die Schichtleitung diese Kontrolle übernimmt?</p>
+<p class="ua">Вважаю це дуже хорошою ідеєю. Крім того, ми могли б робити вибіркові перевірки, наприклад, п'ять номерів щодня. Чи було б можливо, щоб цю перевірку взяло на себе керівництво зміни?</p>
+</div></div>
+
+<div class="turn"><div class="phase">Konkretisieren</div><div class="say">
+<p class="de"><span class="sp">B:</span> Einverstanden. Ich <span class="k2">würde</span> vorschlagen, Frau Weber darum <span class="zu">zu bitten</span>, die Stichproben <span class="zu">zu übernehmen</span>. Sie arbeitet schon lange bei uns und weiß genau, worauf man achten muss.</p>
+<p class="ua">Згоден. Я б запропонував попросити пані Вебер взяти на себе вибіркові перевірки. Вона працює в нас уже давно й точно знає, на що треба звертати увагу.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Gäste entschädigen</div><div class="say">
+<p class="de"><span class="sp">A:</span> Und was machen wir mit den Gästen, die sich beschwert haben? Wir <span class="k2">dürften</span> sie auf keinen Fall einfach vergessen.</p>
+<p class="ua">А що ми робимо з гостями, які поскаржилися? Ми в жодному разі не мали б права просто про них забути.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Entschädigung</div><div class="say">
+<p class="de"><span class="sp">B:</span> Wir <span class="k2">könnten</span> ihnen anbieten, am letzten Tag kostenlos im Hotelrestaurant <span class="zu">zu frühstücken</span>. Als kleine Entschädigung <span class="k2">wäre</span> auch ein Gutschein für die nächste Übernachtung denkbar.</p>
+<p class="ua">Ми могли б запропонувати їм останнього дня безкоштовно поснідати в ресторані готелю. Як невелика компенсація був би можливий і ваучер на наступне проживання.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Prävention</div><div class="say">
+<p class="de"><span class="sp">A:</span> Gut. Ich <span class="k2">hätte</span> noch einen Vorschlag: Es <span class="k2">wäre</span> sinnvoll, für die neuen Kolleginnen eine kurze Schulung <span class="zu">zu organisieren</span>. Vor allem <span class="k2">wäre</span> es wichtig, ihnen genau <span class="zu">zu zeigen</span>, wie ein Zimmer hergerichtet wird.</p>
+<p class="ua">Добре. У мене була б ще одна пропозиція: мало б сенс організувати коротке навчання для нових колег. Передусім було б важливо точно показати їм, як готується номер.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Aufgaben verteilen</div><div class="say">
+<p class="de"><span class="sp">B:</span> Einverstanden. Wer kümmert sich worum? Ich <span class="k2">würde</span> die Checkliste erstellen und mit Frau Weber sprechen. <span class="k2">Wärst</span> du bereit, mit den Gästen <span class="zu">zu sprechen</span>?</p>
+<p class="ua">Згоден. Хто чим займається? Я б склав чек-лист і поговорив з пані Вебер. Чи був би ти готовий поговорити з гостями?</p>
+</div></div>
+
+<div class="turn"><div class="phase">Aufgabe übernehmen</div><div class="say">
+<p class="de"><span class="sp">A:</span> Ja, ich übernehme es, die Gäste <span class="zu">an<b>zu</b>rufen</span> und mich persönlich <span class="zu">zu entschuldigen</span>. Danach informiere ich die Geschäftsleitung, damit sie Bescheid weiß.</p>
+<p class="ua">Так, я беру на себе зателефонувати гостям і особисто вибачитися. Після цього я поінформую керівництво, щоб воно було в курсі.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Termin vereinbaren</div><div class="say">
+<p class="de"><span class="sp">B:</span> <span class="k2">Könnten</span> wir uns nächste Woche noch einmal zusammensetzen, <span class="zu">um</span> die Ergebnisse <span class="zu">zu besprechen</span>? Wie <span class="k2">wäre</span> es mit Montag um zehn Uhr?</p>
+<p class="ua">Чи могли б ми наступного тижня ще раз зібратися, щоб обговорити результати? Як щодо понеділка о десятій?</p>
+</div></div>
+
+<div class="turn"><div class="phase">Abschluss</div><div class="say">
+<p class="de"><span class="sp">A:</span> Montag um zehn passt mir gut. Ich denke, wir haben eine gute Lösung gefunden. Vielen Dank für das Gespräch!</p>
+<p class="ua">Понеділок о десятій мені підходить. Думаю, ми знайшли хороше рішення. Дякую за розмову!</p>
+</div></div>
+
+</div>
+
+<div class="note">Зверни увагу на репліку 12: у відокремлюваних дієсловах <b>zu</b> стоїть УСЕРЕДИНІ слова — <b>anzurufen</b>, <b>vorzuschlagen</b>, <b>einzuführen</b>, <b>abzuklären</b>. Це типова помилка на іспиті: «zu anrufen» ✗.</div>
+
+<h2>Dialog 2 — dieselbe Situation, andere Lösung (kurze Version)</h2>
+<div class="note">Той самий кейс, але інший шлях рішення: зовнішня клінінгова фірма замість внутрішніх заходів. Тренуй обидва варіанти — на іспиті партнер може відхилити твою першу пропозицію.</div>
+
+<div class="dlg">
+
+<div class="turn"><div class="phase">Problem</div><div class="say">
+<p class="de"><span class="sp">A:</span> Es gibt leider ein Problem mit dem Zimmerservice. Viele Gäste haben sich darüber beschwert, dass die Handtücher nicht gewechselt und die Betten nicht gemacht werden. Wie <span class="k2">sollten</span> wir vorgehen?</p>
+<p class="ua">На жаль, є проблема з обслуговуванням номерів. Багато гостей поскаржилися, що рушники не міняють, а ліжка не застеляють. Як нам слід діяти?</p>
+</div></div>
+
+<div class="turn"><div class="phase">Vorschlag</div><div class="say">
+<p class="de"><span class="sp">B:</span> Ich <span class="k2">hätte</span> einen Vorschlag: Wir <span class="k2">könnten</span> überlegen, eine externe Reinigungsfirma <span class="zu">zu beauftragen</span>. Dann <span class="k2">bräuchten</span> wir uns nicht mehr um die Personalplanung <span class="zu">zu kümmern</span>.</p>
+<p class="ua">У мене була б пропозиція: ми могли б подумати про те, щоб найняти зовнішню клінінгову фірму. Тоді нам не довелося б більше перейматися плануванням персоналу.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Widerspruch</div><div class="say">
+<p class="de"><span class="sp">A:</span> Da muss ich dir leider widersprechen. Eine externe Firma <span class="k2">wäre</span> deutlich teurer, und die Qualität <span class="k2">könnte</span> am Anfang sogar schlechter sein. Ich <span class="k2">würde</span> lieber versuchen, das Problem intern <span class="zu">zu lösen</span>.</p>
+<p class="ua">Тут я, на жаль, мушу тобі заперечити. Зовнішня фірма була б значно дорожчою, а якість спочатку могла б навіть погіршитися. Я б радше спробував вирішити проблему всередині.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Kompromiss</div><div class="say">
+<p class="de"><span class="sp">B:</span> Das kann ich nachvollziehen. Als Kompromiss <span class="k2">würde</span> ich vorschlagen, die externe Firma nur am Wochenende <span class="zu">ein<b>zu</b>setzen</span>. Unter der Woche <span class="k2">könnte</span> unser eigenes Team die Zimmer machen.</p>
+<p class="ua">Це я можу зрозуміти. Як компроміс я запропонував би залучати зовнішню фірму лише на вихідних. У будні номери могла б прибирати наша власна команда.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Einigung + Aufgaben</div><div class="say">
+<p class="de"><span class="sp">A:</span> Damit <span class="k2">wäre</span> ich einverstanden. Ich kümmere mich darum, drei Angebote <span class="zu">ein<b>zu</b>holen</span>, und du <span class="k2">könntest</span> mit dem Team über die neue Regelung sprechen.</p>
+<p class="ua">З цим я був би згоден. Я подбаю про те, щоб отримати три комерційні пропозиції, а ти міг би поговорити з командою про новий порядок.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Termin</div><div class="say">
+<p class="de"><span class="sp">B:</span> Gut. <span class="k2">Wäre</span> es dir recht, wenn wir uns am Freitag kurz treffen, <span class="zu">um</span> alles <span class="zu">zu besprechen</span>? Ich denke, so verlieren wir keine Gäste.</p>
+<p class="ua">Добре. Чи влаштувало б тебе, якби ми коротко зустрілися в п'ятницю, щоб усе обговорити? Думаю, так ми не втратимо гостей.</p>
+</div></div>
+
+</div>
+
+<h2>Dialog 3 — Transfer auf eine andere Situation</h2>
+<div class="task"><b>Situation:</b> Sie arbeiten in einem Handelsunternehmen. Kunden beschweren sich, dass die Lieferungen zu spät und manchmal beschädigt ankommen.</div>
+
+<div class="dlg">
+
+<div class="turn"><div class="phase">Problem</div><div class="say">
+<p class="de"><span class="sp">A:</span> Hast du schon gehört? Viele Kunden haben sich darüber beschwert, dass unsere Lieferungen zu spät und teilweise beschädigt ankommen. Wir <span class="k2">sollten</span> versuchen, gemeinsam eine Lösung <span class="zu">zu finden</span>.</p>
+<p class="ua">Ти вже чув? Багато клієнтів поскаржилися, що наші поставки приходять запізно і частково пошкодженими. Нам слід спробувати разом знайти рішення.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Ursache</div><div class="say">
+<p class="de"><span class="sp">B:</span> Ich <span class="k2">würde</span> sagen, dass die Transportfirma schuld ist. Es <span class="k2">wäre</span> sinnvoll, zuerst alle Reklamationen der letzten Wochen <span class="zu">zu sammeln</span>, <span class="zu">um</span> genaue Zahlen <span class="zu">zu haben</span>.</p>
+<p class="ua">Я б сказав, що винна транспортна фірма. Мало б сенс спершу зібрати всі рекламації за останні тижні, щоб мати точні цифри.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Vorschlag</div><div class="say">
+<p class="de"><span class="sp">A:</span> Gute Idee. Danach <span class="k2">könnten</span> wir den Transportdienstleister bitten, die Ware besser <span class="zu">zu verpacken</span>. Wenn es weitere Beschwerden gibt, <span class="k2">müssten</span> wir über einen Wechsel nachdenken.</p>
+<p class="ua">Гарна ідея. Після цього ми могли б попросити перевізника краще пакувати товар. Якщо будуть подальші скарги, нам довелося б подумати про зміну.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Kunden</div><div class="say">
+<p class="de"><span class="sp">B:</span> Und den betroffenen Kunden <span class="k2">würde</span> ich anbieten, den nächsten Einkauf mit zehn Prozent Rabatt <span class="zu">zu bezahlen</span>. Es <span class="k2">wäre</span> außerdem wichtig, uns schriftlich <span class="zu">zu entschuldigen</span>.</p>
+<p class="ua">А постраждалим клієнтам я б запропонував оплатити наступну покупку зі знижкою десять відсотків. Крім того, було б важливо письмово вибачитися.</p>
+</div></div>
+
+<div class="turn"><div class="phase">Aufgaben + Termin</div><div class="say">
+<p class="de"><span class="sp">A:</span> Einverstanden. Ich kümmere mich um die Reklamationen, und du <span class="k2">könntest</span> mit dem Lieferanten telefonieren. <span class="k2">Könnten</span> wir uns am Donnerstag treffen, <span class="zu">um</span> das Ergebnis <span class="zu">zu besprechen</span>?</p>
+<p class="ua">Згоден. Я займуся рекламаціями, а ти міг би зателефонувати постачальнику. Чи могли б ми зустрітися в четвер, щоб обговорити результат?</p>
+</div></div>
+
+</div>
+
+<h2>Grammatik kompakt 1 — Konjunktiv II</h2>
+<table>
+<thead><tr><th>Indikativ (B1)</th><th>Konjunktiv II (B2)</th><th>Beispiel im Dialog</th><th>Переклад</th></tr></thead>
+<tbody>
+<tr><td>ist</td><td><span class="k2">wäre</span></td><td>Das wäre eine gute Lösung.</td><td class="ua">Це було б хорошим рішенням.</td></tr>
+<tr><td>hat</td><td><span class="k2">hätte</span></td><td>Ich hätte einen Vorschlag.</td><td class="ua">У мене була б пропозиція.</td></tr>
+<tr><td>kann</td><td><span class="k2">könnte</span></td><td>Wir könnten die Kunden anrufen.</td><td class="ua">Ми могли б зателефонувати клієнтам.</td></tr>
+<tr><td>muss</td><td><span class="k2">müsste</span></td><td>Wir müssten das zuerst klären.</td><td class="ua">Нам слід було б спершу це з'ясувати.</td></tr>
+<tr><td>soll</td><td><span class="k2">sollte</span></td><td>Wir sollten schnell reagieren.</td><td class="ua">Нам слід швидко відреагувати.</td></tr>
+<tr><td>darf</td><td><span class="k2">dürfte</span></td><td>Das dürfte nicht passieren.</td><td class="ua">Такого не мало б статися.</td></tr>
+<tr><td>braucht</td><td><span class="k2">bräuchte</span></td><td>Dann bräuchten wir kein neues Personal.</td><td class="ua">Тоді нам не був би потрібен новий персонал.</td></tr>
+<tr><td>alle anderen Verben</td><td><span class="k2">würde</span> + Infinitiv</td><td>Ich würde vorschlagen, …</td><td class="ua">Я б запропонував …</td></tr>
+</tbody>
+</table>
+
+<div class="note">Правило економії: <span class="wrong">würde können</span> ✗ → <span class="right">könnte</span> ✓. Для sein, haben і модальних дієслів форма з würde НЕ вживається.</div>
+
+<h3>Wozu Konjunktiv II in Teil 3?</h3>
+<ul>
+<li><b>Vorschlag statt Befehl:</b> <span class="wrong">Wir machen eine Checkliste.</span> → <span class="right">Wir <span class="k2">könnten</span> eine Checkliste machen.</span> — пропозиція, а не наказ.</li>
+<li><b>Höfliche Frage:</b> <span class="k2">Könntest</span> du …? / <span class="k2">Wäre</span> es möglich, …? / Wie <span class="k2">wäre</span> es mit …?</li>
+<li><b>Vorsichtiger Widerspruch:</b> Das <span class="k2">wäre</span> natürlich eine Erklärung, trotzdem …</li>
+<li><b>Vermutung:</b> Ich <span class="k2">könnte</span> mir vorstellen, dass … / Das <span class="k2">dürfte</span> der Grund sein.</li>
+<li><b>Irreale Folge:</b> Dann <span class="k2">hätten</span> wir weniger Beschwerden.</li>
+</ul>
+
+<h2>Grammatik kompakt 2 — Infinitiv mit <b>zu</b></h2>
+<table>
+<thead><tr><th>Auslöser</th><th>Beispielsatz</th><th>Переклад</th></tr></thead>
+<tbody>
+<tr><td>es ist + Adjektiv<br><span style="font-size:12.5px;color:#5a5a5a">wichtig, sinnvoll, möglich, nötig, schwierig</span></td><td>Es wäre wichtig, die Ursache <span class="zu">zu klären</span>.</td><td class="ua">Було б важливо з'ясувати причину.</td></tr>
+<tr><td>ich habe / es gibt + Nomen<br><span style="font-size:12.5px;color:#5a5a5a">die Möglichkeit, die Idee, den Plan, Zeit, Lust</span></td><td>Wir haben die Möglichkeit, das intern <span class="zu">zu lösen</span>.</td><td class="ua">У нас є можливість вирішити це всередині.</td></tr>
+<tr><td>vorschlagen</td><td>Ich schlage vor, eine Checkliste <span class="zu">ein<b>zu</b>führen</span>.</td><td class="ua">Пропоную запровадити чек-лист.</td></tr>
+<tr><td>anbieten</td><td>Wir könnten ihnen anbieten, kostenlos <span class="zu">zu frühstücken</span>.</td><td class="ua">Ми могли б запропонувати їм поснідати безкоштовно.</td></tr>
+<tr><td>versuchen</td><td>Wir versuchen, eine Lösung <span class="zu">zu finden</span>.</td><td class="ua">Ми намагаємося знайти рішення.</td></tr>
+<tr><td>bitten (jemanden)</td><td>Ich würde Frau Weber bitten, das <span class="zu">zu übernehmen</span>.</td><td class="ua">Я попросив би пані Вебер це взяти на себе.</td></tr>
+<tr><td>empfehlen / raten</td><td>Ich empfehle dir, mit dem Chef <span class="zu">zu sprechen</span>.</td><td class="ua">Раджу тобі поговорити з шефом.</td></tr>
+<tr><td>sich kümmern um / darum</td><td>Ich kümmere mich darum, die Angebote <span class="zu">ein<b>zu</b>holen</span>.</td><td class="ua">Я подбаю про те, щоб отримати пропозиції.</td></tr>
+<tr><td>vergessen / vorhaben / beabsichtigen</td><td>Wir haben vor, das Personal <span class="zu">auf<b>zu</b>stocken</span>.</td><td class="ua">Ми маємо намір збільшити персонал.</td></tr>
+<tr><td><b>um … zu …</b> (Ziel)</td><td>… <span class="zu">um</span> unseren Ruf nicht <span class="zu">zu verlieren</span>.</td><td class="ua">…щоб не втратити нашу репутацію.</td></tr>
+<tr><td><b>ohne … zu …</b></td><td>Sie gehen, ohne das Bad <span class="zu">zu kontrollieren</span>.</td><td class="ua">Вони йдуть, не перевіривши ванну.</td></tr>
+<tr><td><b>statt … zu …</b></td><td><span class="zu">Statt</span> neues Personal <span class="zu">ein<b>zu</b>stellen</span>, schulen wir das Team.</td><td class="ua">Замість наймати новий персонал, ми навчаємо команду.</td></tr>
+</tbody>
+</table>
+
+<h3>Drei Regeln, die auf jeden Fall sitzen müssen</h3>
+<ul>
+<li><b>Trennbare Verben:</b> zu стоїть усередині — <span class="right">anzurufen, einzuführen, vorzuschlagen, abzuklären, einzustellen</span>. Ніколи <span class="wrong">zu anrufen</span>.</li>
+<li><b>Nach Modalverben kein zu:</b> <span class="right">Wir müssen das klären.</span> / <span class="wrong">Wir müssen das zu klären.</span></li>
+<li><b>um … zu …</b> лише тоді, коли підмет в обох частинах ОДИН і той самий. Якщо різні — <b>damit</b>: <span class="right">Ich informiere die Geschäftsleitung, damit sie Bescheid weiß.</span></li>
+</ul>
+
+<h2>Bausteine — універсальний каркас на будь-яку ситуацію</h2>
+<table>
+<thead><tr><th>Phase</th><th>Baustein</th><th>Переклад</th></tr></thead>
+<tbody>
+<tr><td>Problem</td><td>Viele Kunden haben sich darüber beschwert, dass … / Wir <span class="k2">sollten</span> versuchen, eine Lösung <span class="zu">zu finden</span>.</td><td class="ua">Багато клієнтів поскаржилися, що… / Нам слід спробувати знайти рішення.</td></tr>
+<tr><td>Ursache</td><td>Zuerst <span class="k2">wäre</span> es wichtig <span class="zu">zu klären</span>, woran das liegt. / Ich <span class="k2">könnte</span> mir vorstellen, dass …</td><td class="ua">Спершу було б важливо з'ясувати, у чому причина. / Я міг би уявити, що…</td></tr>
+<tr><td>Vorschlag</td><td>Ich <span class="k2">würde</span> vorschlagen, … <b>zu</b> … / Wir <span class="k2">könnten</span> überlegen, … <b>zu</b> …</td><td class="ua">Я б запропонував… / Ми могли б подумати про те, щоб…</td></tr>
+<tr><td>Nachfrage</td><td><span class="k2">Hättest</span> du eine Idee? / <span class="k2">Wäre</span> es möglich, dass …? / Wie <span class="k2">wäre</span> es mit …?</td><td class="ua">Чи є в тебе ідея? / Чи було б можливо, щоб…? / Як щодо…?</td></tr>
+<tr><td>Zustimmung</td><td>Damit <span class="k2">wäre</span> ich einverstanden. / Das <span class="k2">wäre</span> eine gute Lösung.</td><td class="ua">З цим я був би згоден. / Це було б хорошим рішенням.</td></tr>
+<tr><td>Widerspruch</td><td>Da muss ich dir widersprechen. Das <span class="k2">wäre</span> zu teuer. / Ich <span class="k2">würde</span> lieber versuchen, … <b>zu</b> …</td><td class="ua">Тут я мушу заперечити. Це було б надто дорого. / Я б радше спробував…</td></tr>
+<tr><td>Kompromiss</td><td>Als Kompromiss <span class="k2">würde</span> ich vorschlagen, … <b>zu</b> …</td><td class="ua">Як компроміс я запропонував би…</td></tr>
+<tr><td>Entschädigung</td><td>Wir <span class="k2">könnten</span> ihnen anbieten, … <b>zu</b> … / Es <span class="k2">wäre</span> wichtig, uns <span class="zu">zu entschuldigen</span>.</td><td class="ua">Ми могли б запропонувати їм… / Було б важливо вибачитися.</td></tr>
+<tr><td>Aufgaben</td><td>Ich kümmere mich darum, … <b>zu</b> … , und du <span class="k2">könntest</span> …</td><td class="ua">Я подбаю про те, щоб… , а ти міг би…</td></tr>
+<tr><td>Termin</td><td><span class="k2">Könnten</span> wir uns am … treffen, <span class="zu">um</span> das Ergebnis <span class="zu">zu besprechen</span>?</td><td class="ua">Чи могли б ми зустрітися в…, щоб обговорити результат?</td></tr>
+<tr><td>Abschluss</td><td>Ich denke, wir haben eine gute Lösung gefunden. Vielen Dank für das Gespräch.</td><td class="ua">Думаю, ми знайшли хороше рішення. Дякую за розмову.</td></tr>
+</tbody>
+</table>
+
+<h2>Checkliste vor der Prüfung</h2>
+<ul>
+<li>Мінімум <b>5 форм Konjunktiv II</b> за діалог: könnten, wäre, würde, müssten, hätte.</li>
+<li>Мінімум <b>4 конструкції з zu</b>, з них одна — <b>um … zu …</b>.</li>
+<li>Один раз ввічливо <b>не погодитись</b> і запропонувати компроміс — це дає бали за взаємодію.</li>
+<li>Обов'язково <b>розподілити завдання</b> («Ich kümmere mich um…, du könntest…») і <b>домовитися про час</b>.</li>
+<li>Не говорити монологом: після кожної своєї пропозиції — питання партнеру.</li>
+</ul>
+
+</div>
+</body>
+</html>
