@@ -1,0 +1,427 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Хронологія ретритів</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:wght@500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#f7f4ee; --surface:#fffdf9; --ink:#23201b; --muted:#6b645a; --line:#e3dccf;
+  --accent:#8a5a2b; --accent-soft:#f1e6d6;
+  --w:#2f5d8a; --w-soft:#e5eef7; --wm:#3b7a4a; --wm-soft:#e3f1e6; --maybe:#9a6b00; --maybe-soft:#fbf1d6;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#16140f; --surface:#1f1c16; --ink:#ece6da; --muted:#a79f91; --line:#35302a;
+    --accent:#d9a86c; --accent-soft:#3a2e20;
+    --w:#8fb8e3; --w-soft:#1e2c3b; --wm:#8fcf9d; --wm-soft:#1d3024; --maybe:#e7c064; --maybe-soft:#3a3018;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#16140f; --surface:#1f1c16; --ink:#ece6da; --muted:#a79f91; --line:#35302a;
+  --accent:#d9a86c; --accent-soft:#3a2e20;
+  --w:#8fb8e3; --w-soft:#1e2c3b; --wm:#8fcf9d; --wm-soft:#1d3024; --maybe:#e7c064; --maybe-soft:#3a3018;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 Inter,system-ui,-apple-system,"Segoe UI",sans-serif}
+.wrap{max-width:860px;margin:0 auto;padding:40px 16px 64px}
+header h1{font-family:Lora,Georgia,serif;font-weight:600;font-size:clamp(28px,5vw,40px);line-height:1.15;margin:0 0 8px}
+header p.lead{color:var(--muted);margin:0 0 20px;max-width:640px}
+.legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:14px;color:var(--muted);margin-bottom:20px}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:36px}
+nav.toc a{font-size:14px;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--line);border-radius:999px;padding:6px 12px}
+nav.toc a:hover{border-color:var(--accent)}
+section.trip{position:relative;margin-bottom:40px}
+.trip-head{margin-bottom:14px}
+.when{display:inline-block;font-size:13px;font-weight:600;letter-spacing:.02em;color:var(--accent);background:var(--accent-soft);border-radius:6px;padding:3px 8px;margin-bottom:8px}
+.trip h2{font-family:Lora,Georgia,serif;font-weight:600;font-size:clamp(22px,3.6vw,28px);line-height:1.25;margin:0 0 4px}
+.trip .src{font-size:13px;color:var(--muted)}
+ol.events{list-style:none;margin:0;padding:0 0 0 22px;border-left:2px solid var(--line)}
+ol.events li{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:14px 16px;margin:0 0 12px}
+ol.events li::before{content:"";position:absolute;left:-31px;top:20px;width:14px;height:14px;border-radius:50%;background:var(--bg);border:3px solid var(--accent)}
+.day{font-size:13px;color:var(--muted);font-weight:500}
+.ev{font-weight:600;margin:2px 0 4px}
+.ev + p{margin:0 0 8px;color:var(--ink)}
+.links{display:flex;flex-wrap:wrap;gap:6px}
+.links a{display:inline-flex;align-items:center;gap:6px;font-size:13.5px;text-decoration:none;border-radius:6px;padding:3px 8px;line-height:1.4;overflow-wrap:anywhere}
+.links a.w{color:var(--w);background:var(--w-soft)}
+.links a.wm{color:var(--wm);background:var(--wm-soft)}
+.links a:hover{text-decoration:underline}
+.b{font-size:11px;font-weight:700;letter-spacing:.03em}
+.maybe{font-size:11.5px;font-weight:600;color:var(--maybe);background:var(--maybe-soft);border-radius:4px;padding:1px 6px;margin-left:4px;white-space:nowrap}
+footer{margin-top:48px;padding-top:20px;border-top:1px solid var(--line);font-size:14px;color:var(--muted)}
+footer p{margin:0 0 8px}
+@media (max-width:520px){
+  .wrap{padding-top:28px}
+  ol.events{padding-left:18px}
+  ol.events li::before{left:-27px}
+}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+  <h1>Хронологія ретритів</h1>
+  <p class="lead">Головні події ретритів групи Омнії — від Буковини й Поділля до Дніпра, з посиланнями на місця, про які йдеться в записах.</p>
+  <div class="legend">
+    <span><span class="links"><a class="w" href="#" onclick="return false"><span class="b">W</span> Вікіпедія</a></span></span>
+    <span><span class="links"><a class="wm" href="#" onclick="return false"><span class="b">WM</span> Wikimapia</a></span></span>
+    <span><span class="maybe">ймовірно</span> об'єкт визначено за описом у записі</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <a href="#t1">1 · Буковина й Поділля</a>
+  <a href="#t2">2 · Одеса, вересень</a>
+  <a href="#t3">3 · Краків — Саксонія</a>
+  <a href="#t4">4 · Черкаси</a>
+  <a href="#t5">5 · Одеса, червень</a>
+  <a href="#t6">6 · Дніпро</a>
+</nav>
+
+<!-- 1 -->
+<section class="trip" id="t1">
+  <div class="trip-head">
+    <span class="when">Кінець липня — 2 серпня · ймовірно 2025</span>
+    <h2>Чернівці — Хотин — Кам'янець-Подільський — Бакота</h2>
+    <div class="src">Записи 25 і 24</div>
+  </div>
+  <ol class="events">
+    <li>
+      <div class="day">День 1 · Чернівці</div>
+      <div class="ev">Знайомство з духом міста</div>
+      <p>Духа вітали ще дорогою. Його місце знайшли в сквері біля університету — хвойні дерева з особливою корою. Екскурсія залами колишньої резиденції митрополитів.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A0%D0%B5%D0%B7%D0%B8%D0%B4%D0%B5%D0%BD%D1%86%D1%96%D1%8F_%D0%BC%D0%B8%D1%82%D1%80%D0%BE%D0%BF%D0%BE%D0%BB%D0%B8%D1%82%D1%96%D0%B2_%D0%91%D1%83%D0%BA%D0%BE%D0%B2%D0%B8%D0%BD%D0%B8_%D1%96_%D0%94%D0%B0%D0%BB%D0%BC%D0%B0%D1%86%D1%96%D1%97" target="_blank" rel="noopener"><span class="b">W</span> Резиденція митрополитів Буковини і Далмації</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A7%D0%B5%D1%80%D0%BD%D1%96%D0%B2%D0%B5%D1%86%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BD%D0%B0%D1%86%D1%96%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9_%D1%83%D0%BD%D1%96%D0%B2%D0%B5%D1%80%D1%81%D0%B8%D1%82%D0%B5%D1%82_%D1%96%D0%BC%D0%B5%D0%BD%D1%96_%D0%AE%D1%80%D1%96%D1%8F_%D0%A4%D0%B5%D0%B4%D1%8C%D0%BA%D0%BE%D0%B2%D0%B8%D1%87%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Чернівецький національний університет</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">День 2 · Чернівці</div>
+      <div class="ev">Храми міста і звільнення душі «Оскара-хорвата»</div>
+      <p>Костели, православні й вірменський храми, синагога, найстаріша дерев'яна церква. У великому костелі на реставрації ведуча відпустила душу, що загинула в підземних ходах. У кафедральному соборі група вперше побачила ікону «Серце Ісуса» в православному храмі.</p>
+    </li>
+    <li>
+      <div class="day">День 3 · Хотин</div>
+      <div class="ev">Дух-воїн Хотинської фортеці</div>
+      <p>Ночували біля мосту через Дністер. У фортеці дух показав символ на своєму списі, який потім знайшли на дверях кузні, і місце дерев'яного «сонця», що тричі горіло. Тепер там криниця.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A5%D0%BE%D1%82%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D1%84%D0%BE%D1%80%D1%82%D0%B5%D1%86%D1%8F" target="_blank" rel="noopener"><span class="b">W</span> Хотинська фортеця</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A5%D0%BE%D1%82%D0%B8%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Хотин</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">31-ше · Кам'янець-Подільський</div>
+      <div class="ev">Собор із мінаретом, «сумний Ісус» і дві ікони «Серце Ісуса»</div>
+      <p>Храм, який у 1672–1699 роках був мечеттю, досі має мінарет зі статуєю Діви Марії. Гід біля статуї сумного Ісуса повторював, що «Господь сумує», і ведуча сприйняла це як послання. Біля вірменського храму ікона Миколая Угодника, за її словами, «підтвердила», що його мощі в Барі.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9A%D0%B0%D1%84%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9_%D0%BA%D0%BE%D1%81%D1%82%D0%B5%D0%BB_%D0%A1%D0%B2%D1%8F%D1%82%D0%B8%D1%85_%D0%90%D0%BF%D0%BE%D1%81%D1%82%D0%BE%D0%BB%D1%96%D0%B2_%D0%9F%D0%B5%D1%82%D1%80%D0%B0_%D1%96_%D0%9F%D0%B0%D0%B2%D0%BB%D0%B0_(%D0%9A%D0%B0%D0%BC'%D1%8F%D0%BD%D0%B5%D1%86%D1%8C-%D0%9F%D0%BE%D0%B4%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B8%D0%B9)" target="_blank" rel="noopener"><span class="b">W</span> Кафедральний костел Петра і Павла</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9E%D0%B1%D0%BB%D0%BE%D0%B3%D0%B0_%D0%9A%D0%B0%D0%BC'%D1%8F%D0%BD%D1%86%D1%8F-%D0%9F%D0%BE%D0%B4%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%BE%D0%B3%D0%BE_(1672)" target="_blank" rel="noopener"><span class="b">W</span> Облога Кам'янця 1672</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%92%D1%96%D1%80%D0%BC%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D1%86%D0%B5%D1%80%D0%BA%D0%B2%D0%B0_%D1%81%D0%B2%D1%8F%D1%82%D0%BE%D0%B3%D0%BE_%D0%9C%D0%B8%D0%BA%D0%BE%D0%BB%D0%B0%D1%8F_(%D0%9A%D0%B0%D0%BC'%D1%8F%D0%BD%D0%B5%D1%86%D1%8C-%D0%9F%D0%BE%D0%B4%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B8%D0%B9)" target="_blank" rel="noopener"><span class="b">W</span> Вірменська церква святого Миколая</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">1-ше · Бакота</div>
+      <div class="ev">Скельний монастир і спів молоді</div>
+      <p>Понад чотири години над Дністром. До печерного монастиря спуск близько 320 м. Дух «підганяв» групу вгору до скельного храму, де молодь співала пісню Ісусові.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%91%D0%B0%D0%BA%D0%BE%D1%82%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Бакота</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%91%D0%B0%D0%BA%D0%BE%D1%82%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%80" target="_blank" rel="noopener"><span class="b">W</span> Бакотський монастир</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%91%D0%B0%D0%BA%D0%BE%D1%82%D1%81%D1%8C%D0%BA%D0%B0_%D0%B7%D0%B0%D1%82%D0%BE%D0%BA%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Бакотська затока</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">Останній день · Кам'янець-Подільський</div>
+      <div class="ev">Фортеця: благословення списом</div>
+      <p>Дух фортеці, воїн у кольчузі, «благословив» ведучу списом. У тирі всі стріли летять у мішень із портретом Путіна.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9A%D0%B0%D0%BC'%D1%8F%D0%BD%D0%B5%D1%86%D1%8C-%D0%9F%D0%BE%D0%B4%D1%96%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B0_%D1%84%D0%BE%D1%80%D1%82%D0%B5%D1%86%D1%8F" target="_blank" rel="noopener"><span class="b">W</span> Кам'янець-Подільська фортеця</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">2-ге · дорога до Львова</div>
+      <div class="ev">Замість Золочева — Унівська лавра</div>
+      <p>Золочівський замок уже зачинився, тож поїхали до лаври. Служба лунала гучномовцями на всю територію. Ведуча бачила, як Мати Божа покриває монастир.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A3%D0%BD%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B0_%D0%BB%D0%B0%D0%B2%D1%80%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Унівська лавра</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%97%D0%BE%D0%BB%D0%BE%D1%87%D1%96%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%B7%D0%B0%D0%BC%D0%BE%D0%BA" target="_blank" rel="noopener"><span class="b">W</span> Золочівський замок</a>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- 2 -->
+<section class="trip" id="t2">
+  <div class="trip-head">
+    <span class="when">18–21 вересня 2025</span>
+    <h2>Одеса: Куликове поле, Чумка, Маринівка, Куяльник</h2>
+    <div class="src">Запис 23</div>
+  </div>
+  <ol class="events">
+    <li>
+      <div class="day">18 вересня · «ворота 999»</div>
+      <div class="ev">Куликове поле: понад 300 застряглих душ</div>
+      <p>Двохсотлітня історія місця: тюрма й поховання, братська могила 1918 року, трагедія 2 травня 2014-го. Під час роботи раптом здійнявся вітер-«торнадо». Уперше ведуча побачила біля порталу представника темних сил.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9A%D1%83%D0%BB%D0%B8%D0%BA%D0%BE%D0%B2%D0%B5_%D0%BF%D0%BE%D0%BB%D0%B5_(%D0%9E%D0%B4%D0%B5%D1%81%D0%B0)" target="_blank" rel="noopener"><span class="b">W</span> Куликове поле (Одеса)</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9E%D0%B4%D0%B5%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BF%D1%80%D0%BE%D1%84%D1%81%D0%BF%D1%96%D0%BB%D0%BE%D0%BA" target="_blank" rel="noopener"><span class="b">W</span> Одеський будинок профспілок</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9F%D1%80%D0%BE%D1%82%D0%B8%D1%81%D1%82%D0%BE%D1%8F%D0%BD%D0%BD%D1%8F_%D0%B2_%D0%9E%D0%B4%D0%B5%D1%81%D1%96_2_%D1%82%D1%80%D0%B0%D0%B2%D0%BD%D1%8F_2014" target="_blank" rel="noopener"><span class="b">W</span> Протистояння в Одесі 2 травня 2014</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">18 вересня · гора Чумка</div>
+      <div class="ev">«11 променів» до Кам'яної Могили</div>
+      <p>Ключова подія, за словами ведучої. Під насипом над похованнями жертв чуми вона побачила темний портал, один з 11 «променів» до резервуара під Кам'яною Могилою. Творець, за її баченням, запечатав усі 11 входів.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A7%D1%83%D0%BC%D0%B0_%D0%B2_%D0%9E%D0%B4%D0%B5%D1%81%D1%96" target="_blank" rel="noopener"><span class="b">W</span> Чума в Одесі</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9A%D0%B0%D0%BC'%D1%8F%D0%BD%D0%B0_%D0%9C%D0%BE%D0%B3%D0%B8%D0%BB%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Кам'яна Могила</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">19 вересня</div>
+      <div class="ev">Свято-Покровський монастир у Маринівці, потім Куяльник</div>
+      <p>Монастир над лиманом: озеро з лебедями, лелека, що заходить до храму, літній храм. Потім занедбана здравниця Куяльник: «квітка» закрутилася лише з третьої спроби. За баченням ведучої, на територію претендували темні маги.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9C%D0%B0%D1%80%D0%B8%D0%BD%D1%96%D0%B2%D0%BA%D0%B0_(%D0%9E%D0%B4%D0%B5%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD)" target="_blank" rel="noopener"><span class="b">W</span> Маринівка (Одеський район)</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A2%D0%B8%D0%BB%D1%96%D0%B3%D1%83%D0%BB%D1%8C%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BB%D0%B8%D0%BC%D0%B0%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Тилігульський лиман</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9A%D1%83%D1%8F%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BB%D0%B8%D0%BC%D0%B0%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Куяльницький лиман</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">21 вересня · сонячне затемнення</div>
+      <div class="ev">Звіт групі й практика роду</div>
+      <p>У пік затемнення група виконала практику зі свічкою та мантрами про силу роду. Ведуча порадила взяти аскезу до кінця місяця.</p>
+    </li>
+  </ol>
+</section>
+
+<!-- 3 -->
+<section class="trip" id="t3">
+  <div class="trip-head">
+    <span class="when">Близько 9 днів · ймовірно жовтень 2025</span>
+    <h2>Краків — Мейсен — Берлін — Дрезден — Рудні гори</h2>
+    <div class="src">Записи 21 і 22</div>
+  </div>
+  <ol class="events">
+    <li>
+      <div class="day">Після Кракова · Мейсен</div>
+      <div class="ev">«Казкове» місто порцеляни</div>
+      <p>Дахи з віконцями, схожими на очі. Робота в соборі на пагорбі.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9C%D0%B0%D0%B9%D1%81%D0%B5%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Майсен</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9C%D0%B0%D0%B9%D1%81%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%BF%D0%BE%D1%80%D1%86%D0%B5%D0%BB%D1%8F%D0%BD%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Майсенська порцеляна</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">Понеділок · Берлін</div>
+      <div class="ev">Кайзер знімає червоний плащ</div>
+      <p>Прогноз обіцяв дощ, а було сонце. Удень — важка робота в центрі, ввечері — рожевий захід над «чарівним озером» Оліверії. За баченням ведучої, дух Німеччини погодився прибрати плащ, що закривав країну від духовності.</p>
+    </li>
+    <li>
+      <div class="day">Вівторок · Дрезден</div>
+      <div class="ev">Фрауенкірхе: «лабораторія» в підземеллі</div>
+      <p>Нагорі — триярусний купол і ложі, «наче театр». На нижньому рівні ведуча побачила алхімічну лабораторію й жертовник; очищення далося їй фізично важко. Біля опери вона «впізнала» ложу з минулого втілення. Прогулянка Цвінгером.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A4%D1%80%D0%B0%D1%83%D0%B5%D0%BD%D0%BA%D1%96%D1%80%D1%85%D0%B5_(%D0%94%D1%80%D0%B5%D0%B7%D0%B4%D0%B5%D0%BD)" target="_blank" rel="noopener"><span class="b">W</span> Фрауенкірхе (Дрезден)</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A1%D0%B0%D0%BA%D1%81%D0%BE%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%B4%D0%B5%D1%80%D0%B6%D0%B0%D0%B2%D0%BD%D0%B0_%D0%BE%D0%BF%D0%B5%D1%80%D0%B0_%D0%94%D1%80%D0%B5%D0%B7%D0%B4%D0%B5%D0%BD%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Саксонська державна опера (Земперопер)</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A6%D0%B2%D1%96%D0%BD%D2%91%D0%B5%D1%80" target="_blank" rel="noopener"><span class="b">W</span> Цвінгер</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%93%D0%B0%D0%BB%D0%B5%D1%80%D0%B5%D1%8F_%D1%81%D1%82%D0%B0%D1%80%D0%B8%D1%85_%D0%BC%D0%B0%D0%B9%D1%81%D1%82%D1%80%D1%96%D0%B2" target="_blank" rel="noopener"><span class="b">W</span> Галерея старих майстрів</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A1%D1%96%D0%BA%D1%81%D1%82%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%9C%D0%B0%D0%B4%D0%BE%D0%BD%D0%BD%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Сікстинська Мадонна</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">Середа · Рудні гори</div>
+      <div class="ev">Портал Божественного зцілення планети</div>
+      <p>Місце біля кордону з Чехією ведуча описала з бачення, а Дмитро показав фото саме цієї галявини. Вона назвала цей портал найлегшим з усіх. Онлайн і наживо долучилися 20 людей. Потім була історія з новими черевиками.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A1%D0%B0%D0%BA%D1%81%D0%BE%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%A8%D0%B2%D0%B5%D0%B9%D1%86%D0%B0%D1%80%D1%96%D1%8F_%E2%80%94_%D0%A1%D1%85%D1%96%D0%B4%D0%BD%D1%96_%D0%A0%D1%83%D0%B4%D0%BD%D1%96_%D0%93%D0%BE%D1%80%D0%B8" target="_blank" rel="noopener"><span class="b">W</span> Район Саксонська Швейцарія — Східні Рудні Гори</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">Четвер · Саксонська Швейцарія</div>
+      <div class="ev">Дух, якому вперше принесли дари</div>
+      <p>Скелі й мости між ними, пікнік на вершині. Над групою білий «портал», а дощ пройшов обабіч. Наступного дня ведуча бачила золоте сяйво над порталом.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A1%D0%B0%D0%BA%D1%81%D0%BE%D0%BD%D1%81%D1%8C%D0%BA%D0%B0_%D0%A8%D0%B2%D0%B5%D0%B9%D1%86%D0%B0%D1%80%D1%96%D1%8F_(%D0%BD%D0%B0%D1%86%D1%96%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA)" target="_blank" rel="noopener"><span class="b">W</span> Нацпарк Саксонська Швейцарія</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%91%D0%B0%D1%81%D1%82%D0%B0%D0%B9" target="_blank" rel="noopener"><span class="b">W</span> Бастай<span class="maybe">ймовірно</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="day">П'ятниця · Дрезден</div>
+      <div class="ev">Листопад без вітру</div>
+      <p>Спокійне «досвітлювання» міста. Сильфіда, подарунок духа Києва, обсипала ведучу й Оліверію листям.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%94%D1%80%D0%B5%D0%B7%D0%B4%D0%B5%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Дрезден</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">Після повернення · онлайн</div>
+      <div class="ev">До Херсона «повертається» дух — Потьомкін</div>
+      <p>За баченням ведучої, дух міста пішов, коли зняли пам'ятник, а тепер повернувся.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9F%D0%B0%D0%BC'%D1%8F%D1%82%D0%BD%D0%B8%D0%BA_%D0%9F%D0%BE%D1%82%D1%8C%D0%BE%D0%BC%D0%BA%D1%96%D0%BD%D1%83_(%D0%A5%D0%B5%D1%80%D1%81%D0%BE%D0%BD)" target="_blank" rel="noopener"><span class="b">W</span> Пам'ятник Потьомкіну (Херсон)</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9F%D0%BE%D1%82%D1%8C%D0%BE%D0%BC%D0%BA%D1%96%D0%BD_%D0%93%D1%80%D0%B8%D0%B3%D0%BE%D1%80%D1%96%D0%B9_%D0%9E%D0%BB%D0%B5%D0%BA%D1%81%D0%B0%D0%BD%D0%B4%D1%80%D0%BE%D0%B2%D0%B8%D1%87" target="_blank" rel="noopener"><span class="b">W</span> Григорій Потьомкін</a>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- 4 -->
+<section class="trip" id="t4">
+  <div class="trip-head">
+    <span class="when">Весна (квітнуть магнолії) · ймовірно 2026</span>
+    <h2>Холодний Яр і Черкаси</h2>
+    <div class="src">Запис 20</div>
+  </div>
+  <ol class="events">
+    <li>
+      <div class="day">День 1 · Холодний Яр</div>
+      <div class="ev">Портал біля села Буда</div>
+      <p>Портал, пов'язаний з «українською ідентичністю». Олена з Холодного Яру звернула увагу на рядок Шевченка про «новий огонь з Холодного Яру».</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A5%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%B8%D0%B9_%D0%AF%D1%80" target="_blank" rel="noopener"><span class="b">W</span> Холодний Яр</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%91%D1%83%D0%B4%D0%B0_(%D0%A7%D0%B8%D0%B3%D0%B8%D1%80%D0%B8%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%80%D0%B0%D0%B9%D0%BE%D0%BD)" target="_blank" rel="noopener"><span class="b">W</span> Буда (село)</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A5%D0%BE%D0%BB%D0%BE%D0%B4%D0%BD%D0%B8%D0%B9_%D0%AF%D1%80_(%D0%B2%D1%96%D1%80%D1%88)" target="_blank" rel="noopener"><span class="b">W</span> «Холодний Яр» (вірш Шевченка)</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">День 2 · Черкаси</div>
+      <div class="ev">«Ом» над містом від Храму Білого Лотоса</div>
+      <p>Магнолії, меморіал із вічним вогнем, схили Дніпра. Під час роботи біля буддійського храму учасники чули «бом-ом». Енергію рознесли на 100 км. У домі Матаджі започаткували ретритний центр.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A5%D1%80%D0%B0%D0%BC_%D0%91%D1%96%D0%BB%D0%BE%D0%B3%D0%BE_%D0%9B%D0%BE%D1%82%D0%BE%D1%81%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Храм Білого Лотоса</a>
+        <a class="wm" href="https://wikimapia.org/13548700/Buddhist-temple-White-Lotus" target="_blank" rel="noopener"><span class="b">WM</span> «Білий лотос» на мапі</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9F%D0%B0%D0%B3%D0%BE%D1%80%D0%B1_%D0%A1%D0%BB%D0%B0%D0%B2%D0%B8_(%D0%A7%D0%B5%D1%80%D0%BA%D0%B0%D1%81%D0%B8)" target="_blank" rel="noopener"><span class="b">W</span> Пагорб Слави<span class="maybe">ймовірно</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="day">Плани</div>
+      <div class="ev">Наступні місця сили</div>
+      <p>Кандидати для майбутніх поїздок, які назвали учасники.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A2%D1%80%D0%B0%D1%85%D1%82%D0%B5%D0%BC%D0%B8%D1%80%D1%96%D0%B2" target="_blank" rel="noopener"><span class="b">W</span> Трахтемирів</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A8%D0%B0%D1%94%D0%B2%D0%B0_%D0%B3%D0%BE%D1%80%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Шаєва гора</a>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- 5 -->
+<section class="trip" id="t5">
+  <div class="trip-head">
+    <span class="when">Червень 2026 · близько 10 днів</span>
+    <h2>Одеса: Куяльник, море, катакомби, опера</h2>
+    <div class="src">Зустріч 18.06.2026</div>
+  </div>
+  <ol class="events">
+    <li>
+      <div class="day">11 червня · Куяльник</div>
+      <div class="ev">Злива з градом над «вузлом кристалічної решітки»</div>
+      <p>У басейні з пірамідальним дахом ведуча передавала послання, а надворі йшла злива з градом. Щойно роботу завершили, дощ ущух.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9A%D1%83%D1%8F%D0%BB%D1%8C%D0%BD%D0%B8%D1%86%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BB%D0%B8%D0%BC%D0%B0%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Куяльницький лиман</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">12 червня · море й катакомби</div>
+      <div class="ev">Робота з Чорним морем і входом у катакомби</div>
+      <p>Уранці — очищення моря з «цивілізацією золотих дельфінів»; після роботи вода стала каламутною. Потім катакомби: під землю не спускалися, працювали біля входу. Обидва місця заплановано повторити у вересні.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9E%D0%B4%D0%B5%D1%81%D1%8C%D0%BA%D1%96_%D0%BA%D0%B0%D1%82%D0%B0%D0%BA%D0%BE%D0%BC%D0%B1%D0%B8" target="_blank" rel="noopener"><span class="b">W</span> Одеські катакомби</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">13 червня · опера</div>
+      <div class="ev">«Наталка Полтавка» під тривоги</div>
+      <p>Повітряні тривоги виводили глядачів із зали, і це дало змогу опрацювати театр зсередини.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9E%D0%B4%D0%B5%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BD%D0%B0%D1%86%D1%96%D0%BE%D0%BD%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9_%D0%B0%D0%BA%D0%B0%D0%B4%D0%B5%D0%BC%D1%96%D1%87%D0%BD%D0%B8%D0%B9_%D1%82%D0%B5%D0%B0%D1%82%D1%80_%D0%BE%D0%BF%D0%B5%D1%80%D0%B8_%D1%82%D0%B0_%D0%B1%D0%B0%D0%BB%D0%B5%D1%82%D1%83" target="_blank" rel="noopener"><span class="b">W</span> Одеський театр опери та балету</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">14 червня</div>
+      <div class="ev">Мечеть та Іллінський монастир</div>
+      <p>Екскурсія до мечеті: килим із «комірками» для кожного, хто молиться. Далі Іллінський монастир і будівлі, що колись горіли.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%90%D1%80%D0%B0%D0%B1%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BA%D1%83%D0%BB%D1%8C%D1%82%D1%83%D1%80%D0%BD%D0%B8%D0%B9_%D1%86%D0%B5%D0%BD%D1%82%D1%80_(%D0%9E%D0%B4%D0%B5%D1%81%D0%B0)" target="_blank" rel="noopener"><span class="b">W</span> Арабський культурний центр (мечеть)<span class="maybe">ймовірно</span></a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%86%D0%BB%D0%BB%D1%96%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D1%87%D0%BE%D0%BB%D0%BE%D0%B2%D1%96%D1%87%D0%B8%D0%B9_%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D0%B8%D1%80_(%D0%9E%D0%B4%D0%B5%D1%81%D0%B0)" target="_blank" rel="noopener"><span class="b">W</span> Іллінський монастир</a>
+        <a class="wm" href="https://wikimapia.org/16176989/ru/%D0%A1%D0%B2%D1%8F%D1%82%D0%BE-%D0%98%D0%BB%D1%8C%D0%B8%D0%BD%D1%81%D0%BA%D0%B8%D0%B9-%D0%BC%D1%83%D0%B6%D1%81%D0%BA%D0%BE%D0%B9-%D0%BC%D0%BE%D0%BD%D0%B0%D1%81%D1%82%D1%8B%D1%80%D1%8C-%D0%A3%D0%9F%D0%A6-%D0%9C%D0%9F" target="_blank" rel="noopener"><span class="b">WM</span> Іллінський монастир на мапі</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">17 червня · гості з Миколаєва</div>
+      <div class="ev">Філармонія і «вогняна квітка» на шпилі опери</div>
+      <p>Дорогою до театру група попрацювала з будівлею філармонії, колишньою біржею. За баченням ведучої, на шпилі опери тепер постійно працює «вогняна квітка».</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9E%D0%B4%D0%B5%D1%81%D1%8C%D0%BA%D0%B0_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D0%BD%D0%B0_%D1%84%D1%96%D0%BB%D0%B0%D1%80%D0%BC%D0%BE%D0%BD%D1%96%D1%8F" target="_blank" rel="noopener"><span class="b">W</span> Одеська обласна філармонія</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9E%D0%B4%D0%B5%D1%81%D1%8C%D0%BA%D0%B0_%D0%B1%D1%96%D1%80%D0%B6%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Одеська біржа</a>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<!-- 6 -->
+<section class="trip" id="t6">
+  <div class="trip-head">
+    <span class="when">23–26 липня 2026</span>
+    <h2>Дніпро і Сміла</h2>
+    <div class="src">Звіт 26.07.2026</div>
+  </div>
+  <ol class="events">
+    <li>
+      <div class="day">24 липня · день святої Ольги</div>
+      <div class="ev">Храм біля парку Шевченка і дух-хранитель міста</div>
+      <p>Зранку — служба в соборі: знятий «купол» і благословення на роботу. У парку в колі дерев хранитель розповів історію назви міста, а до групи прибігла родина білок.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A1%D0%BF%D0%B0%D1%81%D0%BE-%D0%9F%D1%80%D0%B5%D0%BE%D0%B1%D1%80%D0%B0%D0%B6%D0%B5%D0%BD%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BA%D0%B0%D1%84%D0%B5%D0%B4%D1%80%D0%B0%D0%BB%D1%8C%D0%BD%D0%B8%D0%B9_%D1%81%D0%BE%D0%B1%D0%BE%D1%80_(%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE)" target="_blank" rel="noopener"><span class="b">W</span> Спасо-Преображенський собор<span class="maybe">ймовірно</span></a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9F%D0%B0%D1%80%D0%BA_%D1%96%D0%BC%D0%B5%D0%BD%D1%96_%D0%A2%D0%B0%D1%80%D0%B0%D1%81%D0%B0_%D0%A8%D0%B5%D0%B2%D1%87%D0%B5%D0%BD%D0%BA%D0%B0_(%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE)" target="_blank" rel="noopener"><span class="b">W</span> Парк Шевченка (Дніпро)</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">24 липня · біля колишнього навчального закладу ведучої</div>
+      <div class="ev">Закриття «променя» до резервуара</div>
+      <p>Навпроти колишнього храму, нині органного залу, ведуча відчула, що група стоїть на «промені» до Кам'яної Могили. «Свищі» закрито; ще один знайшли й закрили в районі висоток. За день пройшли близько 20 км.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%B1%D1%83%D0%B4%D0%B8%D0%BD%D0%BE%D0%BA_%D0%BE%D1%80%D0%B3%D0%B0%D0%BD%D0%BD%D0%BE%D1%97_%D1%96_%D0%BA%D0%B0%D0%BC%D0%B5%D1%80%D0%BD%D0%BE%D1%97_%D0%BC%D1%83%D0%B7%D0%B8%D0%BA%D0%B8" target="_blank" rel="noopener"><span class="b">W</span> Дніпровський будинок органної музики<span class="maybe">ймовірно</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="day">25 липня · ранок</div>
+      <div class="ev">«Менора», потім обласна психіатрична лікарня</div>
+      <p>Попри шабат, групу пустили до «Менори». Біля лікарні на лівому березі провели відпускання застряглих душ: 7 — «вниз», більшість — на середній рівень, 3 — на найвищий.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A6%D0%B5%D0%BD%D1%82%D1%80_%C2%AB%D0%9C%D0%B5%D0%BD%D0%BE%D1%80%D0%B0%C2%BB" target="_blank" rel="noopener"><span class="b">W</span> Центр «Менора»</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%94%D0%BD%D1%96%D0%BF%D1%80%D0%BE%D0%BF%D0%B5%D1%82%D1%80%D0%BE%D0%B2%D1%81%D1%8C%D0%BA%D0%B0_%D0%BE%D0%B1%D0%BB%D0%B0%D1%81%D0%BD%D0%B0_%D0%B1%D0%B0%D0%B3%D0%B0%D1%82%D0%BE%D0%BF%D1%80%D0%BE%D1%84%D1%96%D0%BB%D1%8C%D0%BD%D0%B0_%D0%BA%D0%BB%D1%96%D0%BD%D1%96%D1%87%D0%BD%D0%B0_%D0%BB%D1%96%D0%BA%D0%B0%D1%80%D0%BD%D1%8F_%D0%BF%D1%81%D0%B8%D1%85%D1%96%D0%B0%D1%82%D1%80%D0%B8%D1%87%D0%BD%D0%BE%D1%97_%D0%B4%D0%BE%D0%BF%D0%BE%D0%BC%D0%BE%D0%B3%D0%B8" target="_blank" rel="noopener"><span class="b">W</span> Обласна лікарня психіатричної допомоги</a>
+      </div>
+    </li>
+    <li>
+      <div class="day">25 липня · вечір</div>
+      <div class="ev">«Річка життя» і золотий ключ від серця Землі</div>
+      <p>У великому центральному парку з колесом огляду дух міста показав підземну «річку життя» й вручив учасникам символічні дари. Далі — вулиця сучасної архітектури, храм і свято кришнаїтів.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9F%D0%B0%D1%80%D0%BA_%D0%9B%D0%B0%D0%B7%D0%B0%D1%80%D1%8F_%D0%93%D0%BB%D0%BE%D0%B1%D0%B8" target="_blank" rel="noopener"><span class="b">W</span> Парк Лазаря Глоби<span class="maybe">ймовірно</span></a>
+      </div>
+    </li>
+    <li>
+      <div class="day">26 липня · дорога додому</div>
+      <div class="ev">Сміла: «Алилуя» в парку та «фонтан» у Тясмині</div>
+      <p>Родинний ансамбль співав духовні пісні. Під час роботи відчували запах гару — «давню пожежу» міста. За баченням ведучої, місто підтримує енергетичний «фонтан» у річці.</p>
+      <div class="links">
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A1%D0%BC%D1%96%D0%BB%D0%B0" target="_blank" rel="noopener"><span class="b">W</span> Сміла</a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%9C%D1%96%D1%81%D1%8C%D0%BA%D0%B8%D0%B9_%D0%BF%D0%B0%D1%80%D0%BA_(%D0%BC._%D0%A1%D0%BC%D1%96%D0%BB%D0%B0)" target="_blank" rel="noopener"><span class="b">W</span> Міський парк Сміли<span class="maybe">ймовірно</span></a>
+        <a class="w" href="https://uk.wikipedia.org/wiki/%D0%A2%D1%8F%D1%81%D0%BC%D0%B8%D0%BD" target="_blank" rel="noopener"><span class="b">W</span> Тясмин</a>
+      </div>
+    </li>
+  </ol>
+</section>
+
+<footer>
+  <p>Джерело — 8 транскрипцій зустрічей групи. Бачення, духи й енергетичні процеси подано як розповідь ведучої та учасників.</p>
+  <p>Дати з позначкою «ймовірно» відновлено за підказками в тексті: затемнення 21 вересня, згадки «рік тому» тощо. Позначка «ймовірно» біля посилання означає, що в записі об'єкт не названо прямо, а визначено за описом.</p>
+</footer>
+</div>
+</body>
+</html>
