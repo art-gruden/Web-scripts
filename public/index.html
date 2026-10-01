@@ -1,0 +1,183 @@
+<!doctype html>
+<html lang="uk">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Deutsch B2 Beruf</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:opsz,wght@7..72,400;7..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a study desk index — exam-structure strip on top (each block jumps to its materials), then sections of link cards in a responsive grid. */
+:root{
+  --paper:#f3f5f4; --sheet:#ffffff; --ink:#18263a; --muted:#5d6b7a; --rule:#d7dde2;
+  --accent:#1f4f8a; --accent-soft:#e3ecf7; --mark:#f6e27a;
+  --c-lesen:#1f4f8a; --c-hoeren:#7a4b9c; --c-schreiben:#1d7a6a; --c-sprechen:#b0532a; --c-gramm:#5d6b7a;
+  --f-text:"Literata", Georgia, "Times New Roman", serif;
+  --f-ui:"IBM Plex Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  --f-num:"IBM Plex Mono", ui-monospace, Menlo, monospace;
+  color-scheme:light;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --paper:#11161d; --sheet:#18202a; --ink:#e4e9ef; --muted:#9aa7b5; --rule:#2c3744; --accent:#8db8ee; --accent-soft:#1f2f44; --mark:#6b5a12;
+  --c-lesen:#8db8ee; --c-hoeren:#c3a0e0; --c-schreiben:#6fcfb9; --c-sprechen:#f0a07a; --c-gramm:#9aa7b5; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --paper:#11161d; --sheet:#18202a; --ink:#e4e9ef; --muted:#9aa7b5; --rule:#2c3744; --accent:#8db8ee; --accent-soft:#1f2f44; --mark:#6b5a12;
+  --c-lesen:#8db8ee; --c-hoeren:#c3a0e0; --c-schreiben:#6fcfb9; --c-sprechen:#f0a07a; --c-gramm:#9aa7b5; color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{margin:0}
+body{background:var(--paper);color:var(--ink);font-family:var(--f-ui);font-size:15px;line-height:1.5;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+.wrap{max-width:1180px;margin:0 auto;padding-inline:16px;padding-block:28px 64px}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+header{display:flex;flex-wrap:wrap;gap:16px 28px;align-items:end;justify-content:space-between}
+.eyebrow{font-size:.75rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+h1{font-family:var(--f-text);font-weight:600;font-size:clamp(1.8rem,4vw,2.6rem);line-height:1.1;margin:.15em 0 0;text-wrap:balance}
+.search{position:relative;flex:0 1 340px;min-width:0;width:100%}
+.search input{width:100%;font:inherit;padding:10px 12px 10px 36px;border:1px solid var(--rule);border-radius:6px;background:var(--sheet);color:var(--ink)}
+.search svg{position:absolute;left:11px;top:50%;transform:translateY(-50%);width:16px;height:16px;stroke:var(--muted);fill:none;stroke-width:2}
+
+.exam{margin-top:26px;background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:16px}
+.exam h2{margin:0 0 10px;font-size:.8rem;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);font-weight:600}
+.strip{display:flex;gap:4px;min-width:0}
+.seg{flex:var(--w) 1 0;min-width:0;text-decoration:none;border-top:5px solid var(--c);padding:8px 8px 4px;border-radius:2px;display:flex;flex-direction:column;gap:2px}
+.seg:hover{background:var(--accent-soft)}
+.seg b{font-size:.88rem;font-weight:600;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.seg span{font-family:var(--f-num);font-size:.72rem;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.extra{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:10px;font-size:.85rem;color:var(--muted)}
+.extra a{text-decoration:none;border-bottom:1px solid var(--rule)}
+.extra a:hover{color:var(--accent);border-color:var(--accent)}
+@media (max-width:640px){.strip{flex-direction:column}.seg{flex:none;border-top:0;border-left:5px solid var(--c)}}
+
+.recent{margin-top:22px;display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.recent .lbl{font-size:.8rem;color:var(--muted);margin-right:4px}
+.recent a{font-size:.85rem;text-decoration:none;border:1px solid var(--rule);background:var(--sheet);border-radius:999px;padding:4px 12px}
+.recent a:hover{border-color:var(--accent);color:var(--accent)}
+
+section{margin-top:40px;scroll-margin-top:16px}
+.sh{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 14px;border-bottom:2px solid var(--c,var(--ink));padding-bottom:6px;margin-bottom:14px}
+.sh h2{font-family:var(--f-text);font-weight:600;font-size:1.4rem;margin:0}
+.sh p{margin:0;color:var(--muted);font-size:.9rem}
+.sh .n{margin-left:auto;font-family:var(--f-num);font-size:.75rem;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,290px),1fr));gap:12px}
+.card{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:14px 16px;min-width:0;transition:border-color .15s, transform .15s}
+.card:hover{border-color:var(--c,var(--accent));transform:translateY(-1px)}
+.card .top{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.kind{font-size:.7rem;letter-spacing:.06em;text-transform:uppercase;font-weight:600;color:var(--c,var(--accent))}
+.date{font-family:var(--f-num);font-size:.7rem;color:var(--muted)}
+.card h3{margin:0;font-size:1.02rem;font-weight:600;line-height:1.3}
+.card p{margin:0;color:var(--muted);font-size:.88rem;line-height:1.45}
+.card .file{font-family:var(--f-num);font-size:.7rem;color:var(--muted);opacity:.8;overflow-wrap:anywhere;margin-top:auto;padding-top:4px}
+mark{background:var(--mark);color:inherit;padding:0 1px}
+
+.audio{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(100%,520px),1fr));gap:12px}
+details.ag{background:var(--sheet);border:1px solid var(--rule);border-radius:8px;padding:10px 14px}
+details.ag summary{cursor:pointer;font-weight:600}
+.track{display:grid;grid-template-columns:52px minmax(0,1fr);gap:10px;align-items:center;margin-top:8px}
+.track code{font-family:var(--f-num);font-size:.78rem;color:var(--muted)}
+.track audio{width:100%;height:34px}
+.empty{color:var(--muted);margin-top:30px}
+footer{margin-top:48px;color:var(--muted);font-size:.8rem}
+@media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <div class="eyebrow">Deutsch-Test für den Beruf · B2</div>
+      <h1>Deutsch B2 Beruf</h1>
+    </div>
+    <label class="search"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/></svg>
+      <input id="q" type="search" placeholder="Пошук: Teil 3, Dativ, Hören…" autocomplete="off" aria-label="Пошук матеріалів">
+    </label>
+  </header>
+
+  <div class="exam">
+    <h2>Структура іспиту · натисніть, щоб перейти до матеріалів</h2>
+    <div class="strip">
+      <a class="seg" href="#lesen" style="--w:45;--c:var(--c-lesen)"><b>Lesen</b><span>Teil 1–4 · 45′</span></a>
+      <a class="seg" href="#lesen" style="--w:20;--c:var(--c-lesen)"><b>Lesen und Schreiben</b><span>19–21 · 20′</span></a>
+      <a class="seg" href="#hoeren" style="--w:25;--c:var(--c-hoeren)"><b>Hören</b><span>22–45 · 25′</span></a>
+      <a class="seg" href="#sprachbausteine" style="--w:35;--c:var(--c-schreiben)"><b>Sprachbausteine · Schreiben</b><span>46–58 · 35′</span></a>
+      <a class="seg" href="#sprechen" style="--w:16;--c:var(--c-sprechen)"><b>Sprechen</b><span>Teil 1–3 · 16′</span></a>
+    </div>
+    <div class="extra"><a href="#pruefung">Повні тести й Kompendium</a><a href="#grammatik">Grammatik</a><a href="#wortschatz">Wortschatz</a><a href="#audio">Аудіо</a></div>
+  </div>
+
+  <div class="recent" id="recent" hidden><span class="lbl">Нещодавно відкриті:</span></div>
+  <div id="list"></div>
+  <p class="empty" id="empty" hidden>Нічого не знайдено.</p>
+
+  <section id="audio" style="--c:var(--c-hoeren)">
+    <div class="sh"><h2>Аудіо</h2><p>Треки до тестів Hören — можна слухати прямо тут</p></div>
+    <div class="audio" id="audioList"></div>
+  </section>
+
+  <footer>Усі файли лежать поруч у цій папці. Прогрес у тренажерах зберігається у вашому браузері.</footer>
+</div>
+
+<script id="data" type="application/json">{"sections": [{"id": "pruefung", "title": "Prüfung komplett", "sub": "Повні тести й довідник по всьому іспиту DTB B2 Beruf", "items": [{"f": "B2_Beruf_Kompendium.html", "t": "Kompendium DTB B2", "k": "Довідник", "d": "Весь іспит в одному документі: Sprechen 1–3 з Redemittel і зразками, Forumsbeitrag (22 теми), Beschwerde-E-Mail, Lesen-Übungstest з рішеннями, Wortschatz B1→B2.", "u": "13.09.2026"}, {"f": "modelltest_dtb_b2.html", "t": "Modelltest DTB B2 · Cornelsen", "k": "Тест", "d": "Модельний тест з аудіо (треки 401–406).", "u": "27.09.2026"}, {"f": "telc_B2_Beruf_Uebungstest_2.html", "t": "Übungstest 2 · schriftlich", "k": "Тест", "d": "Lesen, Lesen und Schreiben, Sprachbausteine, Schreiben — 26 завдань, таймер 60/80/100 хв, оцінка з поясненнями.", "u": "20.08.2026"}]}, {"id": "lesen", "title": "Lesen · Lesen und Schreiben", "sub": "Teil 1–4 і Beschwerde (Aufgaben 1–21)", "items": [{"f": "trainer.html", "t": "DTB B2 Lesen-Trainer", "k": "Тренажер", "d": "Усі варіанти Teil 1–4 і Beschwerde: перевірка відповідей, письмо Aufgabe 21 з чеклістом, пробний тест на 60 балів.", "u": "30.09.2026"}]}, {"id": "hoeren", "title": "Hören", "sub": "Aufgaben 22–45 · бланки відповідей до аудіо", "items": [{"f": "hoeren-b2-test2.html", "t": "Hören Teil 1–4 · Modelltest 2", "k": "Тест", "d": "Antwortbogen з таймером 20 хв, треки 007–011 (Gespräche, Präsentation, Mitteilungen, Hören und Schreiben).", "u": "28.07.2026"}, {"f": "hoeren-test012-016.html", "t": "Hören Teil 1–4 · Übungssatz", "k": "Тест", "d": "Завдання 22–40, написані під треки 012–016.", "u": "29.07.2026"}]}, {"id": "sprachbausteine", "title": "Sprachbausteine · Schreiben", "sub": "Konnektoren, Kasus, Forumsbeitrag", "items": [{"f": "Sprachbausteine_Teil1_Trainer.html", "t": "Sprachbausteine Teil 1", "k": "Тренажер", "d": "Конектори, позиція дієслова, відмінок після пропуску: правила, детектор конекторів, швидке й екзаменаційне тренування.", "u": "21.08.2026"}, {"f": "Themenkarten_B2_1.html", "t": "Themenkarten B2 Beruf", "k": "Картки", "d": "Випадкова тема для Forumsbeitrag або усного висловлювання: pro/contra, Fazit, Redemittel, таймер 3/15/30 хв.", "u": "05.08.2026"}]}, {"id": "sprechen", "title": "Sprechen", "sub": "Teil 1 Präsentation · Teil 2 Smalltalk · Teil 3 Lösungswege finden", "items": [{"f": "b2-redemittel-trainer.html", "t": "Redemittel für Sprechen", "k": "Тренажер", "d": "40 категорій фраз для усного іспиту: довідник і тренування.", "u": "01.07.2026"}, {"f": "Smalltalk_zu_zweit.html", "t": "Smalltalk zu zweit · Teil 2", "k": "Пара", "d": "Практика в парі: теми, ролі, таймер 2 хв, підказки, діалоги-зразки.", "u": "01.10.2026"}, {"f": "Teil3_zu_zweit.html", "t": "Teil 3 zu zweit · 37 Situationen", "k": "Пара", "d": "Усі 37 ситуацій Lösungswege finden: ролями, вільно як на іспиті, випадкова ситуація, Redemittel.", "u": "30.09.2026"}, {"f": "B2_Sprechen_Teil3_Dialoge.html", "t": "Teil 3 · Dialoge mit Konjunktiv II", "k": "Довідник", "d": "Кольорова схема діалогів з Konjunktiv II та Infinitiv mit zu, з українським перекладом.", "u": "13.09.2026"}, {"f": "Sprechen_Teil3_Dialogtrainer_Seniorenwohnheim.html", "t": "Teil 3 · Seniorenwohnheim", "k": "Тренажер", "d": "Одна ситуація повністю: ідеї, лексика, Redemittel, Musterdialog, власна практика.", "u": "21.08.2026"}, {"f": "Sprechen_Teil3_01-10.html", "t": "Teil 3 · Situationen 1–10", "k": "Тренажер", "d": "Діалогтренажер із таймером 2 хв.", "u": "15.08.2026"}, {"f": "Sprechen_Teil3_11-19.html", "t": "Teil 3 · Situationen 11–19", "k": "Тренажер", "d": "Діалогтренажер із таймером 2 хв.", "u": "15.08.2026"}, {"f": "Sprechen_Teil3_20-28.html", "t": "Teil 3 · Situationen 20–28", "k": "Тренажер", "d": "Діалогтренажер із таймером 2 хв.", "u": "15.08.2026"}, {"f": "Sprechen_Teil3_29-37.html", "t": "Teil 3 · Situationen 29–37", "k": "Тренажер", "d": "Діалогтренажер із таймером 2 хв.", "u": "15.08.2026"}]}, {"id": "grammatik", "title": "Grammatik", "sub": "Відмінки, порядок слів, дієслова", "items": [{"f": "dativ-akkusativ-trainer.html", "t": "Dativ & Akkusativ", "k": "Тренажер", "d": "Тренування відмінків.", "u": "25.06.2026"}, {"f": "tekamolo-trainer.html", "t": "TeKaMoLo · Position der Angaben", "k": "Тренажер", "d": "Порядок обставин у реченні: правила, винятки, вправи.", "u": "25.06.2026"}, {"f": "lassen-trainer.html", "t": "Verb lassen", "k": "Тренажер", "d": "Значення, тест на значення, побудова речень, Perfekt.", "u": "28.06.2026"}, {"f": "german-articles.html", "t": "Artikel-Trainer", "k": "Тренажер", "d": "der · die · das з лічильником серії.", "u": "23.05.2026"}, {"f": "deutsche-verben-flashcards.html", "t": "Deutsche Verben · Vergangenheit", "k": "Картки", "d": "100 дієслів B1 у минулому часі.", "u": "27.04.2026"}, {"f": "german-test-lektion1-4.html", "t": "Test Lektionen 1–4 · DE", "k": "Тест", "d": "Граматика й лексика B1/B2, інструкції німецькою.", "u": "25.06.2026"}, {"f": "german-test-l1-4ua.html", "t": "Test Lektionen 1–4 · UA", "k": "Тест", "d": "Той самий тест з інструкціями українською.", "u": "25.06.2026"}]}, {"id": "wortschatz", "title": "Wortschatz", "sub": "Слова, картки, вимова", "items": [{"f": "vocabular.html", "t": "Wichtige Wörter B2", "k": "Картки", "d": "Таблиця й картки з перекладом, відмітка «знаю / не знаю».", "u": "23.05.2026"}, {"f": "german_vocab_b1.html", "t": "Wichtige Wörter B1+", "k": "Картки", "d": "Таблиця й картки з перекладом.", "u": "28.06.2026"}, {"f": "kapitel7_voice_trainer.html", "t": "Kapitel 7 · Голосовий словник", "k": "Вимова", "d": "Озвучування слів для тренування вимови, регульована швидкість.", "u": "06.07.2026"}, {"f": "lexion.html", "t": "Лексика B1–B2 з лекції", "k": "Список", "d": "Дієслова й вирази з прикладами: здоров'я, емоції, спілкування.", "u": "06.07.2026"}]}], "audio": [{"t": "PT DaF Deutschtest für den Beruf B2 · Track 004–006", "files": ["004_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "005_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "006_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3"]}, {"t": "Modelltest 2 · Track 007–011 → Hören Teil 1–4 · Modelltest 2", "files": ["007_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "008_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "009_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "010_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "011_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3"]}, {"t": "Übungssatz · Track 012–016 → Hören Übungssatz", "files": ["012_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "013_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "014_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "015_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3", "016_9783061212742_PT_DaF_Deutschtest_Beruf_B2.mp3"]}, {"t": "Modelltest Cornelsen · Track 401–406", "files": ["9783061224745_401.mp3", "9783061224745_402.mp3", "9783061224745_403.mp3", "9783061224745_404.mp3", "9783061224745_405.mp3", "9783061224745_406.mp3"]}]}</script>
+<script>
+const D = JSON.parse(document.getElementById('data').textContent);
+const COLOR = {pruefung:'--accent', lesen:'--c-lesen', hoeren:'--c-hoeren', sprachbausteine:'--c-schreiben', sprechen:'--c-sprechen', grammatik:'--c-gramm', wortschatz:'--c-schreiben'};
+const esc = s => String(s).replace(/[&<>"]/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+const store = { get(k,d){try{const v=localStorage.getItem('dbh:'+k);return v?JSON.parse(v):d}catch(e){return d}}, set(k,v){try{localStorage.setItem('dbh:'+k,JSON.stringify(v))}catch(e){}} };
+const byFile = {}; D.sections.forEach(s => s.items.forEach(i => byFile[i.f] = i));
+
+function hl(text, q){ if(!q) return esc(text); const i = text.toLowerCase().indexOf(q); if (i<0) return esc(text); return esc(text.slice(0,i))+'<mark>'+esc(text.slice(i,i+q.length))+'</mark>'+esc(text.slice(i+q.length)); }
+
+function render(){
+  const q = document.getElementById('q').value.trim().toLowerCase();
+  const list = document.getElementById('list'); list.innerHTML = '';
+  let total = 0;
+  D.sections.forEach(s => {
+    const items = s.items.filter(i => !q || (i.t+' '+i.d+' '+i.k+' '+i.f+' '+s.title+' '+s.sub).toLowerCase().includes(q));
+    if (!items.length) return;
+    total += items.length;
+    const sec = document.createElement('section');
+    sec.id = s.id; sec.style.setProperty('--c', `var(${COLOR[s.id]})`);
+    sec.innerHTML = `<div class="sh"><h2>${esc(s.title)}</h2><p>${esc(s.sub)}</p><span class="n">${items.length}</span></div><div class="grid"></div>`;
+    const g = sec.querySelector('.grid');
+    items.forEach(i => {
+      const a = document.createElement('a');
+      a.className = 'card'; a.href = i.f;
+      a.innerHTML = `<div class="top"><span class="kind">${esc(i.k)}</span><span class="date" title="Оновлено">${esc(i.u)}</span></div><h3>${hl(i.t,q)}</h3><p>${hl(i.d,q)}</p><span class="file">${esc(i.f)}</span>`;
+      a.addEventListener('click', () => { const r = store.get('recent', []).filter(x => x!==i.f); r.unshift(i.f); store.set('recent', r.slice(0,5)); });
+      g.appendChild(a);
+    });
+    list.appendChild(sec);
+  });
+  document.getElementById('empty').hidden = total > 0;
+  document.getElementById('audio').hidden = !!q && !'аудіо audio hören mp3 track'.includes(q);
+}
+
+function renderRecent(){
+  const r = store.get('recent', []).filter(f => byFile[f]);
+  const box = document.getElementById('recent');
+  if (!r.length) return;
+  box.hidden = false;
+  r.forEach(f => { const a = document.createElement('a'); a.href = f; a.textContent = byFile[f].t; box.appendChild(a); });
+}
+
+function renderAudio(){
+  const box = document.getElementById('audioList');
+  D.audio.forEach((g, gi) => {
+    const d = document.createElement('details'); d.className = 'ag'; if (gi===1) d.open = false;
+    d.innerHTML = `<summary>${esc(g.t)}</summary>` + g.files.map(f => {
+      const n = (f.match(/^(\d{3})_/) || f.match(/_(\d{3})\.mp3$/) || [,''])[1];
+      return `<div class="track"><code>${esc(n)}</code><audio controls preload="none" src="${esc(f)}"></audio></div>`;
+    }).join('');
+    box.appendChild(d);
+  });
+  // pause others when one plays
+  box.addEventListener('play', e => { box.querySelectorAll('audio').forEach(a => { if (a!==e.target) a.pause(); }); }, true);
+}
+
+document.getElementById('q').addEventListener('input', render);
+render(); renderRecent(); renderAudio();
+</script>
+</body>
+</html>
