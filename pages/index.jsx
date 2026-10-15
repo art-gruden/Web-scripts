@@ -1,20 +1,52 @@
 // pages/index.jsx
+//
+//   /                  -> /cv.html
+//   /index.html        -> /cv.html     (через rewrite у next.config.js)
+//   /index.html?topic  -> /topic.html
+//   /index.html?list   -> список файлів
+//
+// Перенаправлення виконується в браузері, бо сторінка статична (getStaticProps),
+// а query-параметри відомі тільки на клієнті. Список файлів будується під час збірки.
 import fs from 'fs';
 import path from 'path';
+import { useEffect, useState } from 'react';
 
 export default function Home({ files }) {
+  const [showList, setShowList] = useState(false);
+
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+
+    if (params.has('list')) {
+      setShowList(true);
+      return;
+    }
+
+    // replace(), щоб кнопка «Назад» не повертала на проміжну сторінку
+    window.location.replace(params.has('topic') ? '/topic.html' : '/cv.html');
+  }, []);
+
+  if (!showList) {
+    // Те, що бачить браузер до редіректу (і користувачі без JavaScript)
+    return (
+      <noscript>
+        <a href="/cv.html">/cv.html</a>
+      </noscript>
+    );
+  }
+
   return (
     <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>Список файлов</h1>
+      <h1>Список файлів</h1>
       <ul style={{ listStyle: 'none', padding: 0 }}>
         {files.map((file) => {
-          // Формируем правильную ссылку
+          // Формуємо правильне посилання
           let href;
           if (file.endsWith('.jsx')) {
-            // Для JSX убираем расширение
+            // Для JSX прибираємо розширення
             href = '/' + file.replace(/\.jsx$/, '');
           } else {
-            // Для HTML оставляем как есть
+            // Для HTML залишаємо як є
             href = '/' + file;
           }
 
@@ -24,7 +56,7 @@ export default function Home({ files }) {
                 {file}
               </a>
               <span style={{ marginLeft: '1rem', color: '#666' }}>
-                ({file.endsWith('.html') ? 'страница' : 'интерактивная страница'})
+                ({file.endsWith('.html') ? 'сторінка' : 'інтерактивна сторінка'})
               </span>
             </li>
           );
@@ -35,15 +67,15 @@ export default function Home({ files }) {
 }
 
 export async function getStaticProps() {
-  // Читаем файлы из папки public (там лежат только .html и, возможно, другие статические файлы)
+  // Читаємо файли з папки public (там лежать тільки .html та, можливо, інші статичні файли)
   const publicDir = path.join(process.cwd(), 'public');
-  // Проверяем существование папки
+  // Перевіряємо існування папки
   if (!fs.existsSync(publicDir)) {
     return { props: { files: [] } };
   }
 
   const allFiles = fs.readdirSync(publicDir);
-  // Фильтруем .html и .jsx (хотя .jsx мы уже не храним в public, но для совместимости оставляем)
+  // Фільтруємо .html та .jsx (хоча .jsx ми вже не зберігаємо в public, але для сумісності залишаємо)
   const filteredFiles = allFiles.filter((file) =>
     /\.(html|jsx)$/i.test(file)
   );
