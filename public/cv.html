@@ -1,0 +1,465 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Dmytro Maiatskyi – Senior DevOps / SRE Engineer</title>
+<meta name="description" content="Senior DevOps / SRE engineer with 8+ years of experience building and operating Kubernetes platforms. GitOps, Terraform, Pulumi, observability. Based in Dresden, Germany.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#F5F6F4">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2313252A'/%3E%3Cpath d='M2 17 L9 17 L11 9 L14 25 L17 6 L20 22 L23 14 L30 17' fill='none' stroke='%237E92FF' stroke-width='2' stroke-linejoin='round' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #F5F6F4;
+    --ink: #13252A;
+    --muted: #566568;
+    --rule: #D3DADA;
+    --accent: #2744E6;
+    --display: "Bricolage Grotesque", "Helvetica Neue", Arial, sans-serif;
+    --text: "Literata", Georgia, "Times New Roman", serif;
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-text-size-adjust: 100%; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--text);
+    font-size: 1.0625rem;
+    line-height: 1.62;
+    font-optical-sizing: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  a { color: inherit; text-decoration-color: var(--accent); text-decoration-thickness: 1.5px; text-underline-offset: 0.22em; }
+  a:hover { color: var(--accent); }
+  :focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; border-radius: 2px; }
+
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
+
+  /* ---------- Hero ---------- */
+  .hero { padding-top: clamp(48px, 9vw, 112px); }
+
+  h1 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 800;
+    font-size: clamp(3.1rem, 11vw, 7.6rem);
+    line-height: 0.92;
+    letter-spacing: -0.035em;
+    font-variation-settings: "opsz" 96;
+  }
+  h1 span { display: block; }
+
+  .role {
+    margin: clamp(20px, 3vw, 32px) 0 0;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .lede {
+    margin: 20px 0 0;
+    max-width: 38em;
+    font-size: clamp(1.1rem, 1.8vw, 1.25rem);
+    line-height: 1.6;
+  }
+
+  .contact {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 10px 32px;
+    margin: 28px 0 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 1.05rem;
+  }
+  .contact .where { color: var(--muted); }
+
+  .save {
+    appearance: none;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    font: inherit;
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: 0.98rem;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color .15s, color .15s, border-color .15s;
+  }
+  .save:hover { background: var(--ink); color: var(--paper); }
+
+  /* ---------- Seismic trace (the one memorable thing) ---------- */
+  .trace { margin-top: clamp(36px, 6vw, 64px); }
+  .trace svg { display: block; width: 100%; height: clamp(72px, 11vw, 120px); overflow: visible; }
+  .trace path {
+    fill: none;
+    stroke: var(--accent);
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+    stroke-linecap: round;
+    vector-effect: non-scaling-stroke;
+    stroke-dasharray: 1;
+  }
+  @media (prefers-reduced-motion: no-preference) {
+    .trace path { animation: draw 2.8s cubic-bezier(.45, .05, .25, 1) .25s both; }
+  }
+  @keyframes draw { from { stroke-dashoffset: 1; } to { stroke-dashoffset: 0; } }
+
+  /* ---------- Sections ---------- */
+  .sec {
+    display: grid;
+    grid-template-columns: 200px minmax(0, 1fr);
+    gap: 0 48px;
+    padding: 56px 0;
+    border-top: 1px solid var(--rule);
+  }
+  .sec:first-of-type { border-top: 0; }
+
+  h2 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 700;
+    font-size: 1.35rem;
+    line-height: 1.2;
+    letter-spacing: -0.015em;
+  }
+
+  .job { margin: 0 0 44px; }
+  .job:last-child { margin-bottom: 0; }
+  .job-head {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2px 24px;
+    align-items: baseline;
+  }
+  h3 {
+    margin: 0;
+    font-family: var(--display);
+    font-weight: 650;
+    font-size: 1.28rem;
+    line-height: 1.25;
+    letter-spacing: -0.012em;
+  }
+  .dates {
+    font-family: var(--display);
+    font-weight: 500;
+    font-size: 0.98rem;
+    color: var(--muted);
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+    text-align: right;
+  }
+  .org { margin: 0; font-size: 1rem; }
+  .ctx { margin: 0; font-size: 0.95rem; color: var(--muted); grid-column: 1 / -1; }
+
+  ul.points { margin: 14px 0 0; padding: 0; list-style: none; }
+  ul.points li { position: relative; padding-left: 1.25em; margin: 0 0 8px; max-width: 46em; }
+  ul.points li::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 0.82em;
+    width: 0.6em;
+    height: 2px;
+    background: var(--accent);
+  }
+
+  dl.skills { margin: 0; display: grid; grid-template-columns: 11.5em minmax(0, 1fr); gap: 14px 24px; }
+  dl.skills dt { font-family: var(--display); font-weight: 650; font-size: 1.02rem; }
+  dl.skills dd { margin: 0; max-width: 40em; }
+
+  .items { margin: 0; padding: 0; list-style: none; display: grid; gap: 22px; }
+  .items li { max-width: 44em; }
+  .items strong { font-family: var(--display); font-weight: 650; font-size: 1.12rem; letter-spacing: -0.01em; }
+  .items .sub { display: block; color: var(--muted); font-size: 0.95rem; }
+
+  footer { padding: 28px 0 72px; border-top: 1px solid var(--rule); color: var(--muted); font-size: 0.95rem; }
+  footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px 24px; }
+
+  /* ---------- Small screens ---------- */
+  @media (max-width: 760px) {
+    .sec { grid-template-columns: 1fr; gap: 20px; padding: 40px 0; }
+    dl.skills { grid-template-columns: 1fr; gap: 2px; }
+    dl.skills dd { margin-bottom: 14px; }
+    .job-head { grid-template-columns: 1fr; }
+    .dates { text-align: left; }
+  }
+
+  /* ---------- Print / Save as PDF ---------- */
+  @page { size: A4; margin: 13mm 14mm; }
+  @media print {
+    :root { --paper: #fff; }
+    html { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+    body { font-size: 9.6pt; line-height: 1.45; }
+    .wrap { max-width: none; padding: 0; }
+    .hero { padding-top: 0; }
+    h1 { font-size: 40pt; }
+    h1 span { display: inline; }
+    .role { font-size: 13pt; margin-top: 8pt; }
+    .lede { font-size: 10.5pt; margin-top: 8pt; max-width: none; }
+    .contact { margin-top: 10pt; font-size: 9.6pt; }
+    .save, footer { display: none; }
+    .trace { margin-top: 14pt; }
+    .trace svg { height: 38pt; }
+    .trace path { animation: none; }
+    .sec { grid-template-columns: 105pt 1fr; gap: 0 18pt; padding: 13pt 0; }
+    h2 { font-size: 11.5pt; }
+    h3 { font-size: 11pt; }
+    .dates, .org, .ctx { font-size: 9pt; }
+    .job { margin-bottom: 13pt; break-inside: avoid; }
+    ul.points { margin-top: 5pt; }
+    ul.points li { margin-bottom: 3pt; max-width: none; }
+    dl.skills { gap: 5pt 14pt; grid-template-columns: 9.5em 1fr; }
+    dl.skills dt { font-size: 9.6pt; }
+    .items { gap: 8pt; }
+    .items strong { font-size: 10pt; }
+    a { color: inherit; text-decoration: none; }
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="wrap">
+    <h1><span>Dmytro</span> <span>Maiatskyi</span></h1>
+    <p class="role">Senior DevOps / SRE engineer, platform engineering on Kubernetes</p>
+    <p class="lede">I have spent more than eight years building and running Kubernetes platforms, most recently on Google Cloud for an energy management product. My work centres on GitOps, infrastructure as code and observability, and I have led an SRE team at GlobalLogic.</p>
+    <ul class="contact">
+      <li><a id="mail" href="https://www.linkedin.com/in/mayatskiydima">Email</a></li>
+      <li><a href="https://www.linkedin.com/in/mayatskiydima" rel="noopener">linkedin.com/in/mayatskiydima</a></li>
+      <li class="where">Dresden, Germany</li>
+      <li><button class="save" type="button" onclick="window.print()">Save as PDF</button></li>
+    </ul>
+  </div>
+  <div class="wrap trace" aria-hidden="true">
+    <svg viewBox="0 0 1200 120" preserveAspectRatio="none" focusable="false">
+      <path pathLength="1" d="M0,60.3 L2,59.4 L4,60.2 L6,60.3 L8,61.0 L10,60.2 L12,58.8 L14,59.5 L16,58.9 L18,59.7 L20,59.6 L22,59.8 L24,61.8 L26,59.1 L28,59.4 L30,59.5 L32,61.9 L34,61.9 L36,61.0 L38,60.5 L40,59.7 L42,60.1 L44,59.4 L46,60.7 L48,59.7 L50,59.6 L52,60.7 L54,58.1 L56,59.4 L58,58.7 L60,60.7 L62,60.8 L64,60.4 L66,60.1 L68,59.3 L70,59.7 L72,60.5 L74,61.1 L76,60.6 L78,58.7 L80,60.9 L82,59.7 L84,59.5 L86,61.6 L88,59.9 L90,58.6 L92,62.2 L94,60.4 L96,60.1 L98,60.9 L100,59.5 L102,60.1 L104,61.6 L106,59.1 L108,59.3 L110,59.0 L112,58.4 L114,59.6 L116,59.9 L118,61.4 L120,59.3 L122,60.7 L124,60.5 L126,61.4 L128,61.1 L130,60.6 L132,58.6 L134,62.2 L136,61.6 L138,59.7 L140,58.4 L142,59.4 L144,62.1 L146,62.8 L148,59.6 L150,60.8 L152,61.2 L154,58.9 L156,58.8 L158,59.8 L160,59.7 L162,59.5 L164,58.2 L166,59.3 L168,59.4 L170,59.4 L172,61.7 L174,58.6 L176,58.9 L178,59.4 L180,62.2 L182,60.7 L184,59.1 L186,62.0 L188,60.2 L190,58.9 L192,61.4 L194,58.2 L196,59.4 L198,60.2 L200,59.6 L202,59.3 L204,59.9 L206,58.7 L208,60.7 L210,60.5 L212,58.9 L214,60.0 L216,61.0 L218,59.0 L220,58.4 L222,60.5 L224,61.5 L226,60.1 L228,60.2 L230,60.3 L232,58.5 L234,61.1 L236,58.6 L238,61.4 L240,60.9 L242,59.3 L244,58.8 L246,59.1 L248,59.6 L250,59.8 L252,59.8 L254,59.4 L256,60.2 L258,59.7 L260,59.4 L262,60.0 L264,59.2 L266,59.4 L268,57.8 L270,59.6 L272,60.5 L274,60.4 L276,60.0 L278,59.0 L280,60.4 L282,59.6 L284,58.0 L286,62.8 L288,61.2 L290,59.7 L292,59.6 L294,59.7 L296,60.5 L298,59.3 L300,59.7 L302,60.6 L304,57.3 L306,59.6 L308,60.6 L310,60.1 L312,60.2 L314,60.1 L316,63.0 L318,60.5 L320,58.9 L322,61.3 L324,60.1 L326,59.0 L328,59.1 L330,58.4 L332,61.9 L334,60.4 L336,60.4 L338,59.3 L340,58.8 L342,63.0 L344,58.8 L346,61.6 L348,59.2 L350,61.6 L352,59.8 L354,58.7 L356,60.2 L358,59.8 L360,59.1 L362,59.8 L364,60.1 L366,58.3 L368,58.8 L370,60.3 L372,57.0 L374,61.3 L376,59.0 L378,60.3 L380,59.9 L382,59.2 L384,59.8 L386,59.3 L388,61.7 L390,61.7 L392,59.3 L394,61.1 L396,61.1 L398,61.6 L400,58.6 L402,59.2 L404,58.4 L406,61.0 L408,60.0 L410,61.3 L412,59.2 L414,58.3 L416,61.0 L418,58.3 L420,58.9 L422,60.2 L424,62.2 L426,58.5 L428,60.1 L430,60.7 L432,59.1 L434,58.3 L436,56.6 L438,59.9 L440,59.0 L442,60.4 L444,61.6 L446,63.3 L448,62.5 L450,58.2 L452,57.1 L454,55.9 L456,55.0 L458,58.7 L460,63.5 L462,63.6 L464,66.1 L466,62.4 L468,60.9 L470,59.3 L472,56.7 L474,55.2 L476,57.0 L478,57.7 L480,61.6 L482,62.1 L484,62.0 L486,60.8 L488,61.2 L490,57.4 L492,59.0 L494,57.9 L496,60.0 L498,58.6 L500,63.1 L502,62.9 L504,63.1 L506,61.7 L508,60.6 L510,58.0 L512,55.3 L514,57.4 L516,58.1 L518,59.2 L520,62.0 L522,63.9 L524,62.8 L526,59.9 L528,61.4 L530,58.9 L532,56.7 L534,57.3 L536,59.2 L538,59.7 L540,61.5 L542,57.2 L544,51.8 L546,48.4 L548,43.6 L550,40.3 L552,40.6 L554,53.4 L556,78.6 L558,99.3 L560,106.4 L562,92.1 L564,74.8 L566,57.2 L568,52.5 L570,49.9 L572,37.0 L574,25.0 L576,22.3 L578,33.1 L580,57.6 L582,83.4 L584,93.0 L586,88.8 L588,79.3 L590,74.4 L592,72.6 L594,69.1 L596,55.2 L598,38.1 L600,21.3 L602,23.1 L604,41.0 L606,59.9 L608,68.1 L610,74.5 L612,72.9 L614,76.2 L616,87.3 L618,85.9 L620,72.2 L622,53.6 L624,35.1 L626,29.2 L628,37.6 L630,46.6 L632,52.2 L634,54.1 L636,59.9 L638,71.1 L640,85.2 L642,90.6 L644,82.7 L646,67.7 L648,53.2 L650,45.7 L652,42.1 L654,45.8 L656,45.3 L658,46.6 L660,45.7 L662,56.8 L664,70.4 L666,82.2 L668,82.9 L670,74.1 L672,67.4 L674,59.1 L676,58.3 L678,56.5 L680,47.3 L682,39.0 L684,40.6 L686,47.1 L688,59.1 L690,70.5 L692,75.3 L694,74.1 L696,67.8 L698,68.3 L700,70.8 L702,65.8 L704,52.1 L706,41.2 L708,33.9 L710,37.4 L712,48.0 L714,55.8 L716,63.8 L718,64.4 L720,66.4 L722,70.9 L724,77.1 L726,76.4 L728,69.1 L730,59.3 L732,51.6 L734,50.4 L736,53.6 L738,55.1 L740,56.2 L742,56.4 L744,58.0 L746,62.6 L748,68.6 L750,70.4 L752,66.7 L754,59.4 L756,54.0 L758,53.5 L760,52.8 L762,53.1 L764,53.1 L766,53.4 L768,55.6 L770,63.9 L772,72.7 L774,74.7 L776,74.6 L778,67.8 L780,64.9 L782,63.6 L784,59.9 L786,53.8 L788,51.0 L790,48.0 L792,47.2 L794,50.4 L796,57.3 L798,63.1 L800,63.8 L802,64.6 L804,65.7 L806,66.3 L808,66.0 L810,64.9 L812,60.1 L814,57.3 L816,53.6 L818,53.8 L820,58.0 L822,58.8 L824,59.8 L826,59.1 L828,61.1 L830,60.1 L832,63.1 L834,63.8 L836,59.7 L838,52.5 L840,53.4 L842,52.7 L844,55.0 L846,58.2 L848,60.5 L850,59.9 L852,62.1 L854,64.9 L856,68.1 L858,69.1 L860,65.1 L862,61.1 L864,58.0 L866,56.5 L868,56.1 L870,54.0 L872,54.4 L874,53.3 L876,54.2 L878,59.7 L880,62.7 L882,66.8 L884,65.5 L886,63.0 L888,62.3 L890,63.0 L892,63.0 L894,62.9 L896,56.8 L898,56.1 L900,55.3 L902,59.2 L904,60.7 L906,63.8 L908,60.6 L910,59.7 L912,62.5 L914,60.8 L916,60.1 L918,61.4 L920,59.3 L922,56.6 L924,56.1 L926,58.7 L928,59.5 L930,61.0 L932,61.4 L934,61.9 L936,62.0 L938,63.5 L940,66.6 L942,64.5 L944,62.3 L946,59.5 L948,56.6 L950,56.2 L952,55.9 L954,58.3 L956,57.8 L958,57.0 L960,58.8 L962,61.2 L964,62.9 L966,64.3 L968,62.0 L970,61.2 L972,61.0 L974,61.6 L976,60.9 L978,63.0 L980,60.0 L982,58.3 L984,60.5 L986,60.0 L988,61.2 L990,63.0 L992,61.0 L994,60.1 L996,58.7 L998,58.5 L1000,59.1 L1002,59.3 L1004,57.7 L1006,57.4 L1008,57.3 L1010,59.5 L1012,62.3 L1014,63.9 L1016,63.0 L1018,63.3 L1020,63.8 L1022,62.7 L1024,62.6 L1026,60.6 L1028,58.4 L1030,57.9 L1032,54.4 L1034,57.7 L1036,56.7 L1038,58.3 L1040,57.5 L1042,61.9 L1044,61.1 L1046,61.1 L1048,61.5 L1050,59.4 L1052,60.8 L1054,59.0 L1056,59.2 L1058,59.1 L1060,59.7 L1062,60.2 L1064,59.1 L1066,60.8 L1068,58.7 L1070,61.7 L1072,60.6 L1074,58.2 L1076,60.0 L1078,59.0 L1080,57.5 L1082,58.8 L1084,59.8 L1086,58.5 L1088,58.1 L1090,58.3 L1092,60.8 L1094,59.1 L1096,60.1 L1098,62.2 L1100,61.6 L1102,62.0 L1104,59.6 L1106,61.6 L1108,59.5 L1110,59.9 L1112,59.2 L1114,57.1 L1116,56.6 L1118,58.6 L1120,59.9 L1122,58.7 L1124,59.8 L1126,59.8 L1128,58.9 L1130,59.8 L1132,61.8 L1134,58.4 L1136,60.4 L1138,59.1 L1140,60.7 L1142,60.2 L1144,62.2 L1146,58.3 L1148,58.5 L1150,61.3 L1152,61.8 L1154,62.1 L1156,58.9 L1158,60.3 L1160,59.3 L1162,59.2 L1164,59.0 L1166,60.3 L1168,59.3 L1170,61.1 L1172,59.8 L1174,59.8 L1176,60.2 L1178,61.6 L1180,62.6 L1182,61.3 L1184,61.5 L1186,58.8 L1188,59.4 L1190,60.1 L1192,60.1 L1194,59.9 L1196,59.8 L1198,59.1 L1200,58.6"/>
+    </svg>
+  </div>
+</header>
+
+<main class="wrap">
+
+  <section class="sec" aria-labelledby="h-exp">
+    <h2 id="h-exp">Experience</h2>
+    <div>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>DevOps Engineer</h3>
+          <span class="dates">May 2025 – Nov 2025</span>
+          <p class="org">Kiwigrid GmbH, Dresden</p>
+          <p class="ctx">Energy management platform on Google Cloud. Hybrid.</p>
+        </div>
+        <ul class="points">
+          <li>Optimised CPU and memory usage of high-load Kubernetes clusters on Google Cloud Platform.</li>
+          <li>Automated infrastructure configuration with Pulumi.</li>
+          <li>Improved CI/CD pipelines with Jenkins, Bitbucket Pipelines and FluxCD.</li>
+          <li>Safeguarded PaaS/SaaS service quality through SLO/SLA metrics, degradation detection and incident investigation.</li>
+          <li>Operated the Prometheus/Grafana monitoring and alerting stack.</li>
+          <li>Optimised big-data reporting workloads to reduce compute costs.</li>
+          <li>Troubleshot microservices, API gateways and production workloads.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>DevOps Engineer and SRE Team Lead</h3>
+          <span class="dates">Jan 2023 – Dec 2024</span>
+          <p class="org">GlobalLogic Germany, Berlin</p>
+          <p class="ctx">Fully remote.</p>
+        </div>
+        <ul class="points">
+          <li>Led an SRE team; worked with functional groups and leadership to evaluate, prioritise, plan and deliver new projects.</li>
+          <li>Ensured availability, security and scalability of Kubernetes clusters, including on-premise clusters and Docker deployments.</li>
+          <li>Automated infrastructure provisioning and configuration with Terraform and Ansible. With the team, built an end-to-end pipeline in which Ansible created VMs on VMware, configured Linux, brought up Kubernetes with Kubespray and deployed the product.</li>
+          <li>Improved CI/CD for microservices using GitOps practices (FluxCD, ArgoCD).</li>
+          <li>Implemented and operated HashiCorp Vault, the EFK logging stack and Prometheus/Grafana monitoring.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>DevOps Engineer</h3>
+          <span class="dates">Jun 2021 – Jan 2023</span>
+          <p class="org">GlobalLogic Ukraine, Kyiv</p>
+        </div>
+        <ul class="points">
+          <li>Designed and maintained Jenkins CI/CD pipelines.</li>
+          <li>Configured multi-node Kubernetes clusters and deployed microservice architectures on VMs and bare-metal servers.</li>
+          <li>Performed root cause analysis of system performance and reliability issues.</li>
+          <li>Contributed to the design of infrastructure monitoring, security and scaling solutions; wrote testable automation code.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>Research and Development Engineer</h3>
+          <span class="dates">May 2020 – May 2021</span>
+          <p class="org">Namecheap Inc., Kyiv</p>
+          <p class="ctx">Fully remote.</p>
+        </div>
+        <ul class="points">
+          <li>Research and development in high-performance computing and Infrastructure as a Service (IaaS).</li>
+          <li>Automated virtualisation workflows; wrote Ansible playbooks for configuration management of Red Hat servers.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>DevOps Engineer</h3>
+          <span class="dates">Feb 2019 – Mar 2020</span>
+          <p class="org">Toplyvo, Kherson</p>
+        </div>
+        <ul class="points">
+          <li>Built and maintained Jenkins CI/CD pipelines; managed Bitbucket repositories, branching and merges.</li>
+          <li>Automated application deployments with Bash and Python; managed Linux servers with Ansible.</li>
+          <li>Operated on-premise and GCP infrastructure.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>IT Engineer</h3>
+          <span class="dates">Jun 2014 – Dec 2018</span>
+          <p class="org">Naumen, Kherson</p>
+        </div>
+        <ul class="points">
+          <li>Installed and operated a contact-centre telephony cluster; connected head offices via IPsec tunnels with QoS.</li>
+          <li>Configured OSPF and static routing, VRRP/HSRP/GLBP, Cisco Catalyst L2/L3 switching, VPDN and RADIUS remote access.</li>
+        </ul>
+      </article>
+
+      <article class="job">
+        <div class="job-head">
+          <h3>Lead IT Infrastructure Support Specialist</h3>
+          <span class="dates">Jul 2010 – May 2014</span>
+          <p class="org">BNP Paribas, Kherson</p>
+          <p class="ctx">Banking sector.</p>
+        </div>
+        <ul class="points">
+          <li>Administered servers, workstations and network equipment; supported banking systems, POS terminals and ATMs, and inter-branch connectivity.</li>
+        </ul>
+      </article>
+
+    </div>
+  </section>
+
+  <section class="sec" aria-labelledby="h-skills">
+    <h2 id="h-skills">Skills</h2>
+    <dl class="skills">
+      <dt>Kubernetes and containers</dt>
+      <dd>GKE in production, on-premise clusters with Kubespray, Docker, Helm, microservices. EKS and AKS at working level; AKS so far in lab and training environments.</dd>
+
+      <dt>Infrastructure as code</dt>
+      <dd>Terraform, Pulumi, Ansible.</dd>
+
+      <dt>GitOps and CI/CD</dt>
+      <dd>FluxCD, ArgoCD, Jenkins, GitLab CI, GitHub Actions, Bitbucket Pipelines.</dd>
+
+      <dt>Observability and reliability</dt>
+      <dd>Prometheus, Grafana, alerting, EFK stack. SLO/SLA definition, incident response, root cause analysis.</dd>
+
+      <dt>Security</dt>
+      <dd>HashiCorp Vault for secrets management, GCP IAM, Kubernetes and cloud-native security (KCSA).</dd>
+
+      <dt>Cloud</dt>
+      <dd>Google Cloud Platform in production. Working knowledge of AWS and Azure, the latter so far at lab level.</dd>
+
+      <dt>Databases</dt>
+      <dd>PostgreSQL, MySQL, Oracle: query design and optimisation, administration, migrations.</dd>
+
+      <dt>Linux and networking</dt>
+      <dd>Linux and Red Hat administration (LFCS), IPsec, OSPF, VRRP/HSRP/GLBP, Cisco L2/L3.</dd>
+
+      <dt>Programming</dt>
+      <dd>Python, Go, Bash, Groovy.</dd>
+    </dl>
+  </section>
+
+  <section class="sec" aria-labelledby="h-cert">
+    <h2 id="h-cert">Certifications</h2>
+    <ul class="items">
+      <li>
+        <strong>Linux Foundation Certified System Administrator (LFCS)</strong>
+        <span class="sub">January 2025, credential ID LF-7lt7lic1ru</span>
+      </li>
+      <li>
+        <strong>Kubernetes and Cloud Native Security Associate (KCSA)</strong>
+        <span class="sub">September 2024, credential ID LF-xzjp24aw6n</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="h-proj">
+    <h2 id="h-proj">Projects</h2>
+    <ul class="items">
+      <li>
+        <strong>ESP32 sensors for seismic activity and water level</strong>
+        <span class="sub">Self-built, from firmware to data collection.</span>
+      </li>
+      <li>
+        <strong>formcheck</strong>
+        <span class="sub">A Next.js and Node.js web tool, deployed on Vercel, that finds and cleans invisible and typographic characters that break web form validation. Built with AI-assisted development.</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="h-edu">
+    <h2 id="h-edu">Education</h2>
+    <ul class="items">
+      <li>
+        <strong>Specialist degree in Finance and Banking</strong>
+        <span class="sub">European University, Kyiv, 2010</span>
+      </li>
+      <li>
+        <strong>Bachelor in Mathematics and Informatics</strong>
+        <span class="sub">Kherson State University, 2005</span>
+      </li>
+    </ul>
+  </section>
+
+  <section class="sec" aria-labelledby="h-lang">
+    <h2 id="h-lang">Languages</h2>
+    <dl class="skills">
+      <dt>English</dt><dd>Advanced, my working language.</dd>
+      <dt>German</dt><dd>B2.</dd>
+      <dt>Ukrainian</dt><dd>Native.</dd>
+      <dt>Russian</dt><dd>Bilingual.</dd>
+    </dl>
+  </section>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Dmytro Maiatskyi, Dresden, Germany</span>
+    <span>Updated October 2026</span>
+  </div>
+</footer>
+
+<script>
+  // Build the mailto link at runtime so the address is not sitting in the HTML for scrapers.
+  (function () {
+    var user = "artgruden", host = "ukr.net";
+    var a = document.getElementById("mail");
+    if (!a) return;
+    a.href = "mailto:" + user + "@" + host;
+    a.textContent = user + "@" + host;
+  })();
+</script>
+</body>
+</html>
